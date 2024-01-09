@@ -12,10 +12,16 @@
       "path": "../../packages/core"
     },
     {
+      "path": "../../packages/getting-started"
+    },
+    {
       "path": "../../packages/messages"
     },
     {
       "path": "../../packages/monaco"
+    },
+    {
+      "path": "../../packages/navigator"
     },
     {
       "path": "../../packages/preferences"
