@@ -6,9 +6,9 @@ import { HelloShellLayoutRestorer } from './hello-shell-layout-restorer'
 import { HelloFilterContribution } from './hello-filter-contribution'
 import { SampleCommandContribution } from './sample-command-contribution'
 import { FileNavigatorWidget, FILE_NAVIGATOR_ID, NavigatorWidgetFactory } from '@theia/navigator/lib/browser'
-import { createHelloFileNavigatorWidget } from './hello-navigator-container'
-import { HelloFileNavigatorWidget } from './hello-navigator-widget'
-import { HelloNavigatorWidgetFactory } from './hello-navigator-widget-factory'
+import { createHelloFileNavigatorWidget } from './navigator/hello-navigator-container'
+import { HelloFileNavigatorWidget } from './navigator/hello-navigator-widget'
+import { HelloNavigatorWidgetFactory } from './navigator/hello-navigator-widget-factory'
 
 export default new ContainerModule((
     bind: interfaces.Bind,
