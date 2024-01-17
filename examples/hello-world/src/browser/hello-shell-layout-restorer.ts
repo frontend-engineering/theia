@@ -15,6 +15,12 @@ export class HelloShellLayoutRestorer extends ShellLayoutRestorer {
         if (!desc.constructionOptions) {
             return undefined
         }
+        if ([
+            'files', 'explorer-view-container',
+        ].indexOf(desc.constructionOptions.factoryId) > -1) {
+            console.warn(`Not restoreState, ${desc.constructionOptions.factoryId}`)
+            return undefined
+        }
         try {
             desc = await this.fireWillInflateWidget(desc, context)
             const widget = await this.widgetManager.getOrCreateWidget(desc.constructionOptions.factoryId, desc.constructionOptions.options)
@@ -28,17 +34,7 @@ export class HelloShellLayoutRestorer extends ShellLayoutRestorer {
                     } else {
                         oldState = desc.innerWidgetState
                     }
-
-                    /**
-                     * 核心 暂停对 'files', 'explorer-view-container' 的 restore
-                     */
-                    if ([
-                        'files', 'explorer-view-container',
-                    ].indexOf(desc.constructionOptions.factoryId) > -1) {
-                        console.warn(`Not restoreState, ${desc.constructionOptions.factoryId}`)
-                    } else {
-                        widget.restoreState(oldState)
-                    }
+                    widget.restoreState(oldState)
                 } catch (e) {
                     if (ApplicationShellLayoutMigrationError.is(e)) {
                         throw e
