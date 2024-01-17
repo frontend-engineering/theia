@@ -5,21 +5,21 @@ type="$1"
 remote_user="root"
 remote_host="111.229.82.31"
 remote_path="/root/theia-browser-app"
-#
-#echo "clean"
-#rm -rf examples/browser-app/lib
-#
-#echo "build:production"
-#yarn --cwd examples/browser-app run build:production
-#
-#echo "打包"
-#mkdir -p dist && tar -cvf ./dist/browser-app-lib.tar -C examples/browser-app lib
+
+echo "clean"
+rm -rf examples/browser-app/lib
+
+echo "build:production"
+yarn --cwd examples/browser-app run build:production
+
+echo "打包"
+mkdir -p dist && tar -zcvf ./dist/browser-app-lib.tar -C examples/browser-app lib
 
 echo "开始上传"
 scp -i "$HOME/Documents/yunhu-doc/new_2024_yunhu.pem" -r "./dist/browser-app-lib.tar" "$remote_user@$remote_host:$remote_path"
 
 echo "远程解压"
-ssh -i "$HOME/Documents/yunhu-doc/new_2024_yunhu.pem" "$remote_user@$remote_host" "cd $remote_path && tar -xvf browser-app-lib.tar"
+ssh -i "$HOME/Documents/yunhu-doc/new_2024_yunhu.pem" "$remote_user@$remote_host" "cd $remote_path && tar -zxvf browser-app-lib.tar"
 
 echo "替换 native"
 ssh -i "$HOME/Documents/yunhu-doc/new_2024_yunhu.pem" "$remote_user@$remote_host" "cd $remote_path/lib/backend && rm -rf native"
