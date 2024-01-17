@@ -16,7 +16,7 @@
 
 import { ContainerModule, Container } from 'inversify';
 import { ILoggerServer, loggerPath, ConsoleLogger } from '../common/logger-protocol';
-import { ILogger, Logger, LoggerFactory, setRootLogger, LoggerName, rootLoggerName } from '../common/logger';
+import { ILogger, Logger, LoggerFactory, LoggerName, rootLoggerName } from '../common/logger';
 import { LoggerWatcher } from '../common/logger-watcher';
 import { WebSocketConnectionProvider } from './messaging';
 import { FrontendApplicationContribution } from './frontend-application-contribution';
@@ -25,7 +25,7 @@ import { EncodingError } from '../common/message-rpc/rpc-message-encoder';
 export const loggerFrontendModule = new ContainerModule(bind => {
     bind(FrontendApplicationContribution).toDynamicValue(ctx => ({
         initialize(): void {
-            setRootLogger(ctx.container.get<ILogger>(ILogger));
+            // setRootLogger(ctx.container.get<ILogger>(ILogger));
         }
     }));
 

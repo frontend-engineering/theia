@@ -47,7 +47,7 @@ export class DefaultSecondaryWindowService implements SecondaryWindowService {
     init(): void {
         // Set up messaging with secondary windows
         window.addEventListener('message', (event: MessageEvent) => {
-            console.trace('Message on main window', event);
+            // console.trace('Message on main window', event);
             if (event.data.fromSecondary) {
                 console.trace('Message comes from secondary window');
                 return;
