@@ -90,6 +90,7 @@ before(async () => {
         bind(StatusBar).toConstantValue({} as StatusBar);
         bind(MarkdownRendererImpl).toSelf().inSingletonScope();
         bind(MarkdownRenderer).toService(MarkdownRendererImpl);
+        // @ts-expect-error
         bind(MarkdownRendererFactory).toFactory(({ container }) => container.get(MarkdownRenderer));
         bind(CommandService).toService(CommandRegistry);
         bind(LabelParser).toSelf().inSingletonScope();

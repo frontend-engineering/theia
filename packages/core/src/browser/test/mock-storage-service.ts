@@ -33,6 +33,7 @@ export class MockStorageService implements StorageService {
     }
 
     setData<T>(key: string, data?: T): Promise<void> {
+        // @ts-expect-error
         this.data.set(key, data);
         if (this.onSetDataCallback) {
             this.onSetDataCallback(key, data);

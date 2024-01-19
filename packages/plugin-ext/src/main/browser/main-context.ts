@@ -152,6 +152,7 @@ export function setUpPluginApi(rpc: RPCProtocol, container: interfaces.Container
     rpc.set(PLUGIN_RPC_CONTEXT.WEBVIEWS_MAIN, webviewsMain);
 
     const customEditorsMain = new CustomEditorsMainImpl(rpc, container, webviewsMain);
+    // @ts-expect-error
     rpc.set(PLUGIN_RPC_CONTEXT.CUSTOM_EDITORS_MAIN, customEditorsMain);
 
     const webviewViewsMain = new WebviewViewsMainImpl(rpc, container, webviewsMain);

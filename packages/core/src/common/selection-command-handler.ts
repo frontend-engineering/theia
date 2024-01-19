@@ -52,8 +52,10 @@ export class SelectionCommandHandler<S> implements CommandHandler {
         }
         const globalSelection = this.getSingleSelection(this.selectionService.selection);
         if (this.isMulti()) {
+            // @ts-expect-error
             return this.getMultiSelection(globalSelection);
         }
+        // @ts-expect-error
         return this.getSingleSelection(globalSelection);
     }
 

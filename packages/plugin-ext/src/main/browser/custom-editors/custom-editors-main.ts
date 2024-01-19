@@ -214,6 +214,7 @@ export class CustomEditorsMainImpl implements CustomEditorsMain, Disposable {
         model.changeContent();
     }
 
+    // @ts-expect-error
     async $createCustomEditorPanel(
         panelId: string,
         title: string,
