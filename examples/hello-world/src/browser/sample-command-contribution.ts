@@ -1,5 +1,6 @@
 import { inject, injectable } from '@theia/core/shared/inversify'
 import { CommandContribution, CommandRegistry, MessageService } from '@theia/core'
+import { trpcProxyClient } from './trpc-client'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
