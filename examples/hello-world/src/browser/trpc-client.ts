@@ -9,6 +9,7 @@ export const trpcProxyClient = createTRPCProxyClient<AppRouter>({
             // You can pass any HTTP headers you wish here
             async headers() {
                 return {
+                    'x-from': 'hello-world',
                     // authorization: getAuthCookie(),
                 }
             },
