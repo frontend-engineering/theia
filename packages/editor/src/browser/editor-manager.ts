@@ -38,7 +38,7 @@ export class EditorManager extends NavigatableWidgetOpenHandler<EditorWidget> {
 
     readonly id = EditorWidgetFactory.ID;
 
-    readonly label = 'Code Editor';
+    readonly label: string = 'Code Editor';
 
     protected readonly editorCounters = new Map<string, number>();
 

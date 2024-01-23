@@ -650,6 +650,11 @@ declare class HelloRouter {
             id: string;
             name: string;
             selected: boolean;
+            uri: {
+                codeUri: {
+                    scheme: string;
+                };
+            };
         }[]>;
     }>;
 }
@@ -1082,12 +1087,12 @@ declare class TrpcRouter {
                     };
                 };
                 _input_in: {
-                    email?: string | undefined;
                     id?: number | undefined;
+                    email?: string | undefined;
                 };
                 _input_out: {
-                    email?: string | undefined;
                     id?: number | undefined;
+                    email?: string | undefined;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1177,6 +1182,11 @@ declare class TrpcRouter {
                 id: string;
                 name: string;
                 selected: boolean;
+                uri: {
+                    codeUri: {
+                        scheme: string;
+                    };
+                };
             }[]>;
         }>;
     }>;
