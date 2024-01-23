@@ -5,12 +5,13 @@ import { trpcProxyClient } from '../trpc-client'
 
 @injectable()
 export class HelloFileNavigatorTree extends FileNavigatorTree {
-    override async resolveChildren(parent: CompositeTreeNode): Promise<TreeNode[]> {
-        if (WorkspaceNode.is(parent)) {
-            return parent.children
-        }
-        const children = await super.resolveChildren(parent)
-        return children
+  override async resolveChildren(parent: CompositeTreeNode): Promise<TreeNode[]> {
+    if (WorkspaceNode.is(parent)) {
+      return parent.children
     }
-
+    const rt = await trpcProxyClient.hello.resolveChildren.query({
+      pid: parent.id,
+    })
+    return rt as any[]
+  }
 }

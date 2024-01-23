@@ -614,8 +614,11 @@ declare class HelloRouter {
             name: string;
             visible: boolean;
             children: {
-                id: number;
+                id: string;
                 name: string;
+                selected: boolean;
+                expanded: boolean;
+                children: never[];
             }[];
         }>;
         resolveChildren: _trpc_server.BuildProcedure<"query", {
@@ -635,20 +638,18 @@ declare class HelloRouter {
                     'x-from': string | string[] | undefined;
                 };
             };
-            _input_in: any;
-            _input_out: any;
+            _input_in: {
+                pid: string;
+            };
+            _input_out: {
+                pid: string;
+            };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
         }, {
             id: string;
-            fileStat: {
-                name: string;
-                resource: {
-                    _path: {
-                        base: string;
-                    };
-                };
-            };
+            name: string;
+            selected: boolean;
         }[]>;
     }>;
 }
@@ -1081,12 +1082,12 @@ declare class TrpcRouter {
                     };
                 };
                 _input_in: {
-                    id?: number | undefined;
                     email?: string | undefined;
+                    id?: number | undefined;
                 };
                 _input_out: {
-                    id?: number | undefined;
                     email?: string | undefined;
+                    id?: number | undefined;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1140,8 +1141,11 @@ declare class TrpcRouter {
                 name: string;
                 visible: boolean;
                 children: {
-                    id: number;
+                    id: string;
                     name: string;
+                    selected: boolean;
+                    expanded: boolean;
+                    children: never[];
                 }[];
             }>;
             resolveChildren: _trpc_server.BuildProcedure<"query", {
@@ -1161,20 +1165,18 @@ declare class TrpcRouter {
                         'x-from': string | string[] | undefined;
                     };
                 };
-                _input_in: any;
-                _input_out: any;
+                _input_in: {
+                    pid: string;
+                };
+                _input_out: {
+                    pid: string;
+                };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
             }, {
                 id: string;
-                fileStat: {
-                    name: string;
-                    resource: {
-                        _path: {
-                            base: string;
-                        };
-                    };
-                };
+                name: string;
+                selected: boolean;
             }[]>;
         }>;
     }>;
