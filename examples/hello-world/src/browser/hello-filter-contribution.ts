@@ -10,7 +10,7 @@ export class HelloFilterContribution implements FilterContribution {
     registerContributionFilters(registry: ContributionFilterRegistry): void {
         registry.addFilters('*', [
             // filter a contribution based on its class type
-            contrib => {
+            contrib =>
                 // // if (contrib.constructor.name.indexOf('Monaco') > -1) return false;
                 // if (contrib.constructor.name.indexOf('EditorCommandContribution') > -1) return false;
                 // if (contrib.constructor.name.indexOf('EditorMenuContribution') > -1) return false;
@@ -19,8 +19,8 @@ export class HelloFilterContribution implements FilterContribution {
                 // if (contrib.constructor.name.indexOf('OutlineViewContribution') > -1) return false;
                 // console.log('contrib.constructor', contrib.constructor.name)
                 // return !(contrib instanceof SampleCommandContribution);
-                return true
-            },
+                true,
+
         ])
     }
 }

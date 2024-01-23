@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "packages": {
+    "@flowda-projects/flowda-services-trpc-server": {
+      "signature": "f1f39993899aae0434b3eaccfd4461ce",
+      "file": true,
+      "replaced": "link:.yalc/@flowda-projects/flowda-services-trpc-server"
+    }
+  }
+}

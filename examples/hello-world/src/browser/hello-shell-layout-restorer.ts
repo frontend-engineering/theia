@@ -2,9 +2,9 @@ import {
     ApplicationShellLayoutMigrationError,
     ShellLayoutRestorer,
     StatefulWidget,
+    Widget,
     WidgetDescription,
 } from '@theia/core/lib/browser'
-import { Widget } from '@phosphor/widgets'
 
 /**
  * 覆写 convertToWidget 确保 'files', 'explorer-view-container' 不要 restore

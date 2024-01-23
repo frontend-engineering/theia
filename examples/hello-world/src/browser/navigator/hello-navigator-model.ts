@@ -10,7 +10,7 @@ export class HelloFileNavigatorModel extends FileNavigatorModel {
     @inject(HelloFileNavigatorTree) protected override readonly tree: FileNavigatorTree
 
     override async createRoot(): Promise<TreeNode | undefined> {
-        const rt = await trpcProxyClient.getResources.query('hi')
+        const rt = await trpcProxyClient.hello.getResourceRoot.query()
         console.log('trpcProxyClient.getResources', rt)
         const root = await super.createRoot()
         // @ts-ignore

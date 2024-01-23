@@ -2764,6 +2764,19 @@ add-stream@^1.0.0:
   resolved "https://registry.yarnpkg.com/add-stream/-/add-stream-1.0.0.tgz#6a7990437ca736d5e1288db92bd3266d5f5cb2aa"
   integrity sha512-qQLMr+8o0WC4FZGQTcJiKBVC59JylcPSrTtk6usvmIDFUOCKegapy1VHQwRbFMOFyb/inzUVqHs+eMYKDM1YeQ==
 
+ag-grid-community@~31.0.2:
+  version "31.0.2"
+  resolved "https://registry.npmmirror.com/ag-grid-community/-/ag-grid-community-31.0.2.tgz#8421c4e23e29205628281c1258808e83dccdada2"
+  integrity sha512-gxUdHeAZUV2TDHqnDax5QSQgUxIvJ1zaFxUuPzcfiiPwbN6btz6kxg/KNrDfEjQi70JBfJV46BMR9KTG6iAVmQ==
+
+ag-grid-react@^31.0.2:
+  version "31.0.2"
+  resolved "https://registry.npmmirror.com/ag-grid-react/-/ag-grid-react-31.0.2.tgz#3675cdbd123e3c0e1e648cf0b68d3a482254b210"
+  integrity sha512-QAC5Rsr4AaE+vCafyrnEJa7JWcmoXNzJyzZmln0T6QCLG43IuT2hZ3ULmce/IqwP2Kxf+B4hVJOVitVT9SdXkg==
+  dependencies:
+    ag-grid-community "~31.0.2"
+    prop-types "^15.8.1"
+
 agent-base@6, agent-base@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-6.0.2.tgz#49fff58577cfee3f37176feab4c22e00f86d7f77"

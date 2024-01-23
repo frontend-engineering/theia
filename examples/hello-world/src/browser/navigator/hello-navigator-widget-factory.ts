@@ -13,13 +13,13 @@ export class HelloNavigatorWidgetFactory extends NavigatorWidgetFactory {
     override async createWidget(): Promise<ViewContainer> {
         const viewContainer = this.viewContainerFactory({
             id: EXPLORER_VIEW_CONTAINER_ID,
-            progressLocationId: 'explorer'
-        });
-        viewContainer.setTitleOptions(EXPLORER_VIEW_CONTAINER_TITLE_OPTIONS);
-        const openEditorsWidget = await this.widgetManager.getOrCreateWidget(OpenEditorsWidget.ID);
-        const navigatorWidget = await this.widgetManager.getOrCreateWidget(FILE_NAVIGATOR_ID + "-hello");
-        viewContainer.addWidget(navigatorWidget, this.fileNavigatorWidgetOptions);
-        viewContainer.addWidget(openEditorsWidget, this.openEditorsWidgetOptions);
-        return viewContainer;
+            progressLocationId: 'explorer',
+        })
+        viewContainer.setTitleOptions(EXPLORER_VIEW_CONTAINER_TITLE_OPTIONS)
+        const openEditorsWidget = await this.widgetManager.getOrCreateWidget(OpenEditorsWidget.ID)
+        const navigatorWidget = await this.widgetManager.getOrCreateWidget(FILE_NAVIGATOR_ID + '-hello')
+        viewContainer.addWidget(navigatorWidget, this.fileNavigatorWidgetOptions)
+        viewContainer.addWidget(openEditorsWidget, this.openEditorsWidgetOptions)
+        return viewContainer
     }
 }

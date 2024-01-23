@@ -6,7 +6,9 @@ import { HelloFileNavigatorTree } from './hello-navigator-tree'
 import { HelloFileNavigatorModel } from './hello-navigator-model'
 import { HelloFileNavigatorWidget } from './hello-navigator-widget'
 
-export function createHelloFileNavigatorContainer(parent: interfaces.Container): Container {
+export function createHelloFileNavigatorContainer(
+    parent: interfaces.Container,
+): Container {
     const child = createFileTreeContainer(parent, {
         tree: HelloFileNavigatorTree,
         model: HelloFileNavigatorModel,
@@ -18,6 +20,10 @@ export function createHelloFileNavigatorContainer(parent: interfaces.Container):
     return child
 }
 
-export function createHelloFileNavigatorWidget(parent: interfaces.Container): HelloFileNavigatorWidget {
-    return createHelloFileNavigatorContainer(parent).get(HelloFileNavigatorWidget)
+export function createHelloFileNavigatorWidget(
+    parent: interfaces.Container,
+): HelloFileNavigatorWidget {
+    return createHelloFileNavigatorContainer(parent).get(
+        HelloFileNavigatorWidget,
+    )
 }

@@ -4,9 +4,11 @@
   "version": "1.45.0",
   "description": "Theia - Hello world",
   "dependencies": {
+    "@flowda-projects/flowda-services-trpc-server": "file:.yalc/@flowda-projects/flowda-services-trpc-server",
     "@theia/core": "1.45.0",
     "@trpc/client": "^10.45.0",
     "@trpc/server": "^10.45.0",
+    "ag-grid-react": "^31.0.2",
     "zod": "^3.22.4"
   },
   "theiaExtensions": [
