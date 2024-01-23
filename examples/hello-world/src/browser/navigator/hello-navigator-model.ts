@@ -7,13 +7,10 @@ import { trpcProxyClient } from '../trpc-client'
 
 @injectable()
 export class HelloFileNavigatorModel extends FileNavigatorModel {
-    @inject(HelloFileNavigatorTree) protected override readonly tree: FileNavigatorTree
+  @inject(HelloFileNavigatorTree) protected override readonly tree: FileNavigatorTree
 
-    override async createRoot(): Promise<TreeNode | undefined> {
-        const rt = await trpcProxyClient.hello.createRoot.query()
-        const root = await super.createRoot()
-        // @ts-ignore
-        // root.children = root.children.concat(rt.children)
-        return root
-    }
+  override async createRoot(): Promise<TreeNode | undefined> {
+    const rt = await trpcProxyClient.hello.createRoot.query()
+    return rt as any
+  }
 }

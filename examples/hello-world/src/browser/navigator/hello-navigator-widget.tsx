@@ -11,23 +11,23 @@ export class HelloFileNavigatorWidget extends FileNavigatorWidget {
         @inject(ContextMenuRenderer) contextMenuRenderer: ContextMenuRenderer,
     ) {
         super(props, model, contextMenuRenderer)
-        this.id = FILE_NAVIGATOR_ID
+        this.id = FILE_NAVIGATOR_ID + '-hello'
         this.addClass(CLASS)
     }
 
     /*
     label provider 太复杂了 override 直接计算
      */
-    // override toNodeName(node: any): string {
-    //     return node.name
-    // }
-    //
-    // override toNodeIcon(node: any): string {
-    //     return `${codicon('folder')} default-folder-icon`;
-    // }
-    //
-    // protected override doUpdateRows(): void {
-    //     super.doUpdateRows()
-    //     this.title.label = 'Explorer'
-    // }
+    override toNodeName(node: any): string {
+        return node.name
+    }
+
+    override toNodeIcon(node: any): string {
+        return `${codicon('folder')} default-folder-icon`;
+    }
+
+    protected override doUpdateRows(): void {
+        super.doUpdateRows()
+        this.title.label = 'Explorer'
+    }
 }
