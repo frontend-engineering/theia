@@ -651,9 +651,8 @@ declare class HelloRouter {
             name: string;
             selected: boolean;
             uri: {
-                codeUri: {
-                    scheme: string;
-                };
+                scheme: string;
+                name: string;
             };
         }[]>;
     }>;
@@ -1183,9 +1182,8 @@ declare class TrpcRouter {
                 name: string;
                 selected: boolean;
                 uri: {
-                    codeUri: {
-                        scheme: string;
-                    };
+                    scheme: string;
+                    name: string;
                 };
             }[]>;
         }>;

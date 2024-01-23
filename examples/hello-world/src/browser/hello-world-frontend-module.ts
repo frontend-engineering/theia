@@ -9,10 +9,9 @@ import { FILE_NAVIGATOR_ID, NavigatorWidgetFactory } from '@theia/navigator/lib/
 import { createHelloFileNavigatorWidget } from './navigator/hello-navigator-container'
 import { HelloFileNavigatorWidget } from './navigator/hello-navigator-widget'
 import { HelloNavigatorWidgetFactory } from './navigator/hello-navigator-widget-factory'
-import { EditorWidgetFactory } from '@theia/editor/lib/browser/editor-widget-factory'
 import { ResourceWidgetFactory } from './resource/resource-widget-factory'
-import { EditorManager } from '@theia/editor/lib/browser'
 import { ResourceManager } from './resource/resource-manager'
+import '../../src/browser/style/branding.css';
 
 export default new ContainerModule(
   (

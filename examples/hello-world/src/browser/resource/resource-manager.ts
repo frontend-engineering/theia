@@ -19,10 +19,10 @@ export class ResourceManager extends EditorManager {
   }
 
   protected override async getOrCreateWidget(uri: any, options?: EditorOpenerOptions): Promise<EditorWidget> {
-    if(uri.codeUri.scheme === 'resource') {
+    if(uri.scheme === 'resource') {
       const widget = new ResourceWidget({
         id: ResourceWidgetFactory.createID(uri),
-        title: uri.displayName
+        title: uri.name
       })
       return Promise.resolve(widget as any)
     }
