@@ -28,4 +28,4 @@ ssh -i "$HOME/Documents/yunhu-doc/new_2024_yunhu.pem" "$remote_user@$remote_host
 ssh -i "$HOME/Documents/yunhu-doc/new_2024_yunhu.pem" "$remote_user@$remote_host" "cd $remote_path/lib/backend && tar -xvf node-v21.5.0-native.tar"
 
 echo "重启 docker container"
-ssh -i "$HOME/Documents/yunhu-doc/new_2024_yunhu.pem" "$remote_user@$remote_host" "docker restart cfa1d5b071b1"
+ssh -i "$HOME/Documents/yunhu-doc/new_2024_yunhu.pem" "$remote_user@$remote_host" "docker restart 5cf333140aa0"

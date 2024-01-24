@@ -15,12 +15,12 @@ export class HelloShellLayoutRestorer extends ShellLayoutRestorer {
         if (!desc.constructionOptions) {
             return undefined
         }
-        if ([
-            'files', 'explorer-view-container',
-        ].indexOf(desc.constructionOptions.factoryId) > -1) {
-            console.warn(`Not restoreState, ${desc.constructionOptions.factoryId}`)
-            return undefined
-        }
+        // if ([
+        //     'files', 'explorer-view-container',
+        // ].indexOf(desc.constructionOptions.factoryId) > -1) {
+        //     console.warn(`Not restoreState, ${desc.constructionOptions.factoryId}`)
+        //     return undefined
+        // }
         try {
             desc = await this.fireWillInflateWidget(desc, context)
             const widget = await this.widgetManager.getOrCreateWidget(desc.constructionOptions.factoryId, desc.constructionOptions.options)
