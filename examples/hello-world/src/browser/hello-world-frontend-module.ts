@@ -11,7 +11,8 @@ import { HelloFileNavigatorWidget } from './navigator/hello-navigator-widget'
 import { HelloNavigatorWidgetFactory } from './navigator/hello-navigator-widget-factory'
 import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 import { ResourceManager } from './resource/resource-manager'
-import '../../src/browser/style/branding.css';
+import '../../src/browser/style/branding.css'
+import { LoginDialog } from './login/login-dialog'
 
 export default new ContainerModule(
   (
@@ -47,11 +48,13 @@ export default new ContainerModule(
       .to(HelloNavigatorWidgetFactory)
       .inSingletonScope()
 
-    bind(ResourceWidgetFactory).toSelf().inSingletonScope();
-    bind(WidgetFactory).toService(ResourceWidgetFactory);
+    bind(ResourceWidgetFactory).toSelf().inSingletonScope()
+    bind(WidgetFactory).toService(ResourceWidgetFactory)
 
-    bind(ResourceManager).toSelf().inSingletonScope();
-    bind(OpenHandler).toService(ResourceManager);
+    bind(ResourceManager).toSelf().inSingletonScope()
+    bind(OpenHandler).toService(ResourceManager)
 
+
+    bind(LoginDialog).toSelf().inSingletonScope()
   },
 )

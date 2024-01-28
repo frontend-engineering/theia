@@ -219,6 +219,76 @@ declare class UserRouter {
                 name: string;
             };
         }, unknown>;
+        sendSmsVerifyCode: _trpc_server.BuildProcedure<"mutation", {
+            _config: _trpc_server.RootConfig<{
+                ctx: {
+                    _meta: {
+                        'x-from': string | string[] | undefined;
+                    };
+                };
+                meta: object;
+                errorShape: _trpc_server.DefaultErrorShape;
+                transformer: _trpc_server.DefaultDataTransformer;
+            }>;
+            _meta: object;
+            _ctx_out: {
+                _meta: {
+                    'x-from': string | string[] | undefined;
+                };
+            };
+            _input_in: {
+                mobile: string;
+            };
+            _input_out: {
+                mobile: string;
+            };
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, _prisma_client_flowda_runtime.GetResult<{
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            isDeleted: boolean;
+            mobile: string;
+            code: string;
+        }, unknown, never>>;
+        verifyMobile: _trpc_server.BuildProcedure<"mutation", {
+            _config: _trpc_server.RootConfig<{
+                ctx: {
+                    _meta: {
+                        'x-from': string | string[] | undefined;
+                    };
+                };
+                meta: object;
+                errorShape: _trpc_server.DefaultErrorShape;
+                transformer: _trpc_server.DefaultDataTransformer;
+            }>;
+            _meta: object;
+            _ctx_out: {
+                _meta: {
+                    'x-from': string | string[] | undefined;
+                };
+            };
+            _input_in: {
+                mobile: string;
+                code: string;
+                uid: number;
+                tid: number;
+                slug: string;
+            };
+            _input_out: {
+                mobile: string;
+                code: string;
+                uid: number;
+                tid: number;
+                slug: string;
+            };
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, {
+            id: number;
+            tenantId: number;
+        }>;
         accountExists: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
                 ctx: {
@@ -244,33 +314,22 @@ declare class UserRouter {
                 username: string;
                 tenantName: string;
             };
-            _output_in: {
-                id: number;
-                createdAt: Date;
-                updatedAt: Date;
-                isDeleted: boolean;
-                username: string;
-                hashedPassword: string | null;
-                hashedRefreshToken: string | null;
-                unionid: string | null;
-                email: string | null;
-                image: string | null;
-                tenantId: number;
-            };
-            _output_out: {
-                id: number;
-                createdAt: Date;
-                updatedAt: Date;
-                isDeleted: boolean;
-                username: string;
-                hashedPassword: string | null;
-                hashedRefreshToken: string | null;
-                unionid: string | null;
-                email: string | null;
-                image: string | null;
-                tenantId: number;
-            };
-        }, unknown>;
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, _prisma_client_flowda_runtime.GetResult<{
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            isDeleted: boolean;
+            username: string;
+            hashedPassword: string | null;
+            hashedRefreshToken: string | null;
+            unionid: string | null;
+            email: string | null;
+            mobile: string | null;
+            image: string | null;
+            tenantId: number;
+        }, unknown, never>>;
         findByUnionIdAndTenantId: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
                 ctx: {
@@ -306,6 +365,7 @@ declare class UserRouter {
                 hashedRefreshToken: string | null;
                 unionid: string | null;
                 email: string | null;
+                mobile: string | null;
                 image: string | null;
                 tenantId: number;
             } | null;
@@ -319,6 +379,7 @@ declare class UserRouter {
                 hashedRefreshToken: string | null;
                 unionid: string | null;
                 email: string | null;
+                mobile: string | null;
                 image: string | null;
                 tenantId: number;
             } | null;
@@ -358,6 +419,7 @@ declare class UserRouter {
                 hashedRefreshToken: string | null;
                 unionid: string | null;
                 email: string | null;
+                mobile: string | null;
                 image: string | null;
                 tenantId: number;
             };
@@ -371,6 +433,7 @@ declare class UserRouter {
                 hashedRefreshToken: string | null;
                 unionid: string | null;
                 email: string | null;
+                mobile: string | null;
                 image: string | null;
                 tenantId: number;
             };
@@ -438,17 +501,47 @@ declare class UserRouter {
                 username: string;
                 password: string;
             };
-            _output_in: {
-                username: string;
-                refresh_token: string;
-                access_token: string;
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, {
+            username: string;
+            refresh_token: string;
+            access_token: string;
+        }>;
+        validateByEmail: _trpc_server.BuildProcedure<"query", {
+            _config: _trpc_server.RootConfig<{
+                ctx: {
+                    _meta: {
+                        'x-from': string | string[] | undefined;
+                    };
+                };
+                meta: object;
+                errorShape: _trpc_server.DefaultErrorShape;
+                transformer: _trpc_server.DefaultDataTransformer;
+            }>;
+            _meta: object;
+            _ctx_out: {
+                _meta: {
+                    'x-from': string | string[] | undefined;
+                };
             };
-            _output_out: {
-                username: string;
-                refresh_token: string;
-                access_token: string;
+            _input_in: {
+                password: string;
+                email: string;
+                tenantId: number;
             };
-        }, unknown>;
+            _input_out: {
+                password: string;
+                email: string;
+                tenantId: number;
+            };
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, {
+            username: string;
+            refresh_token: string;
+            access_token: string;
+        }>;
         findMany: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
                 ctx: {
@@ -484,6 +577,7 @@ declare class UserRouter {
             hashedRefreshToken: string | null;
             unionid: string | null;
             email: string | null;
+            mobile: string | null;
             image: string | null;
             tenantId: number;
         }, unknown> & {})[]>;
@@ -528,6 +622,7 @@ declare class UserRouter {
             hashedRefreshToken: string | null;
             unionid: string | null;
             email: string | null;
+            mobile: string | null;
             image: string | null;
             tenantId: number;
         }, unknown> & {}>;
@@ -568,6 +663,7 @@ declare class UserRouter {
             hashedRefreshToken: string | null;
             unionid: string | null;
             email: string | null;
+            mobile: string | null;
             image: string | null;
             tenantId: number;
         }, unknown> & {}) | null>;
@@ -756,6 +852,76 @@ declare class TrpcRouter {
                     name: string;
                 };
             }, unknown>;
+            sendSmsVerifyCode: _trpc_server.BuildProcedure<"mutation", {
+                _config: _trpc_server.RootConfig<{
+                    ctx: {
+                        _meta: {
+                            'x-from': string | string[] | undefined;
+                        };
+                    };
+                    meta: object;
+                    errorShape: _trpc_server.DefaultErrorShape;
+                    transformer: _trpc_server.DefaultDataTransformer;
+                }>;
+                _meta: object;
+                _ctx_out: {
+                    _meta: {
+                        'x-from': string | string[] | undefined;
+                    };
+                };
+                _input_in: {
+                    mobile: string;
+                };
+                _input_out: {
+                    mobile: string;
+                };
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, _prisma_client_flowda_runtime.GetResult<{
+                id: number;
+                createdAt: Date;
+                updatedAt: Date;
+                isDeleted: boolean;
+                mobile: string;
+                code: string;
+            }, unknown, never>>;
+            verifyMobile: _trpc_server.BuildProcedure<"mutation", {
+                _config: _trpc_server.RootConfig<{
+                    ctx: {
+                        _meta: {
+                            'x-from': string | string[] | undefined;
+                        };
+                    };
+                    meta: object;
+                    errorShape: _trpc_server.DefaultErrorShape;
+                    transformer: _trpc_server.DefaultDataTransformer;
+                }>;
+                _meta: object;
+                _ctx_out: {
+                    _meta: {
+                        'x-from': string | string[] | undefined;
+                    };
+                };
+                _input_in: {
+                    mobile: string;
+                    code: string;
+                    uid: number;
+                    tid: number;
+                    slug: string;
+                };
+                _input_out: {
+                    mobile: string;
+                    code: string;
+                    uid: number;
+                    tid: number;
+                    slug: string;
+                };
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, {
+                id: number;
+                tenantId: number;
+            }>;
             accountExists: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
                     ctx: {
@@ -781,33 +947,22 @@ declare class TrpcRouter {
                     username: string;
                     tenantName: string;
                 };
-                _output_in: {
-                    id: number;
-                    createdAt: Date;
-                    updatedAt: Date;
-                    isDeleted: boolean;
-                    username: string;
-                    hashedPassword: string | null;
-                    hashedRefreshToken: string | null;
-                    unionid: string | null;
-                    email: string | null;
-                    image: string | null;
-                    tenantId: number;
-                };
-                _output_out: {
-                    id: number;
-                    createdAt: Date;
-                    updatedAt: Date;
-                    isDeleted: boolean;
-                    username: string;
-                    hashedPassword: string | null;
-                    hashedRefreshToken: string | null;
-                    unionid: string | null;
-                    email: string | null;
-                    image: string | null;
-                    tenantId: number;
-                };
-            }, unknown>;
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, _prisma_client_flowda_runtime.GetResult<{
+                id: number;
+                createdAt: Date;
+                updatedAt: Date;
+                isDeleted: boolean;
+                username: string;
+                hashedPassword: string | null;
+                hashedRefreshToken: string | null;
+                unionid: string | null;
+                email: string | null;
+                mobile: string | null;
+                image: string | null;
+                tenantId: number;
+            }, unknown, never>>;
             findByUnionIdAndTenantId: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
                     ctx: {
@@ -843,6 +998,7 @@ declare class TrpcRouter {
                     hashedRefreshToken: string | null;
                     unionid: string | null;
                     email: string | null;
+                    mobile: string | null;
                     image: string | null;
                     tenantId: number;
                 } | null;
@@ -856,6 +1012,7 @@ declare class TrpcRouter {
                     hashedRefreshToken: string | null;
                     unionid: string | null;
                     email: string | null;
+                    mobile: string | null;
                     image: string | null;
                     tenantId: number;
                 } | null;
@@ -895,6 +1052,7 @@ declare class TrpcRouter {
                     hashedRefreshToken: string | null;
                     unionid: string | null;
                     email: string | null;
+                    mobile: string | null;
                     image: string | null;
                     tenantId: number;
                 };
@@ -908,6 +1066,7 @@ declare class TrpcRouter {
                     hashedRefreshToken: string | null;
                     unionid: string | null;
                     email: string | null;
+                    mobile: string | null;
                     image: string | null;
                     tenantId: number;
                 };
@@ -975,17 +1134,47 @@ declare class TrpcRouter {
                     username: string;
                     password: string;
                 };
-                _output_in: {
-                    username: string;
-                    refresh_token: string;
-                    access_token: string;
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, {
+                username: string;
+                refresh_token: string;
+                access_token: string;
+            }>;
+            validateByEmail: _trpc_server.BuildProcedure<"query", {
+                _config: _trpc_server.RootConfig<{
+                    ctx: {
+                        _meta: {
+                            'x-from': string | string[] | undefined;
+                        };
+                    };
+                    meta: object;
+                    errorShape: _trpc_server.DefaultErrorShape;
+                    transformer: _trpc_server.DefaultDataTransformer;
+                }>;
+                _meta: object;
+                _ctx_out: {
+                    _meta: {
+                        'x-from': string | string[] | undefined;
+                    };
                 };
-                _output_out: {
-                    username: string;
-                    refresh_token: string;
-                    access_token: string;
+                _input_in: {
+                    password: string;
+                    email: string;
+                    tenantId: number;
                 };
-            }, unknown>;
+                _input_out: {
+                    password: string;
+                    email: string;
+                    tenantId: number;
+                };
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, {
+                username: string;
+                refresh_token: string;
+                access_token: string;
+            }>;
             findMany: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
                     ctx: {
@@ -1021,6 +1210,7 @@ declare class TrpcRouter {
                 hashedRefreshToken: string | null;
                 unionid: string | null;
                 email: string | null;
+                mobile: string | null;
                 image: string | null;
                 tenantId: number;
             }, unknown> & {})[]>;
@@ -1065,6 +1255,7 @@ declare class TrpcRouter {
                 hashedRefreshToken: string | null;
                 unionid: string | null;
                 email: string | null;
+                mobile: string | null;
                 image: string | null;
                 tenantId: number;
             }, unknown> & {}>;
@@ -1086,12 +1277,12 @@ declare class TrpcRouter {
                     };
                 };
                 _input_in: {
-                    id?: number | undefined;
                     email?: string | undefined;
+                    id?: number | undefined;
                 };
                 _input_out: {
-                    id?: number | undefined;
                     email?: string | undefined;
+                    id?: number | undefined;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1105,6 +1296,7 @@ declare class TrpcRouter {
                 hashedRefreshToken: string | null;
                 unionid: string | null;
                 email: string | null;
+                mobile: string | null;
                 image: string | null;
                 tenantId: number;
             }, unknown> & {}) | null>;

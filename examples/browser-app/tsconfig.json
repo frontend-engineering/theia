@@ -12,6 +12,9 @@
       "path": "../../packages/core"
     },
     {
+      "path": "../../packages/file-search"
+    },
+    {
       "path": "../../packages/getting-started"
     },
     {

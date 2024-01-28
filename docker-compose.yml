@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  node:
+    tty: true
+    image: "node:latest"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - /root/theia-browser-app:/home/node/app
+    ports:
+      - '3000:3000'
+    expose:
+      - "3000"
+    command: "node lib/backend/main.js --hostname 0.0.0.0"
+    #command: "node"

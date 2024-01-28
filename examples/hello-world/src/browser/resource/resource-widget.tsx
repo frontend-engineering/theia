@@ -20,7 +20,7 @@ const GridExample = () => {
   ])
 
   return (
-    <div className="ag-theme-alpine" style={{ height: 500 }}>
+    <div className="ag-theme-alpine-dark" style={{ height: 500 }}>
       <AgGridReact rowData={rowData} columnDefs={colDefs as any}/>
     </div>
   )

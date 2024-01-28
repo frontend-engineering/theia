@@ -66,7 +66,8 @@ export class FrontendGenerator extends AbstractGenerator {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>${this.pck.props.frontend.config.applicationName}</title>`;
+  <title>${this.pck.props.frontend.config.applicationName}</title>
+  <link rel="stylesheet"  href="https://assets-1306445775.cos.ap-shanghai.myqcloud.com/eui/eui_theme_dark.css" />`;
     }
 
     protected compileIndexJs(frontendModules: Map<string, string>, frontendPreloadModules: Map<string, string>): string {
