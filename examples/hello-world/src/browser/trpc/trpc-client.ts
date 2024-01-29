@@ -13,7 +13,6 @@ export class TrpcProxyClient {
 
   private trpcProxyClient = createTRPCProxyClient<AppRouter>({
     links: [
-      loggerLink(),
       customLink({
         commandRegistry: this.commandRegistry,
       }),
@@ -24,7 +23,7 @@ export class TrpcProxyClient {
         async headers() {
           return {
             'x-from': 'hello-world',
-            authorization: localStorage.getItem('access_token') || '',
+            authorization: 'Bearer ' + (localStorage.getItem('access_token') || ''),
           }
         },
       }),

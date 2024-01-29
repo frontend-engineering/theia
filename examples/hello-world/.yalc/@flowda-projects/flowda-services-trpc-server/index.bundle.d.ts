@@ -5,37 +5,26 @@ import { LoggerService, INestApplication } from '@nestjs/common';
 import { SchemaService } from '@flowda-projects/flowda-shared';
 import { DynamicTableDefService, UserService } from '@flowda-projects/flowda-services';
 import * as db from '@prisma/client-flowda';
+import * as trpcExpress from '@trpc/server/adapters/express';
 
 declare const flowdaServiceTrpcServerModule: ContainerModule;
 
 declare class TrpcService {
     trpc: {
         _config: _trpc_server.RootConfig<{
-            ctx: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            ctx: object;
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
             transformer: _trpc_server.DefaultDataTransformer;
         }>;
         procedure: _trpc_server.ProcedureBuilder<{
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: typeof _trpc_server.unsetMarker;
             _input_out: typeof _trpc_server.unsetMarker;
             _output_in: typeof _trpc_server.unsetMarker;
@@ -44,11 +33,7 @@ declare class TrpcService {
         }>;
         middleware: <TNewParams extends _trpc_server.ProcedureParams<_trpc_server.AnyRootConfig, unknown, unknown, unknown, unknown, unknown, unknown>>(fn: _trpc_server.MiddlewareFunction<{
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
@@ -61,11 +46,7 @@ declare class TrpcService {
             _meta: object;
         }, TNewParams>) => _trpc_server.MiddlewareBuilder<{
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
@@ -78,11 +59,7 @@ declare class TrpcService {
             _meta: object;
         }, TNewParams>;
         router: <TProcRouterRecord extends _trpc_server.ProcedureRouterRecord>(procedures: TProcRouterRecord) => _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-            ctx: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            ctx: object;
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
             transformer: _trpc_server.DefaultDataTransformer;
@@ -91,20 +68,12 @@ declare class TrpcService {
     };
     procedure: _trpc_server.ProcedureBuilder<{
         _config: _trpc_server.RootConfig<{
-            ctx: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            ctx: object;
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
             transformer: _trpc_server.DefaultDataTransformer;
         }>;
-        _ctx_out: {
-            _meta: {
-                'x-from': string | string[] | undefined;
-            };
-        };
+        _ctx_out: object;
         _input_in: typeof _trpc_server.unsetMarker;
         _input_out: typeof _trpc_server.unsetMarker;
         _output_in: typeof _trpc_server.unsetMarker;
@@ -112,11 +81,7 @@ declare class TrpcService {
         _meta: object;
     }>;
     router: <TProcRouterRecord extends _trpc_server.ProcedureRouterRecord>(procedures: TProcRouterRecord) => _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-        ctx: {
-            _meta: {
-                'x-from': string | string[] | undefined;
-            };
-        };
+        ctx: object;
         meta: object;
         errorShape: _trpc_server.DefaultErrorShape;
         transformer: _trpc_server.DefaultDataTransformer;
@@ -131,32 +96,20 @@ declare class SchemaRouter {
     private readonly logger;
     constructor(trpc: TrpcService, schemaService: SchemaService, dynamicTableDef: DynamicTableDefService, loggerFactory: (name: string) => LoggerService);
     schemaRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-        ctx: {
-            _meta: {
-                'x-from': string | string[] | undefined;
-            };
-        };
+        ctx: object;
         meta: object;
         errorShape: _trpc_server.DefaultErrorShape;
         transformer: _trpc_server.DefaultDataTransformer;
     }>, {
         getSchema: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: undefined;
             _input_out: undefined;
             _output_in: typeof _trpc_server.unsetMarker;
@@ -172,32 +125,20 @@ declare class UserRouter {
     private readonly logger;
     constructor(trpc: TrpcService, userService: UserService, prisma: db.PrismaClient, loggerFactory: (name: string) => LoggerService);
     userRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-        ctx: {
-            _meta: {
-                'x-from': string | string[] | undefined;
-            };
-        };
+        ctx: object;
         meta: object;
         errorShape: _trpc_server.DefaultErrorShape;
         transformer: _trpc_server.DefaultDataTransformer;
     }>, {
         getTenant: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 tid: number;
             };
@@ -221,21 +162,13 @@ declare class UserRouter {
         }, unknown>;
         sendSmsVerifyCode: _trpc_server.BuildProcedure<"mutation", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 mobile: string;
             };
@@ -254,21 +187,13 @@ declare class UserRouter {
         }, unknown, never>>;
         verifyMobile: _trpc_server.BuildProcedure<"mutation", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 mobile: string;
                 code: string;
@@ -291,21 +216,13 @@ declare class UserRouter {
         }>;
         accountExists: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 username: string;
                 tenantName: string;
@@ -332,21 +249,13 @@ declare class UserRouter {
         }, unknown, never>>;
         findByUnionIdAndTenantId: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 unionid: string;
                 tenantId: number;
@@ -386,21 +295,13 @@ declare class UserRouter {
         }, unknown>;
         registerByUnionId: _trpc_server.BuildProcedure<"mutation", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 unionid: string;
                 tenantId: number;
@@ -440,21 +341,13 @@ declare class UserRouter {
         }, unknown>;
         getTenantByName: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 tenantName: string;
             };
@@ -478,21 +371,13 @@ declare class UserRouter {
         }, unknown>;
         validate: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 username: string;
                 password: string;
@@ -510,21 +395,13 @@ declare class UserRouter {
         }>;
         validateByEmail: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 password: string;
                 email: string;
@@ -544,21 +421,13 @@ declare class UserRouter {
         }>;
         findMany: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 userIds: number[];
             };
@@ -583,21 +452,13 @@ declare class UserRouter {
         }, unknown> & {})[]>;
         updateUserInfo: _trpc_server.BuildProcedure<"mutation", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 username?: string | undefined;
                 email?: string | undefined;
@@ -628,21 +489,13 @@ declare class UserRouter {
         }, unknown> & {}>;
         findUnique: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 email?: string | undefined;
                 id?: number | undefined;
@@ -675,32 +528,20 @@ declare class HelloRouter {
     private readonly logger;
     constructor(trpc: TrpcService, loggerFactory: (name: string) => LoggerService);
     helloRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-        ctx: {
-            _meta: {
-                'x-from': string | string[] | undefined;
-            };
-        };
+        ctx: object;
         meta: object;
         errorShape: _trpc_server.DefaultErrorShape;
         transformer: _trpc_server.DefaultDataTransformer;
     }>, {
         createRoot: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: any;
             _input_out: any;
             _output_in: typeof _trpc_server.unsetMarker;
@@ -719,21 +560,13 @@ declare class HelloRouter {
         }>;
         resolveChildren: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
-                ctx: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                ctx: object;
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            _ctx_out: object;
             _input_in: {
                 pid: string;
             };
@@ -746,50 +579,42 @@ declare class HelloRouter {
     }>;
 }
 
+declare class ContextFactory {
+    private userService;
+    private readonly logger;
+    constructor(userService: UserService, loggerFactory: (name: string) => LoggerService);
+    createContext: (opts: trpcExpress.CreateExpressContextOptions) => Promise<object>;
+}
+
 declare class TrpcRouter {
     private trpc;
     private schemaRouter;
     private userRouter;
     private helloRouter;
+    private contextFactory;
     private readonly logger;
-    constructor(trpc: TrpcService, schemaRouter: SchemaRouter, userRouter: UserRouter, helloRouter: HelloRouter, loggerFactory: (name: string) => LoggerService);
+    constructor(trpc: TrpcService, schemaRouter: SchemaRouter, userRouter: UserRouter, helloRouter: HelloRouter, contextFactory: ContextFactory, loggerFactory: (name: string) => LoggerService);
     appRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-        ctx: {
-            _meta: {
-                'x-from': string | string[] | undefined;
-            };
-        };
+        ctx: object;
         meta: object;
         errorShape: _trpc_server.DefaultErrorShape;
         transformer: _trpc_server.DefaultDataTransformer;
     }>, {
         schema: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-            ctx: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            ctx: object;
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
             transformer: _trpc_server.DefaultDataTransformer;
         }>, {
             getSchema: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: undefined;
                 _input_out: undefined;
                 _output_in: typeof _trpc_server.unsetMarker;
@@ -797,32 +622,20 @@ declare class TrpcRouter {
             }, any>;
         }>;
         user: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-            ctx: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            ctx: object;
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
             transformer: _trpc_server.DefaultDataTransformer;
         }>, {
             getTenant: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     tid: number;
                 };
@@ -846,21 +659,13 @@ declare class TrpcRouter {
             }, unknown>;
             sendSmsVerifyCode: _trpc_server.BuildProcedure<"mutation", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     mobile: string;
                 };
@@ -879,21 +684,13 @@ declare class TrpcRouter {
             }, unknown, never>>;
             verifyMobile: _trpc_server.BuildProcedure<"mutation", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     mobile: string;
                     code: string;
@@ -916,21 +713,13 @@ declare class TrpcRouter {
             }>;
             accountExists: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     username: string;
                     tenantName: string;
@@ -957,21 +746,13 @@ declare class TrpcRouter {
             }, unknown, never>>;
             findByUnionIdAndTenantId: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     unionid: string;
                     tenantId: number;
@@ -1011,21 +792,13 @@ declare class TrpcRouter {
             }, unknown>;
             registerByUnionId: _trpc_server.BuildProcedure<"mutation", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     unionid: string;
                     tenantId: number;
@@ -1065,21 +838,13 @@ declare class TrpcRouter {
             }, unknown>;
             getTenantByName: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     tenantName: string;
                 };
@@ -1103,21 +868,13 @@ declare class TrpcRouter {
             }, unknown>;
             validate: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     username: string;
                     password: string;
@@ -1135,21 +892,13 @@ declare class TrpcRouter {
             }>;
             validateByEmail: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     password: string;
                     email: string;
@@ -1169,21 +918,13 @@ declare class TrpcRouter {
             }>;
             findMany: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     userIds: number[];
                 };
@@ -1208,21 +949,13 @@ declare class TrpcRouter {
             }, unknown> & {})[]>;
             updateUserInfo: _trpc_server.BuildProcedure<"mutation", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     username?: string | undefined;
                     email?: string | undefined;
@@ -1253,28 +986,20 @@ declare class TrpcRouter {
             }, unknown> & {}>;
             findUnique: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
-                    id?: number | undefined;
                     email?: string | undefined;
+                    id?: number | undefined;
                 };
                 _input_out: {
-                    id?: number | undefined;
                     email?: string | undefined;
+                    id?: number | undefined;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1294,32 +1019,20 @@ declare class TrpcRouter {
             }, unknown> & {}) | null>;
         }>;
         hello: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
-            ctx: {
-                _meta: {
-                    'x-from': string | string[] | undefined;
-                };
-            };
+            ctx: object;
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
             transformer: _trpc_server.DefaultDataTransformer;
         }>, {
             createRoot: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: any;
                 _input_out: any;
                 _output_in: typeof _trpc_server.unsetMarker;
@@ -1338,21 +1051,13 @@ declare class TrpcRouter {
             }>;
             resolveChildren: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
-                    ctx: {
-                        _meta: {
-                            'x-from': string | string[] | undefined;
-                        };
-                    };
+                    ctx: object;
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: {
-                    _meta: {
-                        'x-from': string | string[] | undefined;
-                    };
-                };
+                _ctx_out: object;
                 _input_in: {
                     pid: string;
                 };
