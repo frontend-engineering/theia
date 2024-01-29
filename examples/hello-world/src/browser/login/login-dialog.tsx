@@ -8,12 +8,6 @@ import { Dialog } from '@theia/core/lib/browser/dialogs'
 import { LoginForm } from './login-form'
 import { LoginModel } from './login.model'
 
-function delay(seconds: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 1000)
-  })
-}
-
 @injectable()
 export class LoginDialog extends ReactDialog<void> {
   constructor(
@@ -36,7 +30,6 @@ export class LoginDialog extends ReactDialog<void> {
 
   protected override async onAfterAttach(msg: Message) {
     super.onAfterAttach(msg)
-    this.login.checkLogin()
     this.update()
   }
 
@@ -46,6 +39,7 @@ export class LoginDialog extends ReactDialog<void> {
     if (this.login.isLogin) {
       await super.accept()
     } else {
+      // todo: 这块逻辑可以不依赖 theia
       await this.login.login(super.accept.bind(this))
     }
   }

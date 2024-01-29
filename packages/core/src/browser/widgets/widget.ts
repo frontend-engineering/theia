@@ -284,6 +284,10 @@ export function addKeyListener<K extends keyof HTMLElementEventMap>(
         }
     })();
     toDispose.push(addEventListener(element, 'keydown', e => {
+        // todo: 先用这个方式忽略 eui
+        if ((e.target as HTMLInputElement).classList.toString().indexOf('eui') > -1) {
+            return;
+        }
         const kc = KeyCode.createKeyCode(e);
         if (keyCodePredicate(kc)) {
             const result = action(e);

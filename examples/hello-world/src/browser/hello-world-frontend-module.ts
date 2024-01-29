@@ -1,7 +1,7 @@
 // tslint:disable:file-header
 import { bindContribution, CommandContribution, FilterContribution } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
-import { OpenHandler, ShellLayoutRestorer, WidgetFactory } from '@theia/core/lib/browser'
+import { KeybindingRegistry, OpenHandler, ShellLayoutRestorer, WidgetFactory } from '@theia/core/lib/browser'
 import { HelloShellLayoutRestorer } from './hello-shell-layout-restorer'
 import { HelloFilterContribution } from './hello-filter-contribution'
 import { SampleCommandContribution } from './sample-command-contribution'
@@ -14,6 +14,7 @@ import { ResourceManager } from './resource/resource-manager'
 import '../../src/browser/style/branding.css'
 import { LoginDialog } from './login/login-dialog'
 import { LoginModel } from './login/login.model'
+import { HelloKeybindingRegistry } from './hello-keybinding'
 
 export default new ContainerModule(
   (
@@ -58,5 +59,8 @@ export default new ContainerModule(
 
     bind(LoginDialog).toSelf().inSingletonScope()
     bind(LoginModel).toSelf().inSingletonScope()
+
+    rebind(KeybindingRegistry).to(HelloKeybindingRegistry).inSingletonScope()
+
   },
 )
