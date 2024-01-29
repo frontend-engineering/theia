@@ -9,19 +9,14 @@ import { LoginFormInputs, loginFormSchema, LoginModel } from './login.model'
 export class LoginForm extends React.Component<{
   model: LoginModel
 }> {
-  public formikProps: FormikProps<LoginFormInputs>
-
-  override componentDidMount() {
-    const access_token = localStorage.getItem('access_token')
-    if (access_token != null) {
-      this.props.model.setIsLogin()
-    }
-  }
-
   override render() {
     if (this.props.model.isLogin) {
       return (
-        <div>logged as test</div>
+        <div>Already logged in! <a onClick={e => {
+          e.preventDefault()
+          e.stopPropagation()
+          this.props.model.logout()
+        }}>Logout</a></div>
       )
     } else {
       return (
@@ -31,7 +26,7 @@ export class LoginForm extends React.Component<{
         }} validationSchema={toFormikValidationSchema(loginFormSchema)}
         >
           {(formikProps: FormikProps<LoginFormInputs>) => {
-            this.formikProps = formikProps
+            this.props.model.formikProps = formikProps
             const {
               values,
               errors,

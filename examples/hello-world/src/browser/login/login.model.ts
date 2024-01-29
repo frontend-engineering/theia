@@ -2,6 +2,9 @@ import { injectable } from '@theia/core/shared/inversify'
 import { action, makeObservable, observable } from 'mobx'
 import { trpcProxyClient } from '../trpc-client'
 import { TypeOf, z } from 'zod'
+import { FormikProps } from 'formik'
+import { inject } from 'inversify'
+import { MessageService } from '@theia/core'
 
 export const loginFormSchema = z.object({
   username: z.string(),
@@ -11,19 +14,44 @@ export type LoginFormInputs = TypeOf<typeof loginFormSchema>
 
 @injectable()
 export class LoginModel {
+  public formikProps: FormikProps<LoginFormInputs>
+
   @observable isLogin = false
 
-  constructor() {
+  constructor(
+    @inject(MessageService) protected readonly messageService: MessageService,
+  ) {
     makeObservable(this)
   }
 
   @action.bound
-  setIsLogin() {
-    this.isLogin = true
+  setIsLogin(isLogin: boolean) {
+    this.isLogin = isLogin
   }
 
-  async login(values: LoginFormInputs) {
-    const res = await trpcProxyClient.user.validate.query(values)
-    localStorage.setItem('access_token', res.access_token)
+  checkLogin() {
+    const access_token = localStorage.getItem('access_token')
+    this.setIsLogin(access_token != null)
+  }
+
+  async login(accept: () => Promise<void>) {
+    this.formikProps.setSubmitting(true)
+    try {
+      const res = await trpcProxyClient.user.validate.query(this.formikProps.values)
+      localStorage.setItem('access_token', res.access_token)
+      this.setIsLogin(true)
+      await accept()
+      void this.messageService.info('Login succeed!', {
+        timeout: 3000,
+      })
+    } catch (e) {
+      console.error('[LoginDialog accept]', e)
+    }
+    this.formikProps.setSubmitting(false)
+  }
+
+  logout() {
+    localStorage.removeItem('access_token')
+    this.setIsLogin(false)
   }
 }

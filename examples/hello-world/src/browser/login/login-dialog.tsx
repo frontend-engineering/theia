@@ -16,8 +16,6 @@ function delay(seconds: number) {
 
 @injectable()
 export class LoginDialog extends ReactDialog<void> {
-  loginFormRef: LoginForm
-
   constructor(
     @inject(AboutDialogProps) protected override readonly props: AboutDialogProps,
     @inject(MessageService) protected readonly messageService: MessageService,
@@ -31,16 +29,14 @@ export class LoginDialog extends ReactDialog<void> {
   }
 
   protected render(): React.ReactNode {
-    this.logger.info(`login model ${this.login.isLogin}`)
     return <div className={ABOUT_CONTENT_CLASS}>
-      <LoginForm ref={ref => this.loginFormRef = ref!}
-                 model={this.login}
-      />
+      <LoginForm model={this.login}/>
     </div>
   }
 
   protected override async onAfterAttach(msg: Message) {
     super.onAfterAttach(msg)
+    this.login.checkLogin()
     this.update()
   }
 
@@ -50,17 +46,7 @@ export class LoginDialog extends ReactDialog<void> {
     if (this.login.isLogin) {
       await super.accept()
     } else {
-      this.loginFormRef.formikProps.setSubmitting(true)
-      try {
-        await this.login.login(this.loginFormRef.formikProps.values)
-        await super.accept()
-        void this.messageService.info('Login succeed!', {
-          timeout: 3000,
-        })
-      } catch (e) {
-        console.error('[LoginDialog accept]', e)
-      }
-      this.loginFormRef.formikProps.setSubmitting(false)
+      await this.login.login(super.accept.bind(this))
     }
   }
 }
