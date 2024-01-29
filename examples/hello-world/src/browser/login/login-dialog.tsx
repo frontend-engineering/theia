@@ -29,6 +29,7 @@ export class LoginDialog extends ReactDialog<void> {
   }
 
   protected override async onAfterAttach(msg: Message) {
+    console.log('onAfterAttach')
     super.onAfterAttach(msg)
     this.update()
   }

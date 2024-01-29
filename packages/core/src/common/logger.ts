@@ -49,7 +49,7 @@ export function setRootLogger(aLogger: ILogger): void {
     console.info = log.bind(undefined, LogLevel.INFO);
     console.debug = log.bind(undefined, LogLevel.DEBUG);
     console.trace = log.bind(undefined, LogLevel.TRACE);
-    console.log = log.bind(undefined, LogLevel.INFO);
+    // console.log = log.bind(undefined, LogLevel.INFO);
 }
 
 export type Log = (message: any, ...params: any[]) => void;

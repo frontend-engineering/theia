@@ -1,5 +1,5 @@
 // tslint:disable:file-header
-import { bindContribution, CommandContribution, FilterContribution } from '@theia/core'
+import { bindContribution, CommandContribution, FilterContribution, ILogger } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import { KeybindingRegistry, OpenHandler, ShellLayoutRestorer, WidgetFactory } from '@theia/core/lib/browser'
 import { HelloShellLayoutRestorer } from './hello-shell-layout-restorer'
@@ -56,11 +56,10 @@ export default new ContainerModule(
     bind(ResourceManager).toSelf().inSingletonScope()
     bind(OpenHandler).toService(ResourceManager)
 
-
     bind(LoginDialog).toSelf().inSingletonScope()
     bind(LoginModel).toSelf().inSingletonScope()
 
+    // fix input autocomplete KeyboardEvent 没有 code
     rebind(KeybindingRegistry).to(HelloKeybindingRegistry).inSingletonScope()
-
   },
 )
