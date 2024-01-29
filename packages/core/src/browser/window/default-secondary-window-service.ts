@@ -64,7 +64,7 @@ export class DefaultSecondaryWindowService implements SecondaryWindowService {
                 return;
             }
 
-            console.trace('Delegate main window message to secondary windows', event);
+            // console.trace('Delegate main window message to secondary windows', event);
             this.secondaryWindows.forEach(secondaryWindow => {
                 if (!secondaryWindow.window.closed) {
                     secondaryWindow.window.postMessage({ ...event.data, fromMain: true }, '*');

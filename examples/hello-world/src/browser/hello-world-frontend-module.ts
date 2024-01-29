@@ -13,6 +13,7 @@ import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 import { ResourceManager } from './resource/resource-manager'
 import '../../src/browser/style/branding.css'
 import { LoginDialog } from './login/login-dialog'
+import { LoginModel } from './login/login.model'
 
 export default new ContainerModule(
   (
@@ -56,5 +57,6 @@ export default new ContainerModule(
 
 
     bind(LoginDialog).toSelf().inSingletonScope()
+    bind(LoginModel).toSelf().inSingletonScope()
   },
 )

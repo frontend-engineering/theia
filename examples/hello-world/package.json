@@ -12,6 +12,7 @@
     "zod": "^3.22.4",
     "formik": "^1.5.8",
     "mobx": "^6.12.0",
+    "mobx-react": "^9.1.0",
     "@elastic/eui": "^92.1.1",
     "@elastic/datemath": "^5.0.2",
     "@emotion/react": "^11.11.3",
