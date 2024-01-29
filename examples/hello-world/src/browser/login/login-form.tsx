@@ -9,9 +9,6 @@ import { LoginFormInputs, loginFormSchema, LoginModel } from './login.model'
 export class LoginForm extends React.Component<{
   model: LoginModel
 }> {
-  override componentDidMount() {
-    this.props.model.checkLogin()
-  }
 
   override render() {
     if (this.props.model.isLogin) {

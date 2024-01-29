@@ -3,16 +3,17 @@ import { FileNavigatorModel } from '@theia/navigator/lib/browser'
 import { FileNavigatorTree } from '@theia/navigator/lib/browser/navigator-tree'
 import { HelloFileNavigatorTree } from './hello-navigator-tree'
 import { open, OpenerService, TreeNode } from '@theia/core/lib/browser'
-import { trpcProxyClient } from '../trpc-client'
+import { TrpcProxyClient } from '../trpc/trpc-client'
 import { URI } from '@theia/core'
 
 @injectable()
 export class HelloFileNavigatorModel extends FileNavigatorModel {
   @inject(HelloFileNavigatorTree) protected override readonly tree: FileNavigatorTree
   @inject(OpenerService) protected override readonly openerService: OpenerService
+  @inject(TrpcProxyClient) protected readonly trpcProxyClient: TrpcProxyClient
 
   override async createRoot(): Promise<TreeNode | undefined> {
-    const rt = await trpcProxyClient.hello.createRoot.query()
+    const rt = await this.trpcProxyClient.client.hello.createRoot.query()
     return rt as any
   }
 

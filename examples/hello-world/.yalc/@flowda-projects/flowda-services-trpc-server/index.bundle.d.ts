@@ -742,15 +742,7 @@ declare class HelloRouter {
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
-        }, {
-            id: string;
-            name: string;
-            selected: boolean;
-            uri: {
-                scheme: string;
-                name: string;
-            };
-        }[]>;
+        }, never>;
     }>;
 }
 
@@ -1277,12 +1269,12 @@ declare class TrpcRouter {
                     };
                 };
                 _input_in: {
-                    email?: string | undefined;
                     id?: number | undefined;
+                    email?: string | undefined;
                 };
                 _input_out: {
-                    email?: string | undefined;
                     id?: number | undefined;
+                    email?: string | undefined;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1369,15 +1361,7 @@ declare class TrpcRouter {
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
-            }, {
-                id: string;
-                name: string;
-                selected: boolean;
-                uri: {
-                    scheme: string;
-                    name: string;
-                };
-            }[]>;
+            }, never>;
         }>;
     }>;
     applyMiddleware(app: INestApplication, globalPrefix: string): void;

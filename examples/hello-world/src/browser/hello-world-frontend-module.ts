@@ -1,5 +1,5 @@
 // tslint:disable:file-header
-import { bindContribution, CommandContribution, FilterContribution, ILogger } from '@theia/core'
+import { bindContribution, CommandContribution, FilterContribution } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import { KeybindingRegistry, OpenHandler, ShellLayoutRestorer, WidgetFactory } from '@theia/core/lib/browser'
 import { HelloShellLayoutRestorer } from './hello-shell-layout-restorer'
@@ -15,6 +15,7 @@ import '../../src/browser/style/branding.css'
 import { LoginDialog } from './login/login-dialog'
 import { LoginModel } from './login/login.model'
 import { HelloKeybindingRegistry } from './hello-keybinding'
+import { TrpcProxyClient } from './trpc/trpc-client'
 
 export default new ContainerModule(
   (
@@ -58,6 +59,8 @@ export default new ContainerModule(
 
     bind(LoginDialog).toSelf().inSingletonScope()
     bind(LoginModel).toSelf().inSingletonScope()
+
+    bind(TrpcProxyClient).toSelf().inSingletonScope()
 
     // fix input autocomplete KeyboardEvent 没有 code
     rebind(KeybindingRegistry).to(HelloKeybindingRegistry).inSingletonScope()
