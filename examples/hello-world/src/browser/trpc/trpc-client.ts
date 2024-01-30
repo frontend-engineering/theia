@@ -1,9 +1,10 @@
-import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client'
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
 // eslint-disable-next-line @theia/runtime-import-check
 import type { AppRouter } from '@flowda-projects/flowda-services-trpc-server'
 import { customLink } from './custom-link'
 import { inject, injectable } from 'inversify'
 import { CommandRegistry } from '@theia/core'
+import { environment } from '../environments/environment'
 
 @injectable()
 export class TrpcProxyClient {
@@ -17,8 +18,7 @@ export class TrpcProxyClient {
         commandRegistry: this.commandRegistry,
       }),
       httpBatchLink({
-        // url: `https://api.webinfra.cloud/flowda-api/trpc`,
-        url: `http://localhost:3350/flowda-api/trpc`,
+        url: environment.FLOWDA_URL,
         // You can pass any HTTP headers you wish here
         async headers() {
           return {

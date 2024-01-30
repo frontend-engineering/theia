@@ -1,15 +1,18 @@
 import { ContainerModule } from 'inversify';
 import * as _prisma_client_flowda_runtime from '@prisma/client-flowda/runtime';
 import * as _trpc_server from '@trpc/server';
+import { UserService, DynamicTableDefService } from '@flowda-projects/flowda-services';
 import { LoggerService, INestApplication } from '@nestjs/common';
 import { SchemaService } from '@flowda-projects/flowda-shared';
-import { DynamicTableDefService, UserService } from '@flowda-projects/flowda-services';
 import * as db from '@prisma/client-flowda';
 import * as trpcExpress from '@trpc/server/adapters/express';
 
 declare const flowdaServiceTrpcServerModule: ContainerModule;
 
 declare class TrpcService {
+    private userService;
+    private readonly logger;
+    constructor(userService: UserService, loggerFactory: (name: string) => LoggerService);
     trpc: {
         _config: _trpc_server.RootConfig<{
             ctx: object;
@@ -79,6 +82,22 @@ declare class TrpcService {
         _output_in: typeof _trpc_server.unsetMarker;
         _output_out: typeof _trpc_server.unsetMarker;
         _meta: object;
+    }>;
+    protectedProcedure: _trpc_server.ProcedureBuilder<{
+        _config: _trpc_server.RootConfig<{
+            ctx: object;
+            meta: object;
+            errorShape: _trpc_server.DefaultErrorShape;
+            transformer: _trpc_server.DefaultDataTransformer;
+        }>;
+        _meta: object;
+        _ctx_out: {
+            user: {};
+        };
+        _input_in: typeof _trpc_server.unsetMarker;
+        _input_out: typeof _trpc_server.unsetMarker;
+        _output_in: typeof _trpc_server.unsetMarker;
+        _output_out: typeof _trpc_server.unsetMarker;
     }>;
     router: <TProcRouterRecord extends _trpc_server.ProcedureRouterRecord>(procedures: TProcRouterRecord) => _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
         ctx: object;
@@ -566,7 +585,9 @@ declare class HelloRouter {
                 transformer: _trpc_server.DefaultDataTransformer;
             }>;
             _meta: object;
-            _ctx_out: object;
+            _ctx_out: {
+                user: {};
+            };
             _input_in: {
                 pid: string;
             };
@@ -575,7 +596,15 @@ declare class HelloRouter {
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
-        }, never>;
+        }, {
+            id: string;
+            name: string;
+            selected: boolean;
+            uri: {
+                scheme: string;
+                name: string;
+            };
+        }[]>;
     }>;
 }
 
@@ -1057,7 +1086,9 @@ declare class TrpcRouter {
                     transformer: _trpc_server.DefaultDataTransformer;
                 }>;
                 _meta: object;
-                _ctx_out: object;
+                _ctx_out: {
+                    user: {};
+                };
                 _input_in: {
                     pid: string;
                 };
@@ -1066,7 +1097,15 @@ declare class TrpcRouter {
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
-            }, never>;
+            }, {
+                id: string;
+                name: string;
+                selected: boolean;
+                uri: {
+                    scheme: string;
+                    name: string;
+                };
+            }[]>;
         }>;
     }>;
     applyMiddleware(app: INestApplication, globalPrefix: string): void;

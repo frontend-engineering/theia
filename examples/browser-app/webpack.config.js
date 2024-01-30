@@ -5,6 +5,7 @@
 // @ts-check
 const configs = require('./gen-webpack.config.js');
 const nodeConfig = require('./gen-webpack.node.config.js');
+const path = require('path')
 
 /**
  * Expose bundled modules on window.theia.moduleName namespace, e.g.
@@ -15,6 +16,14 @@ configs[0].module.rules.push({
     test: /\.js$/,
     loader: require.resolve('@theia/application-manager/lib/expose-loader')
 });
+
+if (process.env.npm_lifecycle_script.indexOf('production') > -1) {
+    if (!configs[0].resolve.alias) {
+        configs[0].resolve.alias = {}
+    }
+    configs[0].resolve.alias[path.resolve(__dirname, '../hello-world/src/browser/environments/environment.ts')]
+        = path.resolve(__dirname, '../hello-world/src/browser/environments/environment.prod.ts')
+}
 
 module.exports = [
     ...configs,
