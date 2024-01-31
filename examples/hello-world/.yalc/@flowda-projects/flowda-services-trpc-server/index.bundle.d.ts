@@ -3,7 +3,7 @@ import * as _prisma_client_flowda_runtime from '@prisma/client-flowda/runtime';
 import * as _trpc_server from '@trpc/server';
 import { UserService, DynamicTableDefService } from '@flowda-projects/flowda-services';
 import { LoggerService, INestApplication } from '@nestjs/common';
-import { SchemaService } from '@flowda-projects/flowda-shared';
+import { SchemaService, DataService } from '@flowda-projects/flowda-shared';
 import * as db from '@prisma/client-flowda';
 import * as trpcExpress from '@trpc/server/adapters/express';
 
@@ -544,8 +544,10 @@ declare class UserRouter {
 
 declare class HelloRouter {
     private trpc;
+    private schemaService;
+    private dataService;
     private readonly logger;
-    constructor(trpc: TrpcService, loggerFactory: (name: string) => LoggerService);
+    constructor(trpc: TrpcService, schemaService: SchemaService, dataService: DataService, loggerFactory: (name: string) => LoggerService);
     helloRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
         ctx: object;
         meta: object;
@@ -605,6 +607,79 @@ declare class HelloRouter {
                 name: string;
             };
         }[]>;
+        getResource: _trpc_server.BuildProcedure<"query", {
+            _config: _trpc_server.RootConfig<{
+                ctx: object;
+                meta: object;
+                errorShape: _trpc_server.DefaultErrorShape;
+                transformer: _trpc_server.DefaultDataTransformer;
+            }>;
+            _meta: object;
+            _ctx_out: {
+                user: {};
+            };
+            _input_in: {
+                schemaName: string;
+            };
+            _input_out: {
+                schemaName: string;
+            };
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, {
+            schema: Partial<{
+                custom?: any;
+                prisma?: boolean | undefined;
+                display_column?: string | string[] | undefined;
+                is_dynamic?: boolean | undefined;
+                searchable_columns?: string[] | undefined;
+                __jsonschema?: any;
+                primary_key: string;
+                name: string;
+                slug: string;
+                display_name: string | null;
+                schema_name: string;
+                display_primary_key: boolean;
+                columns: {
+                    format?: {
+                        select_options: {
+                            value: string | number;
+                            label: string;
+                        }[];
+                    } | undefined;
+                    display_name?: string | undefined;
+                    access_type?: "read_only" | undefined;
+                    prisma?: boolean | undefined;
+                    name: string;
+                    column_type: "string" | "boolean" | "integer" | "reference" | "tag" | "datetime" | "textarea";
+                    reference: {
+                        display_column?: string | string[] | undefined;
+                        'x-unique'?: boolean | undefined;
+                        model_name: string;
+                        primary_key: string;
+                        display_name: string;
+                        'x-relationField': string;
+                        'x-onSoftDelete': string;
+                    };
+                    validators: ({
+                        required: boolean;
+                    } | {
+                        message: string;
+                        format: string;
+                    })[];
+                }[];
+                associations: {
+                    foreign_key: string;
+                    model_name: string;
+                    primary_key: string;
+                    name: string;
+                    slug: string;
+                    display_name: string;
+                    schema_name: string;
+                }[];
+            }>;
+            data: any;
+        }>;
     }>;
 }
 
@@ -1023,12 +1098,12 @@ declare class TrpcRouter {
                 _meta: object;
                 _ctx_out: object;
                 _input_in: {
-                    email?: string | undefined;
                     id?: number | undefined;
+                    email?: string | undefined;
                 };
                 _input_out: {
-                    email?: string | undefined;
                     id?: number | undefined;
+                    email?: string | undefined;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1106,6 +1181,79 @@ declare class TrpcRouter {
                     name: string;
                 };
             }[]>;
+            getResource: _trpc_server.BuildProcedure<"query", {
+                _config: _trpc_server.RootConfig<{
+                    ctx: object;
+                    meta: object;
+                    errorShape: _trpc_server.DefaultErrorShape;
+                    transformer: _trpc_server.DefaultDataTransformer;
+                }>;
+                _meta: object;
+                _ctx_out: {
+                    user: {};
+                };
+                _input_in: {
+                    schemaName: string;
+                };
+                _input_out: {
+                    schemaName: string;
+                };
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, {
+                schema: Partial<{
+                    custom?: any;
+                    prisma?: boolean | undefined;
+                    display_column?: string | string[] | undefined;
+                    is_dynamic?: boolean | undefined;
+                    searchable_columns?: string[] | undefined;
+                    __jsonschema?: any;
+                    primary_key: string;
+                    name: string;
+                    slug: string;
+                    display_name: string | null;
+                    schema_name: string;
+                    display_primary_key: boolean;
+                    columns: {
+                        format?: {
+                            select_options: {
+                                value: string | number;
+                                label: string;
+                            }[];
+                        } | undefined;
+                        display_name?: string | undefined;
+                        access_type?: "read_only" | undefined;
+                        prisma?: boolean | undefined;
+                        name: string;
+                        column_type: "string" | "boolean" | "integer" | "reference" | "tag" | "datetime" | "textarea";
+                        reference: {
+                            display_column?: string | string[] | undefined;
+                            'x-unique'?: boolean | undefined;
+                            model_name: string;
+                            primary_key: string;
+                            display_name: string;
+                            'x-relationField': string;
+                            'x-onSoftDelete': string;
+                        };
+                        validators: ({
+                            required: boolean;
+                        } | {
+                            message: string;
+                            format: string;
+                        })[];
+                    }[];
+                    associations: {
+                        foreign_key: string;
+                        model_name: string;
+                        primary_key: string;
+                        name: string;
+                        slug: string;
+                        display_name: string;
+                        schema_name: string;
+                    }[];
+                }>;
+                data: any;
+            }>;
         }>;
     }>;
     applyMiddleware(app: INestApplication, globalPrefix: string): void;

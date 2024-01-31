@@ -1,12 +1,15 @@
 import { EditorWidgetFactory } from '@theia/editor/lib/browser/editor-widget-factory'
-import { injectable } from '@theia/core/shared/inversify'
+import { inject, injectable } from '@theia/core/shared/inversify'
 import { EditorWidget } from '@theia/editor/lib/browser'
 import { ResourceWidget } from './resource-widget'
 import { NavigatableWidgetOptions } from '@theia/core/lib/browser'
 import { URI } from '@theia/core'
+import { ResourceModel } from './resource.model'
 
 @injectable()
 export class ResourceWidgetFactory extends EditorWidgetFactory {
+  @inject(ResourceModel) protected readonly resourceModel: ResourceModel
+
   static override ID = 'resource-editor-opener'
   override readonly id = ResourceWidgetFactory.ID
 
@@ -16,6 +19,7 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       const widget = new ResourceWidget({
         id: ResourceWidgetFactory.createID(uri),
         title: uri.displayName,
+        model: this.resourceModel,
       })
       widget.id = ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter
       // @ts-expect-error

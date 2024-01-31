@@ -1,4 +1,6 @@
 @import "@elastic/eui/dist/eui_theme_dark.css";
+@import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-alpine.css";
 
 .theia-icon {
     background-image: url("../icons/theia.png");

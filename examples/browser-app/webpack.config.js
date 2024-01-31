@@ -18,11 +18,13 @@ configs[0].module.rules.push({
 });
 
 if (process.env.npm_lifecycle_script.indexOf('production') > -1) {
+    console.log('production, replace environment -> environment.prod')
     if (!configs[0].resolve.alias) {
         configs[0].resolve.alias = {}
     }
-    configs[0].resolve.alias[path.resolve(__dirname, '../hello-world/src/browser/environments/environment.ts')]
-        = path.resolve(__dirname, '../hello-world/src/browser/environments/environment.prod.ts')
+    configs[0].resolve.alias[path.resolve(__dirname, '../hello-world/lib/browser/environments/environment.js')]
+        = path.resolve(__dirname, '../hello-world/lib/browser/environments/environment.prod.js')
+    console.log(configs[0].resolve.alias)
 }
 
 module.exports = [

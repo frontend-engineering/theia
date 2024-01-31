@@ -16,6 +16,7 @@ import { LoginDialog } from './login/login-dialog'
 import { LoginModel } from './login/login.model'
 import { HelloKeybindingRegistry } from './hello-keybinding'
 import { TrpcProxyClient } from './trpc/trpc-client'
+import { ResourceModel } from './resource/resource.model'
 
 export default new ContainerModule(
   (
@@ -53,6 +54,7 @@ export default new ContainerModule(
 
     bind(ResourceWidgetFactory).toSelf().inSingletonScope()
     bind(WidgetFactory).toService(ResourceWidgetFactory)
+    bind(ResourceModel).toSelf().inSingletonScope()
 
     bind(ResourceManager).toSelf().inSingletonScope()
     bind(OpenHandler).toService(ResourceManager)
