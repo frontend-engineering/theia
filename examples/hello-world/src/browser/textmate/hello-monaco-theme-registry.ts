@@ -8,6 +8,6 @@ export class HelloMonacoThemeRegistry extends MonacoThemeRegistry {
     this.register(require('../../../data/monaco-themes/vscode/dark_linear.json'), {
       './dark_vs.json': require('../../../data/monaco-themes/vscode/dark_vs.json'),
       './dark_plus.json': require('../../../data/monaco-themes/vscode/dark_plus.json'),
-    }, 'dark-theia', 'vs-dark')
+    }, 'dark-linear', 'vs-dark')
   }
 }

@@ -9,7 +9,7 @@ export class HelloThemeService extends ThemeServiceWithDB {
       id: 'linear-dark',
       type: 'dark',
       label: 'Dark (Linear)',
-      editorTheme: 'dark-theia', // loaded in /packages/monaco/src/browser/textmate/monaco-theme-registry.ts
+      editorTheme: 'dark-linear',
     })
     super.init()
   }

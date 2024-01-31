@@ -6,6 +6,7 @@ import { Message } from '@theia/core/lib/browser/widgets/widget'
 import { ILogger, MessageService } from '@theia/core'
 import { Dialog } from '@theia/core/lib/browser/dialogs'
 import { LoginModel } from './login.model'
+import { LoginForm } from './login-form'
 
 @injectable()
 export class LoginDialog extends ReactDialog<void> {
@@ -24,7 +25,7 @@ export class LoginDialog extends ReactDialog<void> {
   protected render(): React.ReactNode {
     return <div className={ABOUT_CONTENT_CLASS}>
       {/* 直接引入 eui css 污染太严重了 要么尝试看看 web component */}
-      {/*<LoginForm model={this.login}/>*/}
+      <LoginForm model={this.login}/>
     </div>
   }
 

@@ -3,14 +3,14 @@
 @import "ag-grid-community/styles/ag-theme-alpine.css";
 
 .theia-icon {
-    background-image: url("../icons/theia.png");
+    background-image: url("../icons/linear.avif");
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
 #theia-main-content-panel {
-    background-image: url("../icons/theia.png");
+    background-image: url("../icons/linear.avif");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 15%;
@@ -23,4 +23,12 @@
 
 .theia-notifications-container {
     z-index: 10000 !important;
+}
+
+.p-Menu,
+.theia-notifications-container.theia-notification-center,
+.theia-notification-center-header {
+    backdrop-filter: blur(10px) saturate(190%) contrast(70%) brightness(80%);
+    background-color: rgba(29, 30, 43, 0.498);
+    border: 0.5px solid rgba(82, 82, 111, 0.44);
 }
