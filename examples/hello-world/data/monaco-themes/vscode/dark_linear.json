@@ -1,0 +1,8 @@
+{
+  "$schema": "vscode://schemas/color-theme",
+  "name": "Dark (Linear)",
+  "include": "./dark_plus.json",
+  "colors": {
+    "editor.background": "#1E1E1E"
+  }
+}

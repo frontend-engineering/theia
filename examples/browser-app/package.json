@@ -6,11 +6,12 @@
   "theia": {
     "frontend": {
       "config": {
-        "applicationName": "Theia Browser Example",
+        "applicationName": "Flowda - Redefined Application as a Service",
         "preferences": {
           "files.enableTrash": false
         },
-        "reloadOnReconnect": true
+        "reloadOnReconnect": true,
+        "defaultTheme": "linear"
       }
     },
     "backend": {

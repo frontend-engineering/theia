@@ -11,12 +11,19 @@ import { HelloFileNavigatorWidget } from './navigator/hello-navigator-widget'
 import { HelloNavigatorWidgetFactory } from './navigator/hello-navigator-widget-factory'
 import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 import { ResourceManager } from './resource/resource-manager'
-import '../../src/browser/style/branding.css'
 import { LoginDialog } from './login/login-dialog'
 import { LoginModel } from './login/login.model'
 import { HelloKeybindingRegistry } from './hello-keybinding'
 import { TrpcProxyClient } from './trpc/trpc-client'
 import { ResourceModel } from './resource/resource.model'
+import { SampleColorContribution } from './sample-color-contribution'
+import { ColorContribution } from '@theia/core/lib/browser/color-application-contribution'
+
+import '../../src/browser/style/branding.css'
+import { ThemeService } from '@theia/core/lib/browser/theming'
+import { HelloThemeService } from './hello-theming'
+import { MonacoThemeRegistry } from '@theia/monaco/lib/browser/textmate/monaco-theme-registry'
+import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry'
 
 export default new ContainerModule(
   (
@@ -27,6 +34,10 @@ export default new ContainerModule(
   ) => {
     bind(CommandContribution)
       .to(SampleCommandContribution)
+      .inSingletonScope()
+
+    bind(ColorContribution)
+      .to(SampleColorContribution)
       .inSingletonScope()
 
     bind(HelloFilterContribution)
@@ -66,5 +77,10 @@ export default new ContainerModule(
 
     // fix input autocomplete KeyboardEvent 没有 code
     rebind(KeybindingRegistry).to(HelloKeybindingRegistry).inSingletonScope()
+
+    bind(HelloThemeService).toSelf().inSingletonScope()
+    rebind(ThemeService).toService(HelloThemeService)
+
+    rebind(MonacoThemeRegistry).to(HelloMonacoThemeRegistry).inSingletonScope()
   },
 )
