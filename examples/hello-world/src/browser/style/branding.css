@@ -1,3 +1,6 @@
+/* reset.css 暂时不用，theia 的样式依赖 ua 默认样式 */
+/*@import "./reset.css";*/
+@import "./global_styles.css";
 @import "@elastic/eui/dist/eui_theme_dark.css";
 @import "ag-grid-community/styles/ag-grid.css";
 @import "ag-grid-community/styles/ag-theme-alpine.css";

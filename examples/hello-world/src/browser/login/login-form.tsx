@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { Formik, FormikProps } from 'formik'
-import { EuiFieldText, EuiForm, EuiFormRow, EuiProvider } from '@elastic/eui'
+import { EuiFieldText, EuiForm, EuiFormRow, EuiThemeProvider } from '@elastic/eui'
 import { observer } from 'mobx-react'
 import { LoginFormInputs, loginFormSchema, LoginModel } from './login.model'
 
@@ -39,7 +39,7 @@ export class LoginForm extends React.Component<{
               /* and other goodies */
             } = formikProps
             return (
-              <EuiProvider colorMode="dark" utilityClasses={false}>
+              <EuiThemeProvider colorMode="dark">
                 <EuiForm isInvalid={false} error={[]} component="form">
                   <EuiFormRow label="Username" isInvalid={false}>
                     <EuiFieldText name="username" isInvalid={false} compressed={true} value={values.username}
@@ -53,7 +53,7 @@ export class LoginForm extends React.Component<{
                                   onBlur={handleBlur}/>
                   </EuiFormRow>
                 </EuiForm>
-              </EuiProvider>
+              </EuiThemeProvider>
             )
           }}
         </Formik>
