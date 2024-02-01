@@ -9,7 +9,7 @@ export class Resource extends React.Component<{
 }> {
   override render() {
     return (
-      <div className="ag-theme-alpine-dark" style={{ height: 500 }}>
+      <div className="ag-theme-linear-dark" style={{ height: '100%' }}>
         <AgGridReact rowData={this.props.model.data} columnDefs={this.props.model.columnDefs}/>
       </div>
     )

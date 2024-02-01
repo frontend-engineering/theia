@@ -3,7 +3,7 @@
 @import "./global_styles.css";
 @import "@elastic/eui/dist/eui_theme_dark.css";
 @import "ag-grid-community/styles/ag-grid.css";
-@import "ag-grid-community/styles/ag-theme-alpine.css";
+@import "./ag-theme-linear.css";
 
 .theia-icon {
     background-image: url("../icons/linear.avif");
@@ -55,7 +55,8 @@ todo: backdrop-filter 设置 fallback 即 backdrop-filter: initiate/unset
 
 /* 整体 box-sizing: border-box
   后 这个样式需要 unset 下 */
-.p-TabBar-tabCloseIcon.action-label {
+.p-TabBar-tabCloseIcon.action-label,
+.p-TabBar-tabIcon.codicon {
     box-sizing: unset;
 }
 
@@ -71,4 +72,13 @@ todo: backdrop-filter 设置 fallback 即 backdrop-filter: initiate/unset
 
 .euiFieldText--compressed {
     background-color: var(--theia-sideBar-background);
+}
+
+.ag-root-wrapper {
+    border: var(--ag-borders) transparent !important;
+}
+
+/* 和 linear 一样 27 看起来更协调 */
+.dark-linear {
+    --theia-content-line-height: 27px;
 }

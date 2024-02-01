@@ -18,9 +18,7 @@ export class ResourceWidget extends ReactWidget {
 
   protected render(): React.ReactNode {
     return (
-      <div>
-        <Resource model={this.option.model}/>
-      </div>
+      <Resource model={this.option.model}/>
     )
   }
 }

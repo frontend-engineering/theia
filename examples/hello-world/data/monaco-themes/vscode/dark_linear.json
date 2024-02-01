@@ -23,7 +23,7 @@
     "sideBarSectionHeader.border": "#ccc3",
     "tab.lastPinnedBorder": "#ccc3",
     "list.activeSelectionIconForeground": "#FFF",
-    "sideBar.background": "#20212e",
+    "sideBar.background": "#191A23",
     "activityBar.border": "#2c2d3c",
     "activityBar.background": "#20212e",
     "titleBar.activeBackground": "#191A23",
@@ -47,6 +47,7 @@
     "list.focusHighlightForeground": "#8A8AEF",
     "notificationCenter.border": "#52526f70",
     "notificationsInfoIcon.foreground": "#575bc7",
-    "quickInput.background": "#1e2b7f1d"
+    "quickInput.background": "#1e2b7f1d",
+    "tree.indentGuidesStroke": "#52526f70"
   }
 }
