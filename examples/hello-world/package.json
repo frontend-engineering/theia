@@ -19,7 +19,9 @@
     "@emotion/css": "^11.11.2",
     "moment": "^2.13.0",
     "prop-types": "^15.5.0",
-    "zod-formik-adapter": "^1.2.0"
+    "zod-formik-adapter": "^1.2.0",
+    "lit": "^3.1.2",
+    "@adobe/lit-mobx": "^2.2.2"
   },
   "theiaExtensions": [
     {

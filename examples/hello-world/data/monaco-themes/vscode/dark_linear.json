@@ -48,6 +48,7 @@
     "notificationCenter.border": "#52526f70",
     "notificationsInfoIcon.foreground": "#575bc7",
     "quickInput.background": "#1e2b7f1d",
-    "tree.indentGuidesStroke": "#52526f70"
+    "tree.indentGuidesStroke": "#52526f70",
+    "pickerGroup.foreground": "#575bc7"
   }
 }

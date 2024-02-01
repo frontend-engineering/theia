@@ -12,9 +12,6 @@
       "path": "../../packages/core"
     },
     {
-      "path": "../../packages/file-search"
-    },
-    {
       "path": "../../packages/getting-started"
     },
     {
@@ -28,6 +25,9 @@
     },
     {
       "path": "../../packages/preferences"
+    },
+    {
+      "path": "../../packages/toolbar"
     },
     {
       "path": "../hello-world"

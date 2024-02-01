@@ -1,7 +1,15 @@
 // tslint:disable:file-header
+import '../../src/browser/style/branding.css'
+
 import { bindContribution, CommandContribution, FilterContribution } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
-import { KeybindingRegistry, OpenHandler, ShellLayoutRestorer, WidgetFactory } from '@theia/core/lib/browser'
+import {
+  KeybindingRegistry,
+  OpenHandler,
+  ShellLayoutRestorer,
+  SidebarBottomMenuWidgetFactory,
+  WidgetFactory,
+} from '@theia/core/lib/browser'
 import { HelloShellLayoutRestorer } from './hello-shell-layout-restorer'
 import { HelloFilterContribution } from './hello-filter-contribution'
 import { SampleCommandContribution } from './sample-command-contribution'
@@ -19,11 +27,11 @@ import { ResourceModel } from './resource/resource.model'
 import { SampleColorContribution } from './sample-color-contribution'
 import { ColorContribution } from '@theia/core/lib/browser/color-application-contribution'
 
-import '../../src/browser/style/branding.css'
 import { ThemeService } from '@theia/core/lib/browser/theming'
 import { HelloThemeService } from './hello-theming'
 import { MonacoThemeRegistry } from '@theia/monaco/lib/browser/textmate/monaco-theme-registry'
 import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry'
+import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-widget'
 
 export default new ContainerModule(
   (
@@ -82,5 +90,9 @@ export default new ContainerModule(
     rebind(ThemeService).toService(HelloThemeService)
 
     rebind(MonacoThemeRegistry).to(HelloMonacoThemeRegistry).inSingletonScope()
+
+    bind(HelloSidebarBottomMenuWidget).toSelf()
+    rebind(SidebarBottomMenuWidgetFactory).toAutoFactory(HelloSidebarBottomMenuWidget)
+
   },
 )
