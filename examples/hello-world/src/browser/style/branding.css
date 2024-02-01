@@ -28,10 +28,47 @@
     z-index: 10000 !important;
 }
 
+/* 原先 theia 在 packages/core/src/browser/common-frontend-contribution.ts registerColors
+中颜色写死，这里强制覆盖下 并且在 dark_linear 里加上 css var。如果原先的主题没有会 fallback 到 common-frontend-contribution.ts */
+.theia-button {
+    background-color: var(--theia-button-background);
+    border-radius: 4px;
+}
+
+/* 仅覆盖 css var 不行，需要增加 css
+todo: backdrop-filter 设置 fallback 即 backdrop-filter: initiate/unset
+*/
+.p-Widget.dialogOverlay .dialogBlock,
 .p-Menu,
-.theia-notifications-container.theia-notification-center,
-.theia-notification-center-header {
+.quick-input-widget {
     backdrop-filter: blur(10px) saturate(190%) contrast(70%) brightness(80%);
-    background-color: rgba(29, 30, 43, 0.498);
-    border: 0.5px solid rgba(82, 82, 111, 0.44);
+}
+
+/* override 用新的 css var 是因为原先用的 statusBar.background 用到的地方较多 所以单独改这一个*/
+.p-Widget.dialogOverlay .dialogTitle {
+    background-color: var(--theia-custom-dialogTitleBackground);
+}
+
+.p-Widget.dialogOverlay .dialogBlock {
+    background-color: var(--theia-custom-dialogBlockBackground);
+}
+
+/* 整体 box-sizing: border-box
+  后 这个样式需要 unset 下 */
+.p-TabBar-tabCloseIcon.action-label {
+    box-sizing: unset;
+}
+
+/* eui */
+.euiFormLabel.euiFormLabel-isFocused {
+    color: var(--theia-textLink-foreground);
+}
+
+.euiFieldText--compressed:focus {
+    background-image: linear-gradient(to top, var(--theia-textLink-foreground), var(--theia-textLink-foreground) 2px, transparent 2px, transparent 100%);
+    background-color: var(--theia-sideBar-background);
+}
+
+.euiFieldText--compressed {
+    background-color: var(--theia-sideBar-background);
 }

@@ -27,7 +27,6 @@
     "@theia/preferences": "1.45.0",
     "@theia/navigator": "1.45.0",
     "@theia/getting-started": "1.45.0",
-    "@theia/file-search": "1.45.0",
     "@theia/toolbar": "1.45.0",
     "@theia/hello-world": "1.45.0"
   },

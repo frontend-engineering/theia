@@ -7,9 +7,3 @@
     box-sizing: border-box;
 }
 
-input, textarea, select {
-    font-family: var(--theia-ui-font-family);
-    font-size: var(--theia-ui-font-size1);
-    line-height: var(--theia-content-line-height);
-    font-weight: 400;
-}

@@ -1,5 +1,6 @@
 import { injectable } from '@theia/core/shared/inversify'
 import { ContributionFilterRegistry, FilterContribution } from '@theia/core'
+import { SampleCommandContribution } from './sample-command-contribution';
 
 /**
  * 后续会禁用一些 Editor 相关的绑定
@@ -10,16 +11,39 @@ export class HelloFilterContribution implements FilterContribution {
     registerContributionFilters(registry: ContributionFilterRegistry): void {
         registry.addFilters('*', [
             // filter a contribution based on its class type
-            contrib =>
-                // // if (contrib.constructor.name.indexOf('Monaco') > -1) return false;
-                // if (contrib.constructor.name.indexOf('EditorCommandContribution') > -1) return false;
-                // if (contrib.constructor.name.indexOf('EditorMenuContribution') > -1) return false;
-                // if (contrib.constructor.name.indexOf('WorkspaceSymbolCommand') > -1) return false;
-                // if (contrib.constructor.name.indexOf('OutlineViewService') > -1) return false;
-                // if (contrib.constructor.name.indexOf('OutlineViewContribution') > -1) return false;
-                // console.log('contrib.constructor', contrib.constructor.name)
-                // return !(contrib instanceof SampleCommandContribution);
-                true,
+            contrib => {
+                if (
+                    [
+                        // 所有 Monaco 除 MonacoTextmateService 都可以安全过滤
+                        "MonacoFrontendApplicationContribution",
+                        "MonacoOutlineContribution",
+                        "MonacoFormattingConflictsContribution",
+                        "MonacoStatusBarContribution",
+                        // "MonacoTextmateService",
+                        "MonacoEditorCommandHandlers",
+                        "MonacoKeybindingContribution",
+                        "MonacoEditorMenuContribution",
+                        "MonacoOutlineDecorator",
+                        // 第一批可以安全过滤的
+                        'EditorCommandContribution',
+                        'EditorMenuContribution',
+                        'WorkspaceSymbolCommand',
+                        'OutlineViewService',
+                        'OutlineViewContribution',
+                        // 下一批可以安全过滤
+                        // 'RemoteFileServiceContribution', // 暂时先不过滤，报错多
+                    ].some(c => contrib.constructor.name.indexOf(c) > -1)
+                ) {
+                    console.log('ignore contrib.constructor', contrib.constructor.name)
+                    return false
+                } else {
+                    console.log('register contrib.constructor', contrib.constructor.name)
+                    // return !(contrib instanceof SampleCommandContribution);
+                    return true;
+                }
+
+            }
+            // true,
 
         ])
     }
