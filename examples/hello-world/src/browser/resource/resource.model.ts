@@ -27,4 +27,15 @@ export class ResourceModel {
     }
     this.data = data.data
   }
+
+  async getResourceByDisplayName(name: string) {
+    const schemaRet = await this.trpcProxyClient.client.hello.resolveChildren.query({
+      pid: '0',
+    })
+    const ret = schemaRet.find(item => item.name === name)
+    if (ret) {
+      return this.getResource(ret.id)
+    }
+    return []
+  }
 }

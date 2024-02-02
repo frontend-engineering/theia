@@ -1098,12 +1098,12 @@ declare class TrpcRouter {
                 _meta: object;
                 _ctx_out: object;
                 _input_in: {
-                    email?: string | undefined;
                     id?: number | undefined;
+                    email?: string | undefined;
                 };
                 _input_out: {
-                    email?: string | undefined;
                     id?: number | undefined;
+                    email?: string | undefined;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;

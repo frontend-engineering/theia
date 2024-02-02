@@ -1,14 +1,34 @@
 import { EditorManager, EditorOpenerOptions, EditorWidget, WidgetId } from '@theia/editor/lib/browser'
-import { injectable } from '@theia/core/shared/inversify'
+import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
 import { NavigatableWidgetOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ResourceWidget } from './resource-widget'
+import { ILogger } from '@theia/core'
+import { ResourceModel } from './resource.model'
+
+const WIDGET_ID_REG = /resource-editor-opener:resource:\/\/\/(.*):\d/
 
 @injectable()
 export class ResourceManager extends EditorManager {
   override readonly id = ResourceWidgetFactory.ID
   override readonly label = 'Resource Editor'
+
+  @inject(ILogger) protected logger: ILogger
+  @inject(ResourceModel) protected readonly resourceModel: ResourceModel
+
+  @postConstruct()
+  protected override init(): void {
+    super.init()
+    this.onCurrentEditorChanged((widget) => {
+      if (widget && WIDGET_ID_REG.test(widget.id)) {
+        const ret = widget.id.match(WIDGET_ID_REG)
+        if (ret) {
+          this.resourceModel.getResourceByDisplayName(ret[1])
+        }
+      }
+    })
+  }
 
   override canHandle(uri: URI, options?: WidgetOpenerOptions): number {
     return 110 // > EditorManger 100
@@ -35,9 +55,10 @@ export class ResourceManager extends EditorManager {
         counter: options?.counter,
         kind: 'navigatable',
         // @ts-expect-error
-        uri: uri.scheme + ':///' + uri.name,
+        uri: `${uri.scheme}:///${uri.name}`,
       }
     }
     return super.createWidgetOptions(uri, options)
   }
+
 }

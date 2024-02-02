@@ -85,6 +85,7 @@ todo: backdrop-filter 设置 fallback 即 backdrop-filter: initiate/unset
 
 /* avatar */
 .custom-avatar-wrapper {
+    cursor: pointer;
     margin: 12px auto; /* 和 width/height 相加等于 48px 和侧边栏的 icon 大小一致 */
     display: flex;
     position: relative;
