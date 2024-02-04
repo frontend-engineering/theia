@@ -49,7 +49,7 @@
     "watch": "concurrently --kill-others -n tsc,bundle -c red,yellow \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\"",
     "watch:bundle": "theia build --watch --mode development",
     "watch:compile": "tsc -b -w",
-    "watch:serve": "nodemon --delay 1 --watch ../hello-world/lib src-gen/backend/main.js --log-config log-config.json"
+    "watch:serve": "nodemon --delay 1 --watch ../hello-world/lib --watch ../hello-world/.yalc src-gen/backend/main.js --log-config log-config.json"
   },
   "devDependencies": {
     "@theia/cli": "1.45.0"

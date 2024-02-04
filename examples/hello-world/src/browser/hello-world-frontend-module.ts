@@ -76,7 +76,10 @@ export default new ContainerModule(
 
     bind(ResourceWidgetFactory).toSelf().inSingletonScope()
     bind(WidgetFactory).toService(ResourceWidgetFactory)
-    bind(GridModel).toSelf().inRequestScope()
+    bind(GridModel).toSelf().inTransientScope()
+    bind<interfaces.Factory<GridModel>>('Factory<GridModel>').toFactory<GridModel>(context => {
+      return () => context.container.get(GridModel)
+    })
 
     bind(ResourceManager).toSelf().inSingletonScope()
     bind(OpenHandler).toService(ResourceManager)

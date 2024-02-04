@@ -34,10 +34,10 @@ export class HelloFilterContribution implements FilterContribution {
                         // 'RemoteFileServiceContribution', // 暂时先不过滤，报错多
                     ].some(c => contrib.constructor.name.indexOf(c) > -1)
                 ) {
-                    console.log('ignore contrib.constructor', contrib.constructor.name)
+                    // console.log('ignore contrib.constructor', contrib.constructor.name)
                     return false
                 } else {
-                    console.log('register contrib.constructor', contrib.constructor.name)
+                    // console.log('register contrib.constructor', contrib.constructor.name)
                     // return !(contrib instanceof SampleCommandContribution);
                     return true;
                 }

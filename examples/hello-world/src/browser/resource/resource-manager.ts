@@ -5,17 +5,15 @@ import URI from '@theia/core/lib/common/uri'
 import { NavigatableWidgetOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ResourceWidget } from './resource-widget'
 import { ILogger } from '@theia/core'
-import { GridModel } from '@flowda-projects/flowda-theia-design'
 
-const WIDGET_ID_REG = /resource-editor-opener:resource:\/\/\/(.*):\d/
+const WIDGET_ID_REG = /resource-editor-opener:(.*ResourceSchema):\/\/\/.*:\d/
 
 @injectable()
 export class ResourceManager extends EditorManager {
   override readonly id = ResourceWidgetFactory.ID
   override readonly label = 'Resource Editor'
-
   @inject(ILogger) protected logger: ILogger
-  @inject(GridModel) protected readonly gridModel: GridModel
+  @inject(ResourceWidgetFactory) protected resourceWidgetFactory: ResourceWidgetFactory
 
   @postConstruct()
   protected override init(): void {
@@ -24,7 +22,11 @@ export class ResourceManager extends EditorManager {
       if (widget && WIDGET_ID_REG.test(widget.id)) {
         const ret = widget.id.match(WIDGET_ID_REG)
         if (ret) {
-          this.gridModel.getColAndDataByDisplayName(ret[1])
+          if (!this.resourceWidgetFactory.gridModelMap.has(ret[1])) {
+            this.resourceWidgetFactory.gridModelMap.set(ret[1], this.resourceWidgetFactory.gridModelFactory())
+          }
+          const gridModel = this.resourceWidgetFactory.gridModelMap.get(ret[1])
+          gridModel!.getCol(ret[1])
         }
       }
     })
@@ -50,7 +52,7 @@ export class ResourceManager extends EditorManager {
   }
 
   protected override createWidgetOptions(uri: URI, options?: EditorOpenerOptions): NavigatableWidgetOptions {
-    if (uri.scheme === 'resource') {
+    if (uri.scheme.indexOf('ResourceSchema') > -1) {
       return {
         counter: options?.counter,
         kind: 'navigatable',
