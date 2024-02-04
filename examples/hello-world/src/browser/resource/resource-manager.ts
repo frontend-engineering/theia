@@ -26,7 +26,9 @@ export class ResourceManager extends EditorManager {
             this.resourceWidgetFactory.gridModelMap.set(ret[1], this.resourceWidgetFactory.gridModelFactory())
           }
           const gridModel = this.resourceWidgetFactory.gridModelMap.get(ret[1])
+          this.logger.info(`[ResourceManager] onCurrentEditorChanged ${ret[1]}`)
           gridModel!.getCol(ret[1])
+          gridModel!.refresh()
         }
       }
     })

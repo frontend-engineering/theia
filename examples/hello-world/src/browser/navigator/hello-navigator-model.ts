@@ -24,8 +24,9 @@ export class HelloFileNavigatorModel extends FileNavigatorModel {
       if (!this.resourceWidgetFactory.gridModelMap.has(node.id)) {
         this.resourceWidgetFactory.gridModelMap.set(node.id, this.resourceWidgetFactory.gridModelFactory())
       }
-      const gridModel = this.resourceWidgetFactory.gridModelMap.get(node.id)!
-      gridModel.getCol(node.id)
+      // const gridModel = this.resourceWidgetFactory.gridModelMap.get(node.id)!
+      // gridModel.getCol(node.id)
+      this.logger.info(`[HelloFileNavigatorModel] previewNode ${node.id}`)
       // todo: 换种方式请求
       // gridModel.getData(node.id, { current: 0, pageSize: 20, sort: [] })
       open(this.openerService, node.uri as URI, {
