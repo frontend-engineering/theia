@@ -1,12 +1,11 @@
 import { ReactWidget } from '@theia/core/lib/browser'
 import * as React from '@theia/core/shared/react'
-import { Resource } from './resource'
-import { ResourceModel } from './resource.model'
+import { Grid, GridModel } from '@flowda-projects/flowda-theia-design'
 
 export class ResourceWidget extends ReactWidget {
   static readonly ID = 'resource-widget'
 
-  constructor(private option: { id: string; title: string, model: ResourceModel }) {
+  constructor(private option: { id: string; title: string, model: GridModel }) {
     super()
     this.id = option.id
     this.title.caption = option.title
@@ -18,7 +17,10 @@ export class ResourceWidget extends ReactWidget {
 
   protected render(): React.ReactNode {
     return (
-      <Resource model={this.option.model}/>
+      // todo: 使用 theia 的 parent className 修改主题直接切换 ag grid theme css var
+      <div className="ag-theme-linear-dark" style={{ height: '100%' }}>
+        <Grid model={this.option.model}/>
+      </div>
     )
   }
 }

@@ -23,7 +23,7 @@ import { LoginDialog } from './login/login-dialog'
 import { LoginModel } from './login/login.model'
 import { HelloKeybindingRegistry } from './hello-keybinding'
 import { TrpcProxyClient } from './trpc/trpc-client'
-import { ResourceModel } from './resource/resource.model'
+// import { ResourceModel } from './resource/resource.model'
 import { SampleColorContribution } from './sample-color-contribution'
 import { ColorContribution } from '@theia/core/lib/browser/color-application-contribution'
 
@@ -32,6 +32,9 @@ import { HelloThemeService } from './hello-theming'
 import { MonacoThemeRegistry } from '@theia/monaco/lib/browser/textmate/monaco-theme-registry'
 import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry'
 import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-widget'
+import { GridModel } from '@flowda-projects/flowda-theia-design'
+import { CreateTRPCProxyClient } from '@trpc/client'
+import { AppRouter } from '@flowda-projects/flowda-services-trpc-server'
 
 export default new ContainerModule(
   (
@@ -73,7 +76,7 @@ export default new ContainerModule(
 
     bind(ResourceWidgetFactory).toSelf().inSingletonScope()
     bind(WidgetFactory).toService(ResourceWidgetFactory)
-    bind(ResourceModel).toSelf().inSingletonScope()
+    bind(GridModel).toSelf().inRequestScope()
 
     bind(ResourceManager).toSelf().inSingletonScope()
     bind(OpenHandler).toService(ResourceManager)
@@ -82,6 +85,9 @@ export default new ContainerModule(
     bind(LoginModel).toSelf().inSingletonScope()
 
     bind(TrpcProxyClient).toSelf().inSingletonScope()
+    bind<interfaces.Factory<CreateTRPCProxyClient<AppRouter>>>('trpcFactory').toFactory<CreateTRPCProxyClient<AppRouter>, []>(context => () => {
+      return context.container.get<TrpcProxyClient>(TrpcProxyClient).client
+    })
 
     // fix input autocomplete KeyboardEvent 没有 code
     rebind(KeybindingRegistry).to(HelloKeybindingRegistry).inSingletonScope()

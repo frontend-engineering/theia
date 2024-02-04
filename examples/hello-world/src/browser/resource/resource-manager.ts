@@ -5,7 +5,7 @@ import URI from '@theia/core/lib/common/uri'
 import { NavigatableWidgetOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ResourceWidget } from './resource-widget'
 import { ILogger } from '@theia/core'
-import { ResourceModel } from './resource.model'
+import { GridModel } from '@flowda-projects/flowda-theia-design'
 
 const WIDGET_ID_REG = /resource-editor-opener:resource:\/\/\/(.*):\d/
 
@@ -15,7 +15,7 @@ export class ResourceManager extends EditorManager {
   override readonly label = 'Resource Editor'
 
   @inject(ILogger) protected logger: ILogger
-  @inject(ResourceModel) protected readonly resourceModel: ResourceModel
+  @inject(GridModel) protected readonly gridModel: GridModel
 
   @postConstruct()
   protected override init(): void {
@@ -24,7 +24,7 @@ export class ResourceManager extends EditorManager {
       if (widget && WIDGET_ID_REG.test(widget.id)) {
         const ret = widget.id.match(WIDGET_ID_REG)
         if (ret) {
-          this.resourceModel.getResourceByDisplayName(ret[1])
+          this.gridModel.getColAndDataByDisplayName(ret[1])
         }
       }
     })

@@ -1,0 +1,3 @@
+stories/
+vite.config.*
+*.js.map

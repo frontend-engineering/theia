@@ -607,6 +607,108 @@ declare class HelloRouter {
                 name: string;
             };
         }[]>;
+        getResourceSchema: _trpc_server.BuildProcedure<"query", {
+            _config: _trpc_server.RootConfig<{
+                ctx: object;
+                meta: object;
+                errorShape: _trpc_server.DefaultErrorShape;
+                transformer: _trpc_server.DefaultDataTransformer;
+            }>;
+            _meta: object;
+            _ctx_out: {
+                user: {};
+            };
+            _input_in: {
+                schemaName: string;
+            };
+            _input_out: {
+                schemaName: string;
+            };
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, {
+            custom?: any;
+            prisma?: boolean | undefined;
+            display_column?: string | string[] | undefined;
+            is_dynamic?: boolean | undefined;
+            searchable_columns?: string[] | undefined;
+            __jsonschema?: any;
+            primary_key: string;
+            name: string;
+            slug: string;
+            display_name: string | null;
+            schema_name: string;
+            display_primary_key: boolean;
+            columns: {
+                format?: {
+                    select_options: {
+                        value: string | number;
+                        label: string;
+                    }[];
+                } | undefined;
+                display_name?: string | undefined;
+                access_type?: "read_only" | undefined;
+                prisma?: boolean | undefined;
+                name: string;
+                column_type: "string" | "boolean" | "integer" | "reference" | "tag" | "datetime" | "textarea";
+                reference: {
+                    display_column?: string | string[] | undefined;
+                    'x-unique'?: boolean | undefined;
+                    model_name: string;
+                    primary_key: string;
+                    display_name: string;
+                    'x-relationField': string;
+                    'x-onSoftDelete': string;
+                };
+                validators: ({
+                    required: boolean;
+                } | {
+                    message: string;
+                    format: string;
+                })[];
+            }[];
+            associations: {
+                foreign_key: string;
+                model_name: string;
+                primary_key: string;
+                name: string;
+                slug: string;
+                display_name: string;
+                schema_name: string;
+            }[];
+        }>;
+        getResourceData: _trpc_server.BuildProcedure<"query", {
+            _config: _trpc_server.RootConfig<{
+                ctx: object;
+                meta: object;
+                errorShape: _trpc_server.DefaultErrorShape;
+                transformer: _trpc_server.DefaultDataTransformer;
+            }>;
+            _meta: object;
+            _ctx_out: {
+                user: {};
+            };
+            _input_in: {
+                sort: {
+                    sort: "asc" | "desc";
+                    colId: string;
+                }[];
+                schemaName: string;
+                current: number;
+                pageSize: number;
+            };
+            _input_out: {
+                sort: {
+                    sort: "asc" | "desc";
+                    colId: string;
+                }[];
+                schemaName: string;
+                current: number;
+                pageSize: number;
+            };
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, any>;
         getResource: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
                 ctx: object;
@@ -627,7 +729,7 @@ declare class HelloRouter {
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
         }, {
-            schema: Partial<{
+            schema: {
                 custom?: any;
                 prisma?: boolean | undefined;
                 display_column?: string | string[] | undefined;
@@ -677,7 +779,7 @@ declare class HelloRouter {
                     display_name: string;
                     schema_name: string;
                 }[];
-            }>;
+            };
             data: any;
         }>;
     }>;
@@ -1181,6 +1283,108 @@ declare class TrpcRouter {
                     name: string;
                 };
             }[]>;
+            getResourceSchema: _trpc_server.BuildProcedure<"query", {
+                _config: _trpc_server.RootConfig<{
+                    ctx: object;
+                    meta: object;
+                    errorShape: _trpc_server.DefaultErrorShape;
+                    transformer: _trpc_server.DefaultDataTransformer;
+                }>;
+                _meta: object;
+                _ctx_out: {
+                    user: {};
+                };
+                _input_in: {
+                    schemaName: string;
+                };
+                _input_out: {
+                    schemaName: string;
+                };
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, {
+                custom?: any;
+                prisma?: boolean | undefined;
+                display_column?: string | string[] | undefined;
+                is_dynamic?: boolean | undefined;
+                searchable_columns?: string[] | undefined;
+                __jsonschema?: any;
+                primary_key: string;
+                name: string;
+                slug: string;
+                display_name: string | null;
+                schema_name: string;
+                display_primary_key: boolean;
+                columns: {
+                    format?: {
+                        select_options: {
+                            value: string | number;
+                            label: string;
+                        }[];
+                    } | undefined;
+                    display_name?: string | undefined;
+                    access_type?: "read_only" | undefined;
+                    prisma?: boolean | undefined;
+                    name: string;
+                    column_type: "string" | "boolean" | "integer" | "reference" | "tag" | "datetime" | "textarea";
+                    reference: {
+                        display_column?: string | string[] | undefined;
+                        'x-unique'?: boolean | undefined;
+                        model_name: string;
+                        primary_key: string;
+                        display_name: string;
+                        'x-relationField': string;
+                        'x-onSoftDelete': string;
+                    };
+                    validators: ({
+                        required: boolean;
+                    } | {
+                        message: string;
+                        format: string;
+                    })[];
+                }[];
+                associations: {
+                    foreign_key: string;
+                    model_name: string;
+                    primary_key: string;
+                    name: string;
+                    slug: string;
+                    display_name: string;
+                    schema_name: string;
+                }[];
+            }>;
+            getResourceData: _trpc_server.BuildProcedure<"query", {
+                _config: _trpc_server.RootConfig<{
+                    ctx: object;
+                    meta: object;
+                    errorShape: _trpc_server.DefaultErrorShape;
+                    transformer: _trpc_server.DefaultDataTransformer;
+                }>;
+                _meta: object;
+                _ctx_out: {
+                    user: {};
+                };
+                _input_in: {
+                    sort: {
+                        sort: "asc" | "desc";
+                        colId: string;
+                    }[];
+                    schemaName: string;
+                    current: number;
+                    pageSize: number;
+                };
+                _input_out: {
+                    sort: {
+                        sort: "asc" | "desc";
+                        colId: string;
+                    }[];
+                    schemaName: string;
+                    current: number;
+                    pageSize: number;
+                };
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, any>;
             getResource: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
                     ctx: object;
@@ -1201,7 +1405,7 @@ declare class TrpcRouter {
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
             }, {
-                schema: Partial<{
+                schema: {
                     custom?: any;
                     prisma?: boolean | undefined;
                     display_column?: string | string[] | undefined;
@@ -1251,7 +1455,7 @@ declare class TrpcRouter {
                         display_name: string;
                         schema_name: string;
                     }[];
-                }>;
+                };
                 data: any;
             }>;
         }>;
