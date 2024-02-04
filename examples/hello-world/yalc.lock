@@ -7,7 +7,7 @@
       "replaced": "file:.yalc/@flowda-projects/flowda-services-trpc-server"
     },
     "@flowda-projects/flowda-theia-design": {
-      "signature": "20bc3264359ea41d16833917ae1519fe",
+      "signature": "d84b3c48fdd5738d2f612e014eb0783e",
       "link": true,
       "replaced": "file:.yalc/@flowda-projects/flowda-theia-design"
     }

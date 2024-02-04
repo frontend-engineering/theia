@@ -1,10 +1,12 @@
 // tslint:disable:file-header
 import '../../src/browser/style/branding.css'
 
-import { bindContribution, CommandContribution, FilterContribution } from '@theia/core'
+import { bindContribution, CommandContribution, FilterContribution, URI } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import {
   KeybindingRegistry,
+  open,
+  OpenerService,
   OpenHandler,
   ShellLayoutRestorer,
   SidebarBottomMenuWidgetFactory,
@@ -35,6 +37,9 @@ import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-
 import { GridModel } from '@flowda-projects/flowda-theia-design'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import { AppRouter } from '@flowda-projects/flowda-services-trpc-server'
+import { environment } from './environments/environment'
+
+console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
 export default new ContainerModule(
   (
@@ -78,7 +83,32 @@ export default new ContainerModule(
     bind(WidgetFactory).toService(ResourceWidgetFactory)
     bind(GridModel).toSelf().inTransientScope()
     bind<interfaces.Factory<GridModel>>('Factory<GridModel>').toFactory<GridModel>(context => {
-      return () => context.container.get(GridModel)
+      return () => {
+        const grid = context.container.get<GridModel>(GridModel)
+        const openerService = context.container.get<OpenerService>(OpenerService)
+        grid.handlers.onClickRef = (v) => {
+          const k = GridModel.KEY
+          const resourceQuery = localStorage.getItem(k)
+          let prev: Record<string, any> = {}
+          if (resourceQuery != null) {
+            try {
+              prev = JSON.parse(resourceQuery)
+            } catch (e) {
+              prev = {}
+            }
+          }
+          prev[v.schemaName] = { id: v.id }
+          localStorage.setItem(k, JSON.stringify(prev))
+          open(openerService, {
+            scheme: v.schemaName,
+            name: v.name,
+          } as unknown as URI, {
+            mode: 'reveal',
+            preview: true,
+          })
+        }
+        return grid
+      }
     })
 
     bind(ResourceManager).toSelf().inSingletonScope()
