@@ -696,6 +696,11 @@ declare class HelloRouter {
                 schemaName: string;
                 current: number;
                 pageSize: number;
+                filterModel: Record<string, {
+                    filter: string;
+                    type: "contains";
+                    filterType: "text";
+                }>;
             };
             _input_out: {
                 sort: {
@@ -705,83 +710,15 @@ declare class HelloRouter {
                 schemaName: string;
                 current: number;
                 pageSize: number;
+                filterModel: Record<string, {
+                    filter: string;
+                    type: "contains";
+                    filterType: "text";
+                }>;
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
         }, any>;
-        getResource: _trpc_server.BuildProcedure<"query", {
-            _config: _trpc_server.RootConfig<{
-                ctx: object;
-                meta: object;
-                errorShape: _trpc_server.DefaultErrorShape;
-                transformer: _trpc_server.DefaultDataTransformer;
-            }>;
-            _meta: object;
-            _ctx_out: {
-                user: {};
-            };
-            _input_in: {
-                schemaName: string;
-            };
-            _input_out: {
-                schemaName: string;
-            };
-            _output_in: typeof _trpc_server.unsetMarker;
-            _output_out: typeof _trpc_server.unsetMarker;
-        }, {
-            schema: {
-                custom?: any;
-                prisma?: boolean | undefined;
-                display_column?: string | string[] | undefined;
-                is_dynamic?: boolean | undefined;
-                searchable_columns?: string[] | undefined;
-                __jsonschema?: any;
-                primary_key: string;
-                name: string;
-                slug: string;
-                display_name: string | null;
-                schema_name: string;
-                display_primary_key: boolean;
-                columns: {
-                    format?: {
-                        select_options: {
-                            value: string | number;
-                            label: string;
-                        }[];
-                    } | undefined;
-                    display_name?: string | undefined;
-                    access_type?: "read_only" | undefined;
-                    prisma?: boolean | undefined;
-                    name: string;
-                    column_type: "string" | "boolean" | "integer" | "reference" | "tag" | "datetime" | "textarea";
-                    reference: {
-                        display_column?: string | string[] | undefined;
-                        'x-unique'?: boolean | undefined;
-                        model_name: string;
-                        primary_key: string;
-                        display_name: string;
-                        'x-relationField': string;
-                        'x-onSoftDelete': string;
-                    };
-                    validators: ({
-                        required: boolean;
-                    } | {
-                        message: string;
-                        format: string;
-                    })[];
-                }[];
-                associations: {
-                    foreign_key: string;
-                    model_name: string;
-                    primary_key: string;
-                    name: string;
-                    slug: string;
-                    display_name: string;
-                    schema_name: string;
-                }[];
-            };
-            data: any;
-        }>;
     }>;
 }
 
@@ -1200,12 +1137,12 @@ declare class TrpcRouter {
                 _meta: object;
                 _ctx_out: object;
                 _input_in: {
-                    id?: number | undefined;
                     email?: string | undefined;
+                    id?: number | undefined;
                 };
                 _input_out: {
-                    id?: number | undefined;
                     email?: string | undefined;
+                    id?: number | undefined;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1372,6 +1309,11 @@ declare class TrpcRouter {
                     schemaName: string;
                     current: number;
                     pageSize: number;
+                    filterModel: Record<string, {
+                        filter: string;
+                        type: "contains";
+                        filterType: "text";
+                    }>;
                 };
                 _input_out: {
                     sort: {
@@ -1381,83 +1323,15 @@ declare class TrpcRouter {
                     schemaName: string;
                     current: number;
                     pageSize: number;
+                    filterModel: Record<string, {
+                        filter: string;
+                        type: "contains";
+                        filterType: "text";
+                    }>;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
             }, any>;
-            getResource: _trpc_server.BuildProcedure<"query", {
-                _config: _trpc_server.RootConfig<{
-                    ctx: object;
-                    meta: object;
-                    errorShape: _trpc_server.DefaultErrorShape;
-                    transformer: _trpc_server.DefaultDataTransformer;
-                }>;
-                _meta: object;
-                _ctx_out: {
-                    user: {};
-                };
-                _input_in: {
-                    schemaName: string;
-                };
-                _input_out: {
-                    schemaName: string;
-                };
-                _output_in: typeof _trpc_server.unsetMarker;
-                _output_out: typeof _trpc_server.unsetMarker;
-            }, {
-                schema: {
-                    custom?: any;
-                    prisma?: boolean | undefined;
-                    display_column?: string | string[] | undefined;
-                    is_dynamic?: boolean | undefined;
-                    searchable_columns?: string[] | undefined;
-                    __jsonschema?: any;
-                    primary_key: string;
-                    name: string;
-                    slug: string;
-                    display_name: string | null;
-                    schema_name: string;
-                    display_primary_key: boolean;
-                    columns: {
-                        format?: {
-                            select_options: {
-                                value: string | number;
-                                label: string;
-                            }[];
-                        } | undefined;
-                        display_name?: string | undefined;
-                        access_type?: "read_only" | undefined;
-                        prisma?: boolean | undefined;
-                        name: string;
-                        column_type: "string" | "boolean" | "integer" | "reference" | "tag" | "datetime" | "textarea";
-                        reference: {
-                            display_column?: string | string[] | undefined;
-                            'x-unique'?: boolean | undefined;
-                            model_name: string;
-                            primary_key: string;
-                            display_name: string;
-                            'x-relationField': string;
-                            'x-onSoftDelete': string;
-                        };
-                        validators: ({
-                            required: boolean;
-                        } | {
-                            message: string;
-                            format: string;
-                        })[];
-                    }[];
-                    associations: {
-                        foreign_key: string;
-                        model_name: string;
-                        primary_key: string;
-                        name: string;
-                        slug: string;
-                        display_name: string;
-                        schema_name: string;
-                    }[];
-                };
-                data: any;
-            }>;
         }>;
     }>;
     applyMiddleware(app: INestApplication, globalPrefix: string): void;
