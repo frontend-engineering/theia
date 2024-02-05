@@ -18,7 +18,7 @@ export class ResourceManager extends EditorManager {
   @postConstruct()
   protected override init(): void {
     super.init()
-    this.onCurrentEditorChanged((widget) => {
+    this.onCurrentEditorChanged(widget => {
       if (widget && WIDGET_ID_REG.test(widget.id)) {
         const ret = widget.id.match(WIDGET_ID_REG)
         if (ret) {
@@ -42,6 +42,7 @@ export class ResourceManager extends EditorManager {
     return super.open(uri, options)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected override extractIdFromWidget(widget: any): WidgetId {
     if (widget instanceof ResourceWidget) {
       // @ts-expect-error

@@ -1,3 +1,3 @@
 export const environment = {
-  FLOWDA_URL: 'http://localhost:3350/flowda-api/trpc',
+  FLOWDA_URL: 'http://localhost:3310/flowda-gateway-api/trpc',
 }

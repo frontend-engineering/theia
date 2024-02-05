@@ -3,7 +3,7 @@
 type="$1"
 
 remote_user="root"
-remote_host="111.229.82.31"
+remote_host="172.17.16.2" # 内网
 remote_path="/root/theia-browser-app"
 dist_tar="browser-app-lib.tar.gz"
 

@@ -1,8 +1,8 @@
 {
-  "name": "@flowda-projects/flowda-services-trpc-server",
+  "name": "@flowda-projects/flowda-gateway-trpc-server",
   "version": "0.0.1",
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "ba55c3423f4cf501fefa12f2423d9642"
+  "yalcSig": "8942b3d2b800886882d42ddc76deca01"
 }

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from '@theia/core/shared/react'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { Formik, FormikProps } from 'formik'
 import { EuiFieldText, EuiForm, EuiFormRow, EuiThemeProvider } from '@elastic/eui'

@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { inject, injectable } from 'inversify'
+import * as React from '@theia/core/shared/react'
+import { inject, injectable } from '@theia/core/shared/inversify'
 import { ReactDialog } from '@theia/core/lib/browser/dialogs/react-dialog'
 import { ABOUT_CONTENT_CLASS, AboutDialogProps } from '@theia/core/lib/browser/about-dialog'
 import { Message } from '@theia/core/lib/browser/widgets/widget'

@@ -12,8 +12,8 @@ export class HelloFileNavigatorTree extends FileNavigatorTree {
       return parent.children
     }
     const rt = await this.trpcProxyClient.client.hello.resolveChildren.query({
-      pid: parent.id,
+      pid: parent.id as 'cmsAdmin' | 'flowda',
     })
-    return rt as any[]
+    return rt as unknown as TreeNode[]
   }
 }

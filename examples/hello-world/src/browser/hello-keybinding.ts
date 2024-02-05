@@ -1,4 +1,4 @@
-import { injectable } from 'inversify'
+import { injectable } from '@theia/core/shared/inversify'
 import { KeybindingRegistry } from '@theia/core/lib/browser'
 
 @injectable()

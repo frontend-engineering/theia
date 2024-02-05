@@ -16,7 +16,7 @@ export class HelloFileNavigatorModel extends FileNavigatorModel {
 
   override async createRoot(): Promise<TreeNode | undefined> {
     const rt = await this.trpcProxyClient.client.hello.createRoot.query()
-    return rt as any
+    return rt as unknown as TreeNode
   }
 
   override previewNode(node: TreeNode): void {

@@ -36,7 +36,7 @@ import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry
 import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-widget'
 import { GridModel } from '@flowda-projects/flowda-theia-design'
 import { CreateTRPCProxyClient } from '@trpc/client'
-import { AppRouter } from '@flowda-projects/flowda-services-trpc-server'
+import type { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
 import { environment } from './environments/environment'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
@@ -86,10 +86,11 @@ export default new ContainerModule(
       return () => {
         const grid = context.container.get<GridModel>(GridModel)
         const openerService = context.container.get<OpenerService>(OpenerService)
-        grid.handlers.onClickRef = (v) => {
+        grid.handlers.onClickRef = v => {
           const k = GridModel.KEY
           const resourceQuery = localStorage.getItem(k)
-          let prev: Record<string, any> = {}
+          let prev: Record<string, unknown> = {}
+          // eslint-disable-next-line no-null/no-null
           if (resourceQuery != null) {
             try {
               prev = JSON.parse(resourceQuery)

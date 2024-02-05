@@ -18,10 +18,12 @@ export class HelloFileNavigatorWidget extends FileNavigatorWidget {
   /*
   label provider 太复杂了 override 直接计算
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   override toNodeName(node: any): string {
     return node.name
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   override toNodeIcon(node: any): string {
     if ('expanded' in node && Array.isArray(node.children)) {
       return `${codicon('folder')} default-folder-icon`

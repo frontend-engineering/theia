@@ -1,9 +1,8 @@
-import { injectable } from '@theia/core/shared/inversify'
+import { inject, injectable } from '@theia/core/shared/inversify'
 import { action, makeObservable, observable } from 'mobx'
 import { TrpcProxyClient } from '../trpc/trpc-client'
 import { TypeOf, z } from 'zod'
 import { FormikProps } from 'formik'
-import { inject } from 'inversify'
 import { MessageService } from '@theia/core'
 
 export const loginFormSchema = z.object({
@@ -32,17 +31,18 @@ export class LoginModel {
 
   checkLogin() {
     const access_token = localStorage.getItem('access_token')
+    // eslint-disable-next-line no-null/no-null
     this.setIsLogin(access_token != null)
   }
 
   async login(accept: () => Promise<void>) {
     this.formikProps.setSubmitting(true)
     try {
-      const res = await this.trpcProxyClient.client.user.validate.query(this.formikProps.values)
+      const res = await this.trpcProxyClient.client.hello.validate.query(this.formikProps.values)
       localStorage.setItem('access_token', res.access_token)
       this.setIsLogin(true)
       await accept()
-      void this.messageService.info('Login succeed!', {
+      this.messageService.info('Login succeed!', {
         timeout: 3000,
       })
     } catch (e) {

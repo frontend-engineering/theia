@@ -1,5 +1,5 @@
-import { injectable } from 'inversify'
-import * as React from 'react'
+import { injectable } from '@theia/core/shared/inversify'
+import * as React from '@theia/core/shared/react'
 import { SidebarBottomMenuWidget } from '@theia/core/lib/browser/shell/sidebar-bottom-menu-widget'
 
 @injectable()

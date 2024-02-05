@@ -1,4 +1,4 @@
-import { injectable, postConstruct } from 'inversify'
+import { injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ThemeServiceWithDB } from '@theia/monaco/lib/browser/monaco-indexed-db'
 
 @injectable()

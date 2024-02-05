@@ -1156,13 +1156,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@flowda-projects/flowda-services-trpc-server@link:examples/hello-world/.yalc/@flowda-projects/flowda-services-trpc-server":
-  version "0.0.0"
-  uid ""
+"@flowda-projects/flowda-gateway-trpc-server@file:examples/hello-world/.yalc/@flowda-projects/flowda-gateway-trpc-server":
+  version "0.0.1"
 
-"@flowda-projects/flowda-theia-design@link:examples/hello-world/.yalc/@flowda-projects/flowda-theia-design":
-  version "0.0.0"
-  uid ""
+"@flowda-projects/flowda-theia-design@file:examples/hello-world/.yalc/@flowda-projects/flowda-theia-design":
+  version "0.0.1"
 
 "@hello-pangea/dnd@^16.3.0":
   version "16.5.0"

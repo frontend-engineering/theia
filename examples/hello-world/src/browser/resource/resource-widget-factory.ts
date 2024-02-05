@@ -23,13 +23,14 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       const gridModel = this.gridModelMap.get(uri.scheme)!
       const widget = new ResourceWidget({
         id: ResourceWidgetFactory.createID(uri),
+        // eslint-disable-next-line deprecation/deprecation
         title: uri.displayName,
         model: gridModel,
       })
       widget.id = ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter
       // @ts-expect-error
       widget.uri = options.uri
-      return Promise.resolve(widget as any)
+      return Promise.resolve(widget as unknown as EditorWidget)
     }
     return super.createWidget(options)
   }
