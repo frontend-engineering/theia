@@ -1159,6 +1159,9 @@
 "@flowda-projects/flowda-gateway-trpc-server@file:examples/hello-world/.yalc/@flowda-projects/flowda-gateway-trpc-server":
   version "0.0.1"
 
+"@flowda-projects/flowda-shared-types@file:examples/hello-world/.yalc/@flowda-projects/flowda-shared-types":
+  version "0.0.1"
+
 "@flowda-projects/flowda-theia-design@file:examples/hello-world/.yalc/@flowda-projects/flowda-theia-design":
   version "0.0.1"
 
@@ -10361,6 +10364,11 @@ quick-lru@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
+
+radash@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.npmmirror.com/radash/-/radash-11.0.0.tgz#925698e94b554336fc159c253ac33a9a49881835"
+  integrity sha512-CRWxTFTDff0IELGJ/zz58yY4BDgyI14qSM5OLNKbCItJrff7m7dXbVF0kWYVCXQtPb3SXIVhXvAImH6eT7VLSg==
 
 raf-schd@^4.0.3:
   version "4.0.3"

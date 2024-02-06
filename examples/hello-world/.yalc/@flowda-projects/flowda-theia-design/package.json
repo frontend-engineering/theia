@@ -2,6 +2,6 @@
   "name": "@flowda-projects/flowda-theia-design",
   "version": "0.0.1",
   "main": "./src/index.js",
-  "types": "./src/index.d.ts",
-  "yalcSig": "669a23aecb282233ccd588679eab7bae"
+  "types": "./index.bundle.d.ts",
+  "yalcSig": "15fbf478eb034dd0c78bd2326bbc3b57"
 }
