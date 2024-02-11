@@ -20,6 +20,7 @@ export const customLink: (opts: {
         },
         async error(err) {
           if (err.data && err.data.code === 'UNAUTHORIZED') {
+            localStorage.removeItem('access_token')
             await opts.commandRegistry.executeCommand('command.hello.login')
           }
           // console.log('we received error', err)
