@@ -3,5 +3,5 @@
   "version": "0.0.1",
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "9f8713b1f2bbbaf367cd129310965cfe"
+  "yalcSig": "f28935e28a1c89bb92f5183842e6e166"
 }
