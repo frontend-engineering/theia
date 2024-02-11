@@ -98,9 +98,12 @@ export default new ContainerModule(
               prev = {}
             }
           }
-          prev[v.schemaName] = { id: { filterType: 'number', type: 'equals', filter: v.id } }
-          // console.log('prev', prev)
+          prev[v.schemaName] = {
+            _ref: '1',
+            id: { filterType: 'number', type: 'equals', filter: v.id },
+          }
           localStorage.setItem(k, JSON.stringify(prev))
+
           open(openerService, {
             scheme: v.schemaName,
             name: v.name,

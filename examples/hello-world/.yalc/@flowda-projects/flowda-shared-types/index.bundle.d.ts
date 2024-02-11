@@ -454,143 +454,149 @@ declare const resourceSchema: z.ZodObject<{
     }[];
 }>;
 declare const agFilterInnerSchema: z.ZodObject<{
-    filterType: z.ZodEnum<["text", "number"]>;
-    type: z.ZodEnum<["contains", "equals"]>;
+    filterType: z.ZodString;
+    type: z.ZodString;
     filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
 }, "strip", z.ZodTypeAny, {
     filter: string | number;
-    type: "contains" | "equals";
-    filterType: "number" | "text";
+    type: string;
+    filterType: string;
 }, {
     filter: string | number;
-    type: "contains" | "equals";
-    filterType: "number" | "text";
+    type: string;
+    filterType: string;
 }>;
 declare const agFilterInner2Schema: z.ZodObject<{
-    filterType: z.ZodEnum<["text"]>;
-    operator: z.ZodEnum<["OR", "AND"]>;
+    filterType: z.ZodString;
+    operator: z.ZodString;
     conditions: z.ZodArray<z.ZodObject<{
-        filterType: z.ZodEnum<["text", "number"]>;
-        type: z.ZodEnum<["contains", "equals"]>;
+        filterType: z.ZodString;
+        type: z.ZodString;
         filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
     }, "strip", z.ZodTypeAny, {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }, {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
-    filterType: "text";
-    operator: "OR" | "AND";
+    filterType: string;
+    operator: string;
     conditions: {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }[];
 }, {
-    filterType: "text";
-    operator: "OR" | "AND";
+    filterType: string;
+    operator: string;
     conditions: {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }[];
 }>;
 declare const agFilter1Schema: z.ZodRecord<z.ZodString, z.ZodObject<{
-    filterType: z.ZodEnum<["text", "number"]>;
-    type: z.ZodEnum<["contains", "equals"]>;
+    filterType: z.ZodString;
+    type: z.ZodString;
     filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
 }, "strip", z.ZodTypeAny, {
     filter: string | number;
-    type: "contains" | "equals";
-    filterType: "number" | "text";
+    type: string;
+    filterType: string;
 }, {
     filter: string | number;
-    type: "contains" | "equals";
-    filterType: "number" | "text";
+    type: string;
+    filterType: string;
 }>>;
 type TAgFilter1Schema = z.infer<typeof agFilter1Schema>;
 declare const agFilter2Schema: z.ZodRecord<z.ZodString, z.ZodObject<{
-    filterType: z.ZodEnum<["text"]>;
-    operator: z.ZodEnum<["OR", "AND"]>;
+    filterType: z.ZodString;
+    operator: z.ZodString;
     conditions: z.ZodArray<z.ZodObject<{
-        filterType: z.ZodEnum<["text", "number"]>;
-        type: z.ZodEnum<["contains", "equals"]>;
+        filterType: z.ZodString;
+        type: z.ZodString;
         filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
     }, "strip", z.ZodTypeAny, {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }, {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
-    filterType: "text";
-    operator: "OR" | "AND";
+    filterType: string;
+    operator: string;
     conditions: {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }[];
 }, {
-    filterType: "text";
-    operator: "OR" | "AND";
+    filterType: string;
+    operator: string;
     conditions: {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }[];
 }>>;
-declare const agFilterSchema: z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
-    filterType: z.ZodEnum<["text", "number"]>;
-    type: z.ZodEnum<["contains", "equals"]>;
+declare const agFilterSchema: z.ZodUnion<[z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
+    filterType: z.ZodString;
+    type: z.ZodString;
     filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
 }, "strip", z.ZodTypeAny, {
     filter: string | number;
-    type: "contains" | "equals";
-    filterType: "number" | "text";
+    type: string;
+    filterType: string;
 }, {
     filter: string | number;
-    type: "contains" | "equals";
-    filterType: "number" | "text";
+    type: string;
+    filterType: string;
 }>, z.ZodObject<{
-    filterType: z.ZodEnum<["text"]>;
-    operator: z.ZodEnum<["OR", "AND"]>;
+    filterType: z.ZodString;
+    operator: z.ZodString;
     conditions: z.ZodArray<z.ZodObject<{
-        filterType: z.ZodEnum<["text", "number"]>;
-        type: z.ZodEnum<["contains", "equals"]>;
+        filterType: z.ZodString;
+        type: z.ZodString;
         filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
     }, "strip", z.ZodTypeAny, {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }, {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
-    filterType: "text";
-    operator: "OR" | "AND";
+    filterType: string;
+    operator: string;
     conditions: {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }[];
 }, {
-    filterType: "text";
-    operator: "OR" | "AND";
+    filterType: string;
+    operator: string;
     conditions: {
         filter: string | number;
-        type: "contains" | "equals";
-        filterType: "number" | "text";
+        type: string;
+        filterType: string;
     }[];
-}>]>>;
+}>]>>, z.ZodObject<{
+    _ref: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    _ref?: string | undefined;
+}, {
+    _ref?: string | undefined;
+}>]>;
 type TAgFilterSchema = z.infer<typeof agFilterSchema>;
 declare const agSortSchema: z.ZodArray<z.ZodObject<{
     colId: z.ZodString;

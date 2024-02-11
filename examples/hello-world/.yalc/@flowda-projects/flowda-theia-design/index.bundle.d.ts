@@ -17,6 +17,7 @@ declare class GridModel {
     columnDefs: IResourceColumnSchema[];
     schemaName: string | null;
     schema: IResourceSchema | null;
+    filterModel: any;
     handlers: Partial<{
         onClickRef: (v: {
             schemaName: string;
@@ -48,11 +49,36 @@ declare class GridModel {
         sort: SortModelItem[];
         filterModel: any;
     }): Promise<any>;
-    tryRestoreFilter(filterModel: any, schemaQuery: any): any;
-    private getResourceQuery;
+    getResourceQuery(): any;
     putData(id: number, updatedValue: any): Promise<void>;
     onClickRef(field: string, value: number): void;
 }
+/**
+ * 情况1：刷新 尝试从 localStorage 恢复
+ *       注意：非刷新 关闭 tab 则认为清空条件
+ * 情况2：非刷新，跳转修改 filter，则覆盖
+ * 情况3：非刷新 手动修改 优先级最高
+ *
+ * @param param ag grid 前端传入
+ * @param mem 内存 grid model 维护
+ * @param storage localStorage
+ */
+declare function getFinalFilterModel(param: any, mem: any, storage: any): any;
+declare function tryExtractFilterModelFromRef(storage: any): {
+    _ref?: string | undefined;
+} | Record<string, {
+    filter: string | number;
+    type: string;
+    filterType: string;
+} | {
+    filterType: string;
+    operator: string;
+    conditions: {
+        filter: string | number;
+        type: string;
+        filterType: string;
+    }[];
+}> | undefined;
 
 declare function shortenDatetime(text: string): string;
 type GridProps = {
@@ -68,4 +94,4 @@ declare class Grid extends Component<GridProps> {
     render(): react_jsx_runtime.JSX.Element;
 }
 
-export { Grid, GridModel, GridModelSymbol, type GridProps, designModule, shortenDatetime };
+export { Grid, GridModel, GridModelSymbol, type GridProps, designModule, getFinalFilterModel, shortenDatetime, tryExtractFilterModelFromRef };
