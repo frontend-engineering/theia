@@ -28,6 +28,20 @@ export class TrpcProxyClient {
         },
       }),
     ],
+    transformer: {
+      input: {
+        // on client
+        serialize: object => object,
+        // on server -> resolver
+        deserialize: object => object,
+      },
+      output: {
+        // on server -> client
+        serialize: object => object,
+        // on client
+        deserialize: object => object,
+      },
+    },
   })
 
   public get client() {

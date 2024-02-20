@@ -2,4 +2,4 @@ stories/
 testing/
 vite.config.*
 *.js.map
-src/**/*.d.ts
+src/**/*

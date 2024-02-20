@@ -1,9 +1,0 @@
-export const PrismaSchemaServiceSymbol = Symbol.for('PrismaSchemaService');
-export const SchemaTransformerSymbol = Symbol.for('SchemaTransformer');
-export const PrismaUtilsSymbol = Symbol.for('PrismaUtils');
-export const DataServiceSymbol = Symbol.for('DataService');
-export const SchemaServiceSymbol = Symbol.for('SchemaService');
-export const DynamicTableSchemaTransformerSymbol = Symbol.for('DynamicTableSchemaTransformer');
-export const FlowdaTrpcClientSymbol = Symbol.for('FlowdaTrpcClient');
-export const FlowdaGatewayTrpcClientSymbol = Symbol.for('FlowdaGatewayTrpcClient');
-//# sourceMappingURL=symbols.js.map

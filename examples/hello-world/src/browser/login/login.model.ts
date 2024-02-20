@@ -38,8 +38,8 @@ export class LoginModel {
   async login(accept: () => Promise<void>) {
     this.formikProps.setSubmitting(true)
     try {
-      const res = await this.trpcProxyClient.client.hello.validate.query(this.formikProps.values)
-      localStorage.setItem('access_token', res.access_token)
+      const res = await this.trpcProxyClient.client.hello.validate.mutate(this.formikProps.values)
+      localStorage.setItem('access_token', res.at.token)
       this.setIsLogin(true)
       await accept()
       this.messageService.info('Login succeed!', {

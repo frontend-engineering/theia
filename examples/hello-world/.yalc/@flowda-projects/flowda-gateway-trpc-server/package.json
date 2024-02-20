@@ -4,5 +4,5 @@
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "8942b3d2b800886882d42ddc76deca01"
+  "yalcSig": "5f3d0af7dfa00e4263ff2af83c360219"
 }
