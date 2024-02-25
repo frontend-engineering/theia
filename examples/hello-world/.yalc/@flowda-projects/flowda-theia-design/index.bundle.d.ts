@@ -1,15 +1,17 @@
-import { ContainerModule } from 'inversify';
+import { ContainerModule, interfaces } from 'inversify';
 import * as react_jsx_runtime from 'react/jsx-runtime';
+import * as React from 'react';
 import { Component } from 'react';
 import { IResourceColumnSchema, IResourceSchema } from '@flowda-projects/flowda-shared-types';
 import { SortModelItem } from 'ag-grid-community/dist/lib/sortController';
 import { CreateTRPCProxyClient } from '@trpc/client';
 import { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server';
 import { GridApi, GridReadyEvent, CellValueChangedEvent, ColDef } from 'ag-grid-community';
+import { z, TypeOf } from 'zod';
+import { FormikProps } from 'formik';
 
 declare const designModule: ContainerModule;
-
-declare const GridModelSymbol: unique symbol;
+declare const bindDesignModule: (bind: interfaces.Bind) => void;
 
 declare class GridModel {
     private trpcFactory;
@@ -68,15 +70,15 @@ declare function tryExtractFilterModelFromRef(storage: any): {
     _ref?: string | undefined;
 } | Record<string, {
     filter: string | number;
-    type: string;
-    filterType: string;
+    type: "equals" | "contains";
+    filterType: "number" | "text";
 } | {
-    filterType: string;
-    operator: string;
+    filterType: "text";
+    operator: "OR" | "AND";
     conditions: {
         filter: string | number;
-        type: string;
-        filterType: string;
+        type: "equals" | "contains";
+        filterType: "number" | "text";
     }[];
 }> | undefined;
 
@@ -94,4 +96,37 @@ declare class Grid extends Component<GridProps> {
     render(): react_jsx_runtime.JSX.Element;
 }
 
-export { Grid, GridModel, GridModelSymbol, type GridProps, designModule, getFinalFilterModel, shortenDatetime, tryExtractFilterModelFromRef };
+declare const loginFormSchema: z.ZodObject<{
+    username: z.ZodString;
+    password: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    username: string;
+    password: string;
+}, {
+    username: string;
+    password: string;
+}>;
+type LoginFormInputs = TypeOf<typeof loginFormSchema>;
+declare class LoginModel {
+    private trpcFactory;
+    formikProps: FormikProps<LoginFormInputs> | undefined;
+    isLogin: boolean;
+    handlers: Partial<{
+        info: (message: string, opts: {
+            timeout: number;
+        }) => void;
+    }>;
+    constructor(trpcFactory: () => CreateTRPCProxyClient<AppRouter>);
+    setIsLogin(isLogin: boolean): void;
+    checkLogin(): void;
+    login(accept?: () => Promise<void>): Promise<void>;
+    logout(): void;
+}
+
+declare class Login extends React.Component<{
+    model: LoginModel;
+}> {
+    render(): react_jsx_runtime.JSX.Element;
+}
+
+export { Grid, GridModel, type GridProps, Login, type LoginFormInputs, LoginModel, bindDesignModule, designModule, getFinalFilterModel, loginFormSchema, shortenDatetime, tryExtractFilterModelFromRef };

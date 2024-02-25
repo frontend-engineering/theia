@@ -5,15 +5,15 @@ import { ABOUT_CONTENT_CLASS, AboutDialogProps } from '@theia/core/lib/browser/a
 import { Message } from '@theia/core/lib/browser/widgets/widget'
 import { ILogger, MessageService } from '@theia/core'
 import { Dialog } from '@theia/core/lib/browser/dialogs'
-import { LoginModel } from './login.model'
-import { LoginForm } from './login-form'
+import { Login, LoginModel } from '@flowda-projects/flowda-theia-design'
+import { LoginModelSymbol } from '@flowda-projects/flowda-shared-types'
 
 @injectable()
 export class LoginDialog extends ReactDialog<void> {
   constructor(
     @inject(AboutDialogProps) protected override readonly props: AboutDialogProps,
     @inject(MessageService) protected readonly messageService: MessageService,
-    @inject(LoginModel) protected readonly login: LoginModel,
+    @inject(LoginModelSymbol) protected readonly login: LoginModel,
     @inject(ILogger) protected logger: ILogger,
   ) {
     super({
@@ -25,7 +25,7 @@ export class LoginDialog extends ReactDialog<void> {
   protected render(): React.ReactNode {
     return <div className={ABOUT_CONTENT_CLASS}>
       {/* 直接引入 eui css 污染太严重了 要么尝试看看 web component */}
-      <LoginForm model={this.login}/>
+      <Login model={this.login}/>
     </div>
   }
 

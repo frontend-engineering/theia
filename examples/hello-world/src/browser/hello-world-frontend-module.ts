@@ -4,6 +4,7 @@ import '../../src/browser/style/branding.css'
 import { bindContribution, CommandContribution, FilterContribution, URI } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import {
+  FrontendApplicationContribution,
   KeybindingRegistry,
   open,
   OpenerService,
@@ -22,7 +23,6 @@ import { HelloNavigatorWidgetFactory } from './navigator/hello-navigator-widget-
 import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 import { ResourceManager } from './resource/resource-manager'
 import { LoginDialog } from './login/login-dialog'
-import { LoginModel } from './login/login.model'
 import { HelloKeybindingRegistry } from './hello-keybinding'
 import { TrpcProxyClient } from './trpc/trpc-client'
 // import { ResourceModel } from './resource/resource.model'
@@ -34,10 +34,12 @@ import { HelloThemeService } from './hello-theming'
 import { MonacoThemeRegistry } from '@theia/monaco/lib/browser/textmate/monaco-theme-registry'
 import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry'
 import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-widget'
-import { GridModel } from '@flowda-projects/flowda-theia-design'
+import { bindDesignModule, GridModel } from '@flowda-projects/flowda-theia-design'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import type { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
+import { GridModelSymbol } from '@flowda-projects/flowda-shared-types'
 import { environment } from './environments/environment'
+import { HelloFrontendContribution } from './hello-frontend-contribution'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
@@ -81,10 +83,12 @@ export default new ContainerModule(
 
     bind(ResourceWidgetFactory).toSelf().inSingletonScope()
     bind(WidgetFactory).toService(ResourceWidgetFactory)
-    bind(GridModel).toSelf().inTransientScope()
+
+    bindDesignModule(bind)
+
     bind<interfaces.Factory<GridModel>>('Factory<GridModel>').toFactory<GridModel>(context => {
       return () => {
-        const grid = context.container.get<GridModel>(GridModel)
+        const grid = context.container.get<GridModel>(GridModelSymbol)
         const openerService = context.container.get<OpenerService>(OpenerService)
         grid.handlers.onClickRef = v => {
           const k = GridModel.KEY
@@ -120,7 +124,6 @@ export default new ContainerModule(
     bind(OpenHandler).toService(ResourceManager)
 
     bind(LoginDialog).toSelf().inSingletonScope()
-    bind(LoginModel).toSelf().inSingletonScope()
 
     bind(TrpcProxyClient).toSelf().inSingletonScope()
     bind<interfaces.Factory<CreateTRPCProxyClient<AppRouter>>>('trpcFactory').toFactory<CreateTRPCProxyClient<AppRouter>, []>(context => () => {
@@ -137,6 +140,8 @@ export default new ContainerModule(
 
     bind(HelloSidebarBottomMenuWidget).toSelf()
     rebind(SidebarBottomMenuWidgetFactory).toAutoFactory(HelloSidebarBottomMenuWidget)
-
+    bind(FrontendApplicationContribution)
+      .to(HelloFrontendContribution)
+      .inSingletonScope()
   },
 )
