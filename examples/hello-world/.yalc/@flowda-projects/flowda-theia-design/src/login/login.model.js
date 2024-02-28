@@ -1,18 +1,11 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { action, makeObservable, observable } from 'mobx';
-import { z } from 'zod';
 import { inject, injectable } from 'inversify';
-export const loginFormSchema = z.object({
-    username: z.string(),
-    password: z.string().min(4),
-});
 let LoginModel = class LoginModel {
-    trpcFactory;
-    formikProps;
-    isLogin = false;
-    handlers = {};
     constructor(trpcFactory) {
         this.trpcFactory = trpcFactory;
+        this.isLogin = false;
+        this.handlers = {};
         makeObservable(this);
     }
     setIsLogin(isLogin) {

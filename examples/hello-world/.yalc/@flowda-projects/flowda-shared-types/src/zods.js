@@ -375,4 +375,10 @@ export const ctxUserSchema = z.object({
 });
 export class ctxUserSchemaDto extends createZodDto(ctxUserSchema) {
 }
+export const loginSchema = z.object({
+    username: z.string(),
+    password: z.string().min(4),
+});
+export class loginSchemaDto extends createZodDto(loginSchema) {
+}
 //# sourceMappingURL=zods.js.map

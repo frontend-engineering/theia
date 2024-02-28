@@ -16,7 +16,7 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
 
   override async createWidget(options: NavigatableWidgetOptions): Promise<EditorWidget> {
     const uri = new URI(options.uri)
-    if (uri.scheme.indexOf('ResourceSchema') > -1) {
+    if (uri.scheme.indexOf('resource.') > -1) {
       if (!this.gridModelMap.has(uri.scheme)) {
         this.gridModelMap.set(uri.scheme, this.gridModelFactory())
       }

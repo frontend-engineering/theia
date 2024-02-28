@@ -2,12 +2,11 @@ import { ContainerModule, interfaces } from 'inversify';
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import * as React from 'react';
 import { Component } from 'react';
-import { IResourceColumnSchema, IResourceSchema } from '@flowda-projects/flowda-shared-types';
+import { IResourceColumnSchema, IResourceSchema, loginSchemaDto } from '@flowda-projects/flowda-shared-types';
 import { SortModelItem } from 'ag-grid-community/dist/lib/sortController';
 import { CreateTRPCProxyClient } from '@trpc/client';
 import { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server';
 import { GridApi, GridReadyEvent, CellValueChangedEvent, ColDef } from 'ag-grid-community';
-import { z, TypeOf } from 'zod';
 import { FormikProps } from 'formik';
 
 declare const designModule: ContainerModule;
@@ -96,20 +95,9 @@ declare class Grid extends Component<GridProps> {
     render(): react_jsx_runtime.JSX.Element;
 }
 
-declare const loginFormSchema: z.ZodObject<{
-    username: z.ZodString;
-    password: z.ZodString;
-}, "strip", z.ZodTypeAny, {
-    username: string;
-    password: string;
-}, {
-    username: string;
-    password: string;
-}>;
-type LoginFormInputs = TypeOf<typeof loginFormSchema>;
 declare class LoginModel {
     private trpcFactory;
-    formikProps: FormikProps<LoginFormInputs> | undefined;
+    formikProps: FormikProps<loginSchemaDto> | undefined;
     isLogin: boolean;
     handlers: Partial<{
         info: (message: string, opts: {
@@ -129,4 +117,4 @@ declare class Login extends React.Component<{
     render(): react_jsx_runtime.JSX.Element;
 }
 
-export { Grid, GridModel, type GridProps, Login, type LoginFormInputs, LoginModel, bindDesignModule, designModule, getFinalFilterModel, loginFormSchema, shortenDatetime, tryExtractFilterModelFromRef };
+export { Grid, GridModel, type GridProps, Login, LoginModel, bindDesignModule, designModule, getFinalFilterModel, shortenDatetime, tryExtractFilterModelFromRef };

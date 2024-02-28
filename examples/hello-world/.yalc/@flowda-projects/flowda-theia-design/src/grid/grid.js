@@ -17,9 +17,9 @@ export function shortenDatetime(text) {
     return dayjs(text).format(shortFormat);
 }
 let Grid = class Grid extends Component {
-    gridRef = null;
     constructor(props) {
         super(props);
+        this.gridRef = null;
         this.onGridReady = this.onGridReady.bind(this);
         this.onCellValueChanged = this.onCellValueChanged.bind(this);
     }

@@ -4,17 +4,7 @@ import { inject, injectable } from 'inversify';
 import { action, makeObservable, observable } from 'mobx';
 import { agFilterSchema } from '@flowda-projects/flowda-shared-types';
 import * as _ from 'radash';
-let GridModel = class GridModel {
-    static { GridModel_1 = this; }
-    trpcFactory;
-    static KEY = 'resourceQuery';
-    columnDefs = [];
-    schemaName = null;
-    schema = null;
-    filterModel;
-    handlers = {};
-    isNotEmpty = false;
-    gridApi = null;
+let GridModel = GridModel_1 = class GridModel {
     refresh() {
         if (this.gridApi && !this.gridApi.isDestroyed()) {
             this.gridApi.refreshInfiniteCache();
@@ -33,6 +23,12 @@ let GridModel = class GridModel {
     }
     constructor(trpcFactory) {
         this.trpcFactory = trpcFactory;
+        this.columnDefs = [];
+        this.schemaName = null;
+        this.schema = null;
+        this.handlers = {};
+        this.isNotEmpty = false;
+        this.gridApi = null;
         makeObservable(this);
     }
     async getCol(schemaName) {
@@ -95,13 +91,14 @@ let GridModel = class GridModel {
         const ref = this.schema?.columns.find(t => t.name === field);
         if (typeof this.handlers.onClickRef === 'function') {
             this.handlers.onClickRef({
-                schemaName: `${this.schema.namespace}.${ref.reference.model_name}ResourceSchema`,
+                schemaName: `resource.${this.schema.namespace}.${ref.reference.model_name}ResourceSchema`,
                 name: ref.reference.display_name,
                 id: value,
             });
         }
     }
 };
+GridModel.KEY = 'resourceQuery';
 __decorate([
     observable,
     __metadata("design:type", Array)

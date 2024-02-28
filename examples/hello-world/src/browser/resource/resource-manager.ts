@@ -55,7 +55,7 @@ export class ResourceManager extends EditorManager {
   }
 
   protected override createWidgetOptions(uri: URI, options?: EditorOpenerOptions): NavigatableWidgetOptions {
-    if (uri.scheme.indexOf('ResourceSchema') > -1) {
+    if (uri.scheme.indexOf('resource.') > -1) {
       return {
         counter: options?.counter,
         kind: 'navigatable',

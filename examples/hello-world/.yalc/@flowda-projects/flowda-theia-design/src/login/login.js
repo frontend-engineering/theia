@@ -1,11 +1,11 @@
 import { __decorate } from "tslib";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as React from 'react';
-import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { Formik } from 'formik';
 import { EuiFieldText, EuiForm, EuiFormRow, EuiThemeProvider } from '@elastic/eui';
 import { observer } from 'mobx-react';
-import { loginFormSchema } from './login.model';
+import { loginSchema } from '@flowda-projects/flowda-shared-types';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
 let Login = class Login extends React.Component {
     render() {
         if (this.props.model.isLogin) {
@@ -19,12 +19,12 @@ let Login = class Login extends React.Component {
             return (_jsx(Formik, { onSubmit: () => { }, initialValues: {
                     username: '',
                     password: '',
-                }, validationSchema: toFormikValidationSchema(loginFormSchema), children: (formikProps) => {
+                }, validationSchema: toFormikValidationSchema(loginSchema), children: (formikProps) => {
                     this.props.model.formikProps = formikProps;
                     const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting,
                     /* and other goodies */
                      } = formikProps;
-                    return (_jsx(EuiThemeProvider, { colorMode: "dark", children: _jsxs(EuiForm, { isInvalid: false, error: [], component: "form", children: [_jsx(EuiFormRow, { label: "Username", isInvalid: false, children: _jsx(EuiFieldText, { name: "username", isInvalid: false, compressed: true, value: values.username, onChange: handleChange, onBlur: handleBlur }) }), _jsx(EuiFormRow, { label: "Password", isInvalid: false, children: _jsx(EuiFieldText, { name: "password", type: "password", isInvalid: false, compressed: true, value: values.password, onChange: handleChange, onBlur: handleBlur }) })] }) }));
+                    return (_jsx(EuiThemeProvider, { colorMode: "dark", children: _jsxs(EuiForm, { isInvalid: false, error: [], component: "form", children: [_jsx(EuiFormRow, { label: "Username", isInvalid: !!(touched['username'] && errors['username']), error: errors['username'], children: _jsx(EuiFieldText, { name: "username", isInvalid: !!(touched['username'] && errors['username']), compressed: true, value: values.username, onChange: handleChange, onBlur: handleBlur }) }), _jsx(EuiFormRow, { label: "Password", isInvalid: !!(touched['password'] && errors['password']), error: errors['password'], children: _jsx(EuiFieldText, { name: "password", type: "password", isInvalid: !!(touched['password'] && errors['password']), compressed: true, value: values.password, onChange: handleChange, onBlur: handleBlur }) })] }) }));
                 } }));
         }
     }
