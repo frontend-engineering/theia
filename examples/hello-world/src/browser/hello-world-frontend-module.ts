@@ -1,13 +1,11 @@
 // tslint:disable:file-header
 import '../../src/browser/style/branding.css'
 
-import { bindContribution, CommandContribution, FilterContribution, URI } from '@theia/core'
+import { bindContribution, CommandContribution, FilterContribution } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import {
   FrontendApplicationContribution,
   KeybindingRegistry,
-  open,
-  OpenerService,
   OpenHandler,
   ShellLayoutRestorer,
   SidebarBottomMenuWidgetFactory,
@@ -40,6 +38,7 @@ import type { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
 import { GridModelSymbol } from '@flowda-projects/flowda-shared-types'
 import { environment } from './environments/environment'
 import { HelloFrontendContribution } from './hello-frontend-contribution'
+import { ResourceGridModel } from './resource/resource-grid-model'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
@@ -85,38 +84,11 @@ export default new ContainerModule(
     bind(WidgetFactory).toService(ResourceWidgetFactory)
 
     bindDesignModule(bind)
+    rebind(GridModelSymbol).to(ResourceGridModel).inTransientScope()
 
     bind<interfaces.Factory<GridModel>>('Factory<GridModel>').toFactory<GridModel>(context => {
       return () => {
-        const grid = context.container.get<GridModel>(GridModelSymbol)
-        const openerService = context.container.get<OpenerService>(OpenerService)
-        grid.handlers.onClickRef = v => {
-          const k = GridModel.KEY
-          const resourceQuery = localStorage.getItem(k)
-          let prev: Record<string, unknown> = {}
-          // eslint-disable-next-line no-null/no-null
-          if (resourceQuery != null) {
-            try {
-              prev = JSON.parse(resourceQuery)
-            } catch (e) {
-              prev = {}
-            }
-          }
-          prev[v.schemaName] = {
-            _ref: '1',
-            id: { filterType: 'number', type: 'equals', filter: v.id },
-          }
-          localStorage.setItem(k, JSON.stringify(prev))
-
-          open(openerService, {
-            scheme: v.schemaName,
-            name: v.name,
-          } as unknown as URI, {
-            mode: 'reveal',
-            preview: true,
-          })
-        }
-        return grid
+        return context.container.get<GridModel>(GridModelSymbol)
       }
     })
 

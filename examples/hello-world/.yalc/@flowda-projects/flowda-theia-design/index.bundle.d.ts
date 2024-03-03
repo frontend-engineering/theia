@@ -1,6 +1,7 @@
+/// <reference types="react" />
 import { ContainerModule, interfaces } from 'inversify';
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import * as React from 'react';
+import * as React$1 from 'react';
 import { Component } from 'react';
 import { IResourceColumnSchema, IResourceSchema, loginSchemaDto } from '@flowda-projects/flowda-shared-types';
 import { SortModelItem } from 'ag-grid-community/dist/lib/sortController';
@@ -20,11 +21,12 @@ declare class GridModel {
     schema: IResourceSchema | null;
     filterModel: any;
     handlers: Partial<{
-        onClickRef: (v: {
+        onRefClick: (v: {
             schemaName: string;
             name: string;
             id: number;
         }) => void;
+        onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
     isNotEmpty: boolean;
     gridApi: GridApi | null;
@@ -52,7 +54,7 @@ declare class GridModel {
     }): Promise<any>;
     getResourceQuery(): any;
     putData(id: number, updatedValue: any): Promise<void>;
-    onClickRef(field: string, value: number): void;
+    onRefClick(field: string, value: number): void;
 }
 /**
  * 情况1：刷新 尝试从 localStorage 恢复
@@ -111,7 +113,7 @@ declare class LoginModel {
     logout(): void;
 }
 
-declare class Login extends React.Component<{
+declare class Login extends React$1.Component<{
     model: LoginModel;
 }> {
     render(): react_jsx_runtime.JSX.Element;

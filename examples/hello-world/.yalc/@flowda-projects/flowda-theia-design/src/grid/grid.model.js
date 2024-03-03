@@ -87,10 +87,10 @@ let GridModel = GridModel_1 = class GridModel {
             updatedValue: updatedValue,
         });
     }
-    onClickRef(field, value) {
+    onRefClick(field, value) {
         const ref = this.schema?.columns.find(t => t.name === field);
-        if (typeof this.handlers.onClickRef === 'function') {
-            this.handlers.onClickRef({
+        if (typeof this.handlers.onRefClick === 'function') {
+            this.handlers.onRefClick({
                 schemaName: `resource.${this.schema.namespace}.${ref.reference.model_name}ResourceSchema`,
                 name: ref.reference.display_name,
                 id: value,

@@ -2,11 +2,11 @@
   "version": "v1",
   "packages": {
     "@flowda-projects/flowda-theia-design": {
-      "signature": "f423a41cf64c4ea2262cb92195f937a5",
+      "signature": "e0e3b521f73bf8c3d080b24e06736290",
       "file": true
     },
     "@flowda-projects/flowda-gateway-trpc-server": {
-      "signature": "f321da2c4424accd73f3aa5cadc6bfe1",
+      "signature": "e25fab6b19bb6de3d3ee5f4fdc09af6a",
       "file": true
     },
     "@flowda-projects/flowda-shared-types": {

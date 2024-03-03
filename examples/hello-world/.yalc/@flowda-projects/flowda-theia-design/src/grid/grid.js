@@ -101,8 +101,8 @@ let Grid = class Grid extends Component {
                             return (_jsx("a", { href: "", onClick: e => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    this.props.model.onClickRef(param.colDef.field, param.value);
-                                }, children: param.value }));
+                                    this.props.model.onRefClick(param.colDef.field, param.value);
+                                }, onMouseEnter: this.props.model.handlers.onMouseEnter, children: param.value }));
                         },
                     };
                 }

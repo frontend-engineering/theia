@@ -483,12 +483,12 @@ declare class HelloRouter {
             }>;
             _meta: object;
             _ctx_out: {
+                user: _flowda_projects_flowda_shared_types.ctxUserSchemaDto | undefined;
+                requestId: string;
+                tenant: _flowda_projects_flowda_shared_types.ctxTenantSchemaDto | undefined;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
-                requestId: string;
                 _diagnosis: any[];
-                user: _flowda_projects_flowda_shared_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_projects_flowda_shared_types.ctxTenantSchemaDto | undefined;
             };
             _input_in: {
                 pid: string;
@@ -506,6 +506,16 @@ declare class HelloRouter {
                 scheme: string;
                 name: string;
             };
+        }[] | {
+            id: string;
+            name: string;
+            selected: boolean;
+            uri: {
+                scheme: string;
+                name: string;
+            } | undefined;
+            expanded: boolean | undefined;
+            children: never[] | undefined;
         }[] | undefined>;
         getResourceSchema: _trpc_server.BuildProcedure<"query", {
             _config: _trpc_server.RootConfig<{
@@ -532,12 +542,12 @@ declare class HelloRouter {
             }>;
             _meta: object;
             _ctx_out: {
+                user: _flowda_projects_flowda_shared_types.ctxUserSchemaDto | undefined;
+                requestId: string;
+                tenant: _flowda_projects_flowda_shared_types.ctxTenantSchemaDto | undefined;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
-                requestId: string;
                 _diagnosis: any[];
-                user: _flowda_projects_flowda_shared_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_projects_flowda_shared_types.ctxTenantSchemaDto | undefined;
             };
             _input_in: {
                 schemaName: string;
@@ -624,12 +634,12 @@ declare class HelloRouter {
             }>;
             _meta: object;
             _ctx_out: {
+                user: _flowda_projects_flowda_shared_types.ctxUserSchemaDto | undefined;
+                requestId: string;
+                tenant: _flowda_projects_flowda_shared_types.ctxTenantSchemaDto | undefined;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
-                requestId: string;
                 _diagnosis: any[];
-                user: _flowda_projects_flowda_shared_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_projects_flowda_shared_types.ctxTenantSchemaDto | undefined;
             };
             _input_in: {
                 id?: number | undefined;
@@ -709,22 +719,22 @@ declare class HelloRouter {
             }>;
             _meta: object;
             _ctx_out: {
+                user: _flowda_projects_flowda_shared_types.ctxUserSchemaDto | undefined;
+                requestId: string;
+                tenant: _flowda_projects_flowda_shared_types.ctxTenantSchemaDto | undefined;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
-                requestId: string;
                 _diagnosis: any[];
-                user: _flowda_projects_flowda_shared_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_projects_flowda_shared_types.ctxTenantSchemaDto | undefined;
             };
             _input_in: {
                 updatedValue?: any;
-                schemaName: string;
                 id: number;
+                schemaName: string;
             };
             _input_out: {
                 updatedValue?: any;
-                schemaName: string;
                 id: number;
+                schemaName: string;
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
@@ -934,12 +944,12 @@ declare class TrpcRouter {
                 }>;
                 _meta: object;
                 _ctx_out: {
+                    user: ctxUserSchemaDto | undefined;
+                    requestId: string;
+                    tenant: ctxTenantSchemaDto | undefined;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
-                    requestId: string;
                     _diagnosis: any[];
-                    user: ctxUserSchemaDto | undefined;
-                    tenant: ctxTenantSchemaDto | undefined;
                 };
                 _input_in: {
                     pid: string;
@@ -957,6 +967,16 @@ declare class TrpcRouter {
                     scheme: string;
                     name: string;
                 };
+            }[] | {
+                id: string;
+                name: string;
+                selected: boolean;
+                uri: {
+                    scheme: string;
+                    name: string;
+                } | undefined;
+                expanded: boolean | undefined;
+                children: never[] | undefined;
             }[] | undefined>;
             getResourceSchema: _trpc_server.BuildProcedure<"query", {
                 _config: _trpc_server.RootConfig<{
@@ -983,12 +1003,12 @@ declare class TrpcRouter {
                 }>;
                 _meta: object;
                 _ctx_out: {
+                    user: ctxUserSchemaDto | undefined;
+                    requestId: string;
+                    tenant: ctxTenantSchemaDto | undefined;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
-                    requestId: string;
                     _diagnosis: any[];
-                    user: ctxUserSchemaDto | undefined;
-                    tenant: ctxTenantSchemaDto | undefined;
                 };
                 _input_in: {
                     schemaName: string;
@@ -1075,12 +1095,12 @@ declare class TrpcRouter {
                 }>;
                 _meta: object;
                 _ctx_out: {
+                    user: ctxUserSchemaDto | undefined;
+                    requestId: string;
+                    tenant: ctxTenantSchemaDto | undefined;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
-                    requestId: string;
                     _diagnosis: any[];
-                    user: ctxUserSchemaDto | undefined;
-                    tenant: ctxTenantSchemaDto | undefined;
                 };
                 _input_in: {
                     id?: number | undefined;
@@ -1160,22 +1180,22 @@ declare class TrpcRouter {
                 }>;
                 _meta: object;
                 _ctx_out: {
+                    user: ctxUserSchemaDto | undefined;
+                    requestId: string;
+                    tenant: ctxTenantSchemaDto | undefined;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
-                    requestId: string;
                     _diagnosis: any[];
-                    user: ctxUserSchemaDto | undefined;
-                    tenant: ctxTenantSchemaDto | undefined;
                 };
                 _input_in: {
                     updatedValue?: any;
-                    schemaName: string;
                     id: number;
+                    schemaName: string;
                 };
                 _input_out: {
                     updatedValue?: any;
-                    schemaName: string;
                     id: number;
+                    schemaName: string;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
