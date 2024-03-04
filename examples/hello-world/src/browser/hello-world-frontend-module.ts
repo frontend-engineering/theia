@@ -1,7 +1,8 @@
 // tslint:disable:file-header
 import '../../src/browser/style/branding.css'
+import './resource/reference-preview'
 
-import { bindContribution, CommandContribution, FilterContribution } from '@theia/core'
+import { bindContribution, CommandContribution, FilterContribution, MenuContribution } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import {
   FrontendApplicationContribution,
@@ -39,6 +40,7 @@ import { GridModelSymbol } from '@flowda-projects/flowda-shared-types'
 import { environment } from './environments/environment'
 import { HelloFrontendContribution } from './hello-frontend-contribution'
 import { ResourceGridModel } from './resource/resource-grid-model'
+import { SampleMenuContribution } from './sample-menu-contribution'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
@@ -51,6 +53,10 @@ export default new ContainerModule(
   ) => {
     bind(CommandContribution)
       .to(SampleCommandContribution)
+      .inSingletonScope()
+
+    bind(MenuContribution)
+      .to(SampleMenuContribution)
       .inSingletonScope()
 
     bind(ColorContribution)

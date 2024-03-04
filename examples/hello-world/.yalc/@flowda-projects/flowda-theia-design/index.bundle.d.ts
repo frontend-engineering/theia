@@ -27,6 +27,7 @@ declare class GridModel {
             id: number;
         }) => void;
         onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+        onContextMenu: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
     isNotEmpty: boolean;
     gridApi: GridApi | null;
@@ -54,6 +55,8 @@ declare class GridModel {
     }): Promise<any>;
     getResourceQuery(): any;
     putData(id: number, updatedValue: any): Promise<void>;
+    onMouseEnter(e: React.MouseEvent<HTMLElement, MouseEvent>): void;
+    onContextMenu(e: React.MouseEvent<HTMLElement, MouseEvent>): void;
     onRefClick(field: string, value: number): void;
 }
 /**

@@ -28,8 +28,8 @@ export class HelloFilterContribution implements FilterContribution {
                         'EditorCommandContribution',
                         'EditorMenuContribution',
                         'WorkspaceSymbolCommand',
-                        'OutlineViewService',
-                        'OutlineViewContribution',
+                        // 'OutlineViewService',
+                        // 'OutlineViewContribution',
                         // 下一批可以安全过滤
                         // 'RemoteFileServiceContribution', // 暂时先不过滤，报错多
                     ].some(c => contrib.constructor.name.indexOf(c) > -1)

@@ -98,11 +98,11 @@ let Grid = class Grid extends Component {
                         field: item.name,
                         headerName: item.display_name,
                         cellRenderer: param => {
-                            return (_jsx("a", { href: "", onClick: e => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    this.props.model.onRefClick(param.colDef.field, param.value);
-                                }, onMouseEnter: this.props.model.handlers.onMouseEnter, children: param.value }));
+                            return (_jsx("div", { onContextMenu: this.props.model.onContextMenu, children: _jsx("a", { className: "grid-reference-field", href: "", onClick: e => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        this.props.model.onRefClick(param.colDef.field, param.value);
+                                    }, onMouseEnter: this.props.model.onMouseEnter, children: param.value }) }));
                         },
                     };
                 }

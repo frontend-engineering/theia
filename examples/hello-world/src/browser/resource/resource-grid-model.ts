@@ -1,25 +1,53 @@
 import { GridModel } from '@flowda-projects/flowda-theia-design'
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
-import { HoverService, open, OpenerService } from '@theia/core/lib/browser'
-import { URI } from '@theia/core'
+import { ContextMenuRenderer, HoverService, open, OpenerService } from '@theia/core/lib/browser'
+import { Command, URI } from '@theia/core'
+import * as React from '@theia/core/shared/react'
+
+export const GridCellCommand: Command = {
+  id: 'resource-grid-cell',
+  category: 'Examples',
+  label: 'Open reference',
+}
 
 @injectable()
 export class ResourceGridModel extends GridModel {
   @inject(OpenerService) openerService: OpenerService
   @inject(HoverService) hoverService: HoverService
+  @inject(ContextMenuRenderer) protected readonly contextMenuRenderer: ContextMenuRenderer
+
+  static CONTEXT_MENU = ['resource-grid.context.menu']
 
   @postConstruct()
   postConstruct() {
     this.handlers.onRefClick = this.handleOnRefClick.bind(this)
     this.handlers.onMouseEnter = this.handleMouseEnter.bind(this)
+    this.handlers.onContextMenu = this.handleContextMenu.bind(this)
   }
 
   handleMouseEnter(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+    // todo: 判断是否按照 command
     this.hoverService.requestHover({
-      content: 'hello',
+      content: document.createElement('reference-preview'),
       target: e.currentTarget,
-      position: 'top',
+      position: 'right',
     })
+  }
+
+  handleContextMenu(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+    e.preventDefault()
+    e.stopPropagation()
+    const { clientX, clientY } = e
+    this.contextMenuRenderer.render({
+      menuPath: ResourceGridModel.CONTEXT_MENU,
+      anchor: { x: clientX, y: clientY },
+      args: this.getContextMenuArgs(e),
+    })
+  }
+
+  protected getContextMenuArgs(event: React.MouseEvent): unknown[] {
+    const args: unknown[] = [this]
+    return args
   }
 
   handleOnRefClick(v: {

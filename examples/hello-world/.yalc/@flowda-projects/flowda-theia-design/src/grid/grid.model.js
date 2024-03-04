@@ -30,6 +30,8 @@ let GridModel = GridModel_1 = class GridModel {
         this.isNotEmpty = false;
         this.gridApi = null;
         makeObservable(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onContextMenu = this.onContextMenu.bind(this);
     }
     async getCol(schemaName) {
         this.setSchemaName(schemaName);
@@ -86,6 +88,16 @@ let GridModel = GridModel_1 = class GridModel {
             id: id,
             updatedValue: updatedValue,
         });
+    }
+    onMouseEnter(e) {
+        if (typeof this.handlers.onMouseEnter === 'function') {
+            this.handlers.onMouseEnter(e);
+        }
+    }
+    onContextMenu(e) {
+        if (typeof this.handlers.onContextMenu === 'function') {
+            this.handlers.onContextMenu(e);
+        }
     }
     onRefClick(field, value) {
         const ref = this.schema?.columns.find(t => t.name === field);
