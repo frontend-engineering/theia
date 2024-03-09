@@ -4,6 +4,10 @@ import { LoginDialog } from './login/login-dialog'
 import { VariableRange } from '@theia/memory-inspector/lib/browser/utils/memory-widget-variable-utils'
 import { MemoryTableWidget } from '@theia/memory-inspector/lib/browser/memory-widget/memory-table-widget'
 import { GridCellCommand } from './resource/resource-grid-model'
+import { NavigatorDiffCommands } from '@theia/navigator/lib/browser/navigator-diff'
+import { FileSystemCommands } from '@theia/filesystem/lib/browser/filesystem-frontend-contribution'
+import { CommonCommands } from '@theia/core/lib/browser'
+import { WorkspaceCommands } from '@theia/workspace/lib/browser'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
@@ -43,5 +47,11 @@ export class SampleCommandContribution implements CommandContribution {
       isEnabled: () => true,
       isVisible: () => true,
     })
+
+    registry.unregisterCommand(NavigatorDiffCommands.COMPARE_FIRST.id)
+    registry.unregisterCommand(FileSystemCommands.UPLOAD.id)
+    registry.unregisterCommand(CommonCommands.COPY.id)
+    registry.unregisterCommand(CommonCommands.PASTE.id)
+    registry.unregisterCommand(WorkspaceCommands.ADD_FOLDER.id)
   }
 }

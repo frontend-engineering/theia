@@ -37,7 +37,7 @@ export class HelloFilterContribution implements FilterContribution {
                     // console.log('ignore contrib.constructor', contrib.constructor.name)
                     return false
                 } else {
-                    // console.log('register contrib.constructor', contrib.constructor.name)
+                    console.log('register contrib.constructor', contrib.constructor.name)
                     // return !(contrib instanceof SampleCommandContribution);
                     return true;
                 }

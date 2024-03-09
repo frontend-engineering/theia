@@ -34,6 +34,6 @@ export class HelloFileNavigatorWidget extends FileNavigatorWidget {
 
   protected override doUpdateRows(): void {
     super.doUpdateRows()
-    this.title.label = 'Explorer'
+    this.title.label = 'Menus'
   }
 }
