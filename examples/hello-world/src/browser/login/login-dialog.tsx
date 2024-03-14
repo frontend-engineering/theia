@@ -5,8 +5,8 @@ import { ABOUT_CONTENT_CLASS, AboutDialogProps } from '@theia/core/lib/browser/a
 import { Message } from '@theia/core/lib/browser/widgets/widget'
 import { ILogger, MessageService } from '@theia/core'
 import { Dialog } from '@theia/core/lib/browser/dialogs'
-import { Login, LoginModel } from '@flowda-projects/flowda-theia-design'
-import { LoginModelSymbol } from '@flowda-projects/flowda-shared-types'
+import { Login, LoginModel } from '@flowda/design'
+import { LoginModelSymbol } from '@flowda/types'
 
 @injectable()
 export class LoginDialog extends ReactDialog<void> {

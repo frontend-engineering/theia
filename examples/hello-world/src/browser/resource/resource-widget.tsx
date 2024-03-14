@@ -1,6 +1,6 @@
 import { ReactWidget } from '@theia/core/lib/browser'
 import * as React from '@theia/core/shared/react'
-import { Grid, GridModel } from '@flowda-projects/flowda-theia-design'
+import { Grid, GridModel } from '@flowda/design'
 
 export class ResourceWidget extends ReactWidget {
   static readonly ID = 'resource-widget'

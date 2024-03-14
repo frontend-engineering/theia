@@ -1,8 +1,11 @@
-import { GridModel } from '@flowda-projects/flowda-theia-design'
+import { GridModel } from '@flowda/design'
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ContextMenuRenderer, HoverService, open, OpenerService } from '@theia/core/lib/browser'
 import { Command, URI } from '@theia/core'
 import * as React from '@theia/core/shared/react'
+import { TrpcProxyClient } from '../trpc/trpc-client'
+import { CreateTRPCProxyClient } from '@trpc/client'
+import { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
 
 export const GridCellCommand: Command = {
   id: 'resource-grid-cell',
@@ -15,6 +18,7 @@ export class ResourceGridModel extends GridModel {
   @inject(OpenerService) openerService: OpenerService
   @inject(HoverService) hoverService: HoverService
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer: ContextMenuRenderer
+  @inject('trpcFactory') protected trpcFactory: () => CreateTRPCProxyClient<AppRouter>
 
   static CONTEXT_MENU = ['resource-grid.context.menu']
 
@@ -23,6 +27,9 @@ export class ResourceGridModel extends GridModel {
     this.handlers.onRefClick = this.handleOnRefClick.bind(this)
     this.handlers.onMouseEnter = this.handleMouseEnter.bind(this)
     this.handlers.onContextMenu = this.handleContextMenu.bind(this)
+    this.handlers.getResourceData = this.trpcFactory().hello.getResourceData.query
+    this.handlers.getResourceSchema = this.trpcFactory().hello.getResourceSchema.query
+    this.handlers.putResourceData = this.trpcFactory().hello.putResourceData.mutate
   }
 
   handleMouseEnter(e: React.MouseEvent<HTMLElement, MouseEvent>) {

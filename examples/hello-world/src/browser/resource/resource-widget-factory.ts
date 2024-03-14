@@ -4,7 +4,7 @@ import { EditorWidget } from '@theia/editor/lib/browser'
 import { ResourceWidget } from './resource-widget'
 import { NavigatableWidgetOptions } from '@theia/core/lib/browser'
 import { URI } from '@theia/core'
-import { GridModel } from '@flowda-projects/flowda-theia-design'
+import { GridModel } from '@flowda/design'
 
 @injectable()
 export class ResourceWidgetFactory extends EditorWidgetFactory {

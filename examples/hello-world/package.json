@@ -11,7 +11,9 @@
     "@emotion/react": "^11.11.3",
     "@flowda-projects/flowda-gateway-trpc-server": "file:.yalc/@flowda-projects/flowda-gateway-trpc-server",
     "@flowda-projects/flowda-shared-types": "file:.yalc/@flowda-projects/flowda-shared-types",
-    "@flowda-projects/flowda-theia-design": "file:.yalc/@flowda-projects/flowda-theia-design",
+    "@flowda/design": "file:.yalc/@flowda/design",
+    "@flowda/shared": "file:.yalc/@flowda/shared",
+    "@flowda/types": "file:.yalc/@flowda/types",
     "@theia/core": "1.45.0",
     "@trpc/client": "^10.45.0",
     "@trpc/server": "^10.45.0",
@@ -23,9 +25,9 @@
     "mobx-react": "^9.1.0",
     "moment": "^2.13.0",
     "prop-types": "^15.5.0",
+    "radash": "^11.0.0",
     "zod": "^3.22.4",
-    "zod-formik-adapter": "^1.2.0",
-    "radash": "^11.0.0"
+    "zod-formik-adapter": "^1.2.0"
   },
   "theiaExtensions": [
     {
