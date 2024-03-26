@@ -22,10 +22,9 @@ if (process.env.npm_lifecycle_script.indexOf('production') > -1) {
     if (!configs[0].resolve.alias) {
         configs[0].resolve.alias = {}
     }
-    configs[0].resolve.alias[path.resolve(__dirname, '../hello-world/lib/browser/environments/environment.js')]
-        = path.resolve(__dirname, '../hello-world/lib/browser/environments/environment.prod.js')
-    console.log(configs[0].resolve.alias)
-
+    // configs[0].resolve.alias[path.resolve(__dirname, '../hello-world/lib/browser/environments/environment.js')]
+    //     = path.resolve(__dirname, '../hello-world/lib/browser/environments/environment.prod.js')
+    // console.log(configs[0].resolve.alias)
     configs[0].resolve.alias['@elastic/eui$'] = '@elastic/eui/optimize/es/index.js'
 }
 

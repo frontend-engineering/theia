@@ -34,9 +34,6 @@
     },
     {
       "path": "../../packages/toolbar"
-    },
-    {
-      "path": "../hello-world"
     }
   ]
 }

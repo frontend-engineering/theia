@@ -49,9 +49,6 @@
       "path": "examples/electron"
     },
     {
-      "path": "examples/hello-world"
-    },
-    {
       "path": "examples/playwright"
     },
     {
