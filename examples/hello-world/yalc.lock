@@ -1,0 +1,25 @@
+{
+  "version": "v1",
+  "packages": {
+    "@flowda-projects/flowda-gateway-trpc-server": {
+      "signature": "b99c21e633124c9c3f8a04e125ffd0ee",
+      "file": true
+    },
+    "@flowda-projects/flowda-shared-types": {
+      "signature": "209ac8ded566875bf5a2df6c801b6bb2",
+      "file": true
+    },
+    "@flowda/types": {
+      "signature": "a3d725f4ab5976bc6f64c5b35f0b7e9c",
+      "file": true
+    },
+    "@flowda/shared": {
+      "signature": "308a3e86d13532419a6734e238fed965",
+      "file": true
+    },
+    "@flowda/design": {
+      "signature": "c97bf4150984e7c06bdc6a6003e1152f",
+      "file": true
+    }
+  }
+}

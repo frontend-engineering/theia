@@ -1,0 +1,12 @@
+{
+  "name": "@flowda/types",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "dependencies": {
+    "tslib": "2.6.2",
+    "zod": "3.22.4"
+  },
+  "main": "./src/index.js",
+  "types": "./index.bundle.d.ts",
+  "yalcSig": "a3d725f4ab5976bc6f64c5b35f0b7e9c"
+}

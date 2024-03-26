@@ -21,20 +21,16 @@
     }
   },
   "dependencies": {
-    "@elastic/datemath": "5.0.3",
-    "@flowda/design": "file:.yalc/@flowda/design",
-    "@flowda/shared": "file:.yalc/@flowda/shared",
-    "@flowda/theia-plugin": "file:.yalc/@flowda/theia-plugin",
-    "@flowda/types": "file:.yalc/@flowda/types",
     "@theia/core": "1.45.0",
-    "@theia/getting-started": "1.45.0",
     "@theia/messages": "1.45.0",
     "@theia/monaco": "1.45.0",
-    "@theia/navigator": "1.45.0",
-    "@theia/outline-view": "1.45.0",
     "@theia/preferences": "1.45.0",
+    "@theia/navigator": "1.45.0",
+    "@theia/getting-started": "1.45.0",
+    "@theia/toolbar": "1.45.0",
+    "@theia/outline-view": "1.45.0",
     "@theia/property-view": "1.45.0",
-    "@theia/toolbar": "1.45.0"
+    "@theia/hello-world": "1.45.0"
   },
   "scripts": {
     "clean": "theia clean",
@@ -55,7 +51,7 @@
     "watch": "concurrently --kill-others -n tsc,bundle -c red,yellow \"tsc -b -w --preserveWatchOutput\" \"yarn -s watch:bundle\"",
     "watch:bundle": "theia build --watch --mode development",
     "watch:compile": "tsc -b -w",
-    "watch:serve": "nodemon --delay 1 --watch ./.yalc/@flowda/theia-plugin/src src-gen/backend/main.js --log-config log-config.json"
+    "watch:serve": "nodemon --delay 1 --watch ../hello-world/lib --watch ../hello-world/.yalc src-gen/backend/main.js --log-config log-config.json"
   },
   "devDependencies": {
     "@theia/cli": "1.45.0"
