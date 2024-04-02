@@ -3,7 +3,7 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { Component } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { observer } from 'mobx-react';
-import { shortenDatetime } from '@flowda/shared';
+import { shortenDatetime } from '../utils/time-utils';
 import dayjs from 'dayjs';
 let Grid = class Grid extends Component {
     constructor(props) {

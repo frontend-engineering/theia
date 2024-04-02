@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putResourceDataInputSchema = exports.getResourceDataOutputSchema = exports.getResourceDataOutputInnerSchema = exports.getResourceDataInputSchema = exports.getResourceInputSchema = exports.resourceSchema = exports.resourceAssociationSchema = exports.resourceColumnSchema = exports.selectOptionSchema = void 0;
+exports.resourceKeySchema = exports.putResourceDataInputSchema = exports.getResourceDataOutputSchema = exports.getResourceDataOutputInnerSchema = exports.getResourceDataInputSchema = exports.getResourceInputSchema = exports.resourceSchema = exports.resourceAssociationSchema = exports.resourceColumnSchema = exports.selectOptionSchema = void 0;
 const zod_1 = require("zod");
 const ag_grid_schema_1 = require("./ag-grid-schema");
 exports.selectOptionSchema = zod_1.z.object({
@@ -75,7 +75,7 @@ exports.getResourceDataInputSchema = zod_1.z.object({
 });
 exports.getResourceDataOutputInnerSchema = zod_1.z.object({
     pagination: zod_1.z.object({
-        total: zod_1.z.number()
+        total: zod_1.z.number(),
     }),
     data: zod_1.z.array(zod_1.z.any()),
 });
@@ -86,5 +86,11 @@ exports.putResourceDataInputSchema = zod_1.z.object({
     schemaName: zod_1.z.string(),
     id: zod_1.z.number(),
     updatedValue: zod_1.z.any(),
+});
+exports.resourceKeySchema = zod_1.z.object({
+    origin: zod_1.z.string(),
+    resource: zod_1.z.string(),
+    resourceSchema: zod_1.z.string(),
+    id: zod_1.z.union([zod_1.z.string(), zod_1.z.number()]).optional(),
 });
 //# sourceMappingURL=ui-schema.js.map
