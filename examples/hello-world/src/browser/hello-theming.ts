@@ -6,10 +6,16 @@ export class HelloThemeService extends ThemeServiceWithDB {
   @postConstruct()
   override init(): void {
     this.register({
-      id: 'linear-dark',
+      id: 'linear-magic-blue',
       type: 'dark',
-      label: 'Dark (Linear)',
-      editorTheme: 'dark-linear',
+      label: 'Magic Blue',
+      editorTheme: 'linear-magic-blue',
+    })
+    this.register({
+      id: 'linear-light',
+      type: 'light',
+      label: 'Linear Light',
+      editorTheme: 'linear-light',
     })
     super.init()
   }

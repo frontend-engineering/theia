@@ -48,11 +48,11 @@ todo: backdrop-filter 设置 fallback 即 backdrop-filter: initiate/unset
 
 /* override 用新的 css var 是因为原先用的 statusBar.background 用到的地方较多 所以单独改这一个*/
 .p-Widget.dialogOverlay .dialogTitle {
-    background-color: var(--theia-custom-dialogTitleBackground);
+    background-color: var(--theia-editor-background);
 }
 
 .p-Widget.dialogOverlay .dialogBlock {
-    background-color: var(--theia-custom-dialogBlockBackground);
+    background-color: var(--theia-editor-background);
 }
 
 /* 整体 box-sizing: border-box

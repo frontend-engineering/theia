@@ -14,24 +14,32 @@ export class SampleColorContribution implements ColorContribution {
      */
     colors.register(
       {
-        id: 'custom.dialogTitleBackground',
+        id: 'activityBar.border',
         defaults: {
-          dark: 'statusBar.background',
-          light: 'statusBar.background',
-          hcDark: 'statusBar.background',
-          hcLight: 'statusBar.background',
+          dark: '#292b38',
+          light: '#e0e0e0',
+          hcDark: 'contrastBorder',
+          hcLight: 'contrastBorder',
         },
-        description: 'Custom dialogTitle background color.',
+        description: 'Activity bar border color separating to the side bar. The activity bar is showing on the far left or right and allows to switch between views of the side bar.',
       },
       {
-        id: 'custom.dialogBlockBackground',
+        id: 'titleBar.border', defaults: {
+          dark: '#292b38',
+          light: '#e0e0e0',
+          hcDark: 'contrastBorder',
+          hcLight: 'contrastBorder',
+        }, description: 'Title bar border color. Note that this color is currently only supported on macOS.',
+      },
+      {
+        id: 'statusBar.border',
         defaults: {
-          dark: 'editorWidget.background',
-          light: 'editorWidget.background',
-          hcDark: 'editorWidget.background',
-          hcLight: 'editorWidget.background',
+          dark: '#292b38',
+          light: '#e0e0e0',
+          hcDark: 'contrastBorder',
+          hcLight: 'contrastBorder',
         },
-        description: 'Custom dialogBlock background color.',
+        description: 'Status bar border color separating to the sidebar and editor. The status bar is shown in the bottom of the window.',
       },
     )
   }
