@@ -1,21 +1,22 @@
 import { inject, injectable } from '@theia/core/shared/inversify'
 import { CommandContribution, CommandRegistry, MessageService } from '@theia/core'
 import { LoginDialog } from './login/login-dialog'
-import { VariableRange } from '@theia/memory-inspector/lib/browser/utils/memory-widget-variable-utils'
-import { MemoryTableWidget } from '@theia/memory-inspector/lib/browser/memory-widget/memory-table-widget'
 import { GridCellCommand } from './resource/resource-grid-model'
 import { NavigatorDiffCommands } from '@theia/navigator/lib/browser/navigator-diff'
 import { FileSystemCommands } from '@theia/filesystem/lib/browser/filesystem-frontend-contribution'
 import { CommonCommands } from '@theia/core/lib/browser'
 import { WorkspaceCommands } from '@theia/workspace/lib/browser'
+import { ThemeService } from '@theia/core/lib/browser/theming'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
   @inject(MessageService) protected readonly messageService: MessageService
   @inject(LoginDialog) protected readonly loginDialog: LoginDialog
+  @inject(ThemeService) protected readonly themeService: ThemeService
 
-  registerCommands(registry: CommandRegistry): void {
-    registry.registerCommand(
+
+  registerCommands(commandRegistry: CommandRegistry): void {
+    commandRegistry.registerCommand(
       {
         id: 'command.examples.say-hi',
         category: 'Examples',
@@ -27,7 +28,7 @@ export class SampleCommandContribution implements CommandContribution {
         },
       },
     )
-    registry.registerCommand(
+    commandRegistry.registerCommand(
       {
         id: 'command.hello.login',
         category: 'Examples',
@@ -40,18 +41,18 @@ export class SampleCommandContribution implements CommandContribution {
       },
     )
 
-    registry.registerCommand(GridCellCommand, {
-      execute: (widgetToActOn: MemoryTableWidget, address, variable: VariableRange) => {
+    commandRegistry.registerCommand(GridCellCommand, {
+      execute: (widgetToActOn, address, variable) => {
         this.messageService.info('Open reference')
       },
       isEnabled: () => true,
       isVisible: () => true,
     })
 
-    registry.unregisterCommand(NavigatorDiffCommands.COMPARE_FIRST.id)
-    registry.unregisterCommand(FileSystemCommands.UPLOAD.id)
-    registry.unregisterCommand(CommonCommands.COPY.id)
-    registry.unregisterCommand(CommonCommands.PASTE.id)
-    registry.unregisterCommand(WorkspaceCommands.ADD_FOLDER.id)
+    commandRegistry.unregisterCommand(NavigatorDiffCommands.COMPARE_FIRST.id)
+    commandRegistry.unregisterCommand(FileSystemCommands.UPLOAD.id)
+    commandRegistry.unregisterCommand(CommonCommands.COPY.id)
+    commandRegistry.unregisterCommand(CommonCommands.PASTE.id)
+    commandRegistry.unregisterCommand(WorkspaceCommands.ADD_FOLDER.id)
   }
 }

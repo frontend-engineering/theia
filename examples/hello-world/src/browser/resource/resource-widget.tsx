@@ -16,11 +16,6 @@ export class ResourceWidget extends ReactWidget {
   }
 
   protected render(): React.ReactNode {
-    return (
-      // todo: 使用 theia 的 parent className 修改主题直接切换 ag grid theme css var
-      <div className="ag-theme-linear-magic-blue" style={{ height: '100%' }}>
-        <Grid model={this.option.model}/>
-      </div>
-    )
+    return <Grid model={this.option.model}/>
   }
 }

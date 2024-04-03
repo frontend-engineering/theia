@@ -3,7 +3,7 @@
 @import "./global_styles.css";
 @import "@elastic/eui/dist/eui_theme_dark.css";
 @import "ag-grid-community/styles/ag-grid.css";
-@import "./ag-theme-linear.css";
+@import "./ag-theme-quartz.css";
 @import "./eui-custom.css";
 @import "./grid.css";
 
