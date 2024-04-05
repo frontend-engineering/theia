@@ -67,7 +67,9 @@ export class FrontendGenerator extends AbstractGenerator {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>${this.pck.props.frontend.config.applicationName}</title>
-  <link rel="stylesheet"  href="https://assets-1306445775.cos.ap-shanghai.myqcloud.com/eui/eui_theme_dark.css" />`;
+  <link rel="preload" href="https://assets-1306445775.cos.ap-shanghai.myqcloud.com/linear/Inter-roman.var.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="https://assets-1306445775.cos.ap-shanghai.myqcloud.com/linear/InterDisplay-SemiBold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://assets-1306445775.cos.ap-shanghai.myqcloud.com/ag-grid/ag-grid.css" />`;
     }
 
     protected compileIndexJs(frontendModules: Map<string, string>, frontendPreloadModules: Map<string, string>): string {

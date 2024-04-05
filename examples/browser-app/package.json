@@ -54,6 +54,7 @@
     "watch:serve": "nodemon --delay 1 --watch ../hello-world/lib --watch ../hello-world/.yalc src-gen/backend/main.js --log-config log-config.json"
   },
   "devDependencies": {
-    "@theia/cli": "1.45.0"
+    "@theia/cli": "1.45.0",
+    "raw-loader": "4.0.2"
   }
 }

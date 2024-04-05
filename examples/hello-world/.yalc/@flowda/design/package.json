@@ -1,8 +1,13 @@
 {
   "name": "@flowda/design",
   "version": "0.0.1",
+  "peerDependencies": {
+    "@anatine/zod-openapi": "*",
+    "@flowda/types": "0.0.1",
+    "reflect-metadata": "^0.1.13",
+    "tslib": "~2.6.2"
+  },
   "dependencies": {
-    "@anatine/zod-openapi": "file:.yalc/@anatine/zod-openapi",
     "@elastic/eui": "^93.2.0",
     "@emotion/react": "^11.11.4",
     "ag-grid-community": "^31.1.1",
@@ -21,12 +26,7 @@
     "zod": "^3.22.4",
     "zod-formik-adapter": "^1.2.0"
   },
-  "peerDependencies": {
-    "@flowda/types": "0.0.1",
-    "reflect-metadata": "^0.1.13",
-    "tslib": "~2.6.2"
-  },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "721673f3bfb9df607eec7e3e2c0dfb7f"
+  "yalcSig": "bd462f2802d4be02ce64c8cea24296c6"
 }

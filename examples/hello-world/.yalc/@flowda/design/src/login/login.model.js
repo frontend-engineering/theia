@@ -1,8 +1,11 @@
-import { __awaiter, __decorate, __metadata } from "tslib";
-import { action, makeObservable, observable } from 'mobx';
-import { injectable } from 'inversify';
+import { __awaiter, __decorate, __metadata, __param } from "tslib";
+import { action, makeObservable, observable, } from 'mobx';
+import { injectable, inject } from 'inversify';
+import { ThemeModelSymbol } from '@flowda/types';
+import { ThemeModel } from '../theme/theme.model';
 let LoginModel = class LoginModel {
-    constructor() {
+    constructor(theme) {
+        this.theme = theme;
         this.isLogin = false;
         this.handlers = {};
         makeObservable(this);
@@ -58,7 +61,8 @@ __decorate([
 ], LoginModel.prototype, "setIsLogin", null);
 LoginModel = __decorate([
     injectable(),
-    __metadata("design:paramtypes", [])
+    __param(0, inject(ThemeModelSymbol)),
+    __metadata("design:paramtypes", [ThemeModel])
 ], LoginModel);
 export { LoginModel };
 //# sourceMappingURL=login.model.js.map

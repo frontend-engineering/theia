@@ -80,7 +80,14 @@ declare class Grid extends Component<GridProps> {
     render(): JSX.Element;
 }
 
+declare class ThemeModel {
+    colorMode: 'light' | 'dark';
+    constructor();
+    setColorMode(colorMode: 'light' | 'dark'): void;
+}
+
 declare class LoginModel {
+    theme: ThemeModel;
     formikProps: FormikProps<loginInputSchemaDto> | undefined;
     isLogin: boolean;
     handlers: Partial<{
@@ -89,7 +96,7 @@ declare class LoginModel {
         }) => void;
         validate: (input: loginInputSchemaDto) => Promise<loginOutputSchemaDto>;
     }>;
-    constructor();
+    constructor(theme: ThemeModel);
     setIsLogin(isLogin: boolean): void;
     checkLogin(): void;
     login(accept?: () => Promise<void>): Promise<void>;
@@ -102,4 +109,4 @@ declare class Login extends React$1.Component<{
     render(): JSX.Element;
 }
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, bindDesignModule, designModule, getFinalFilterModel, tryExtractFilterModelFromRef };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, bindDesignModule, designModule, getFinalFilterModel, tryExtractFilterModelFromRef };

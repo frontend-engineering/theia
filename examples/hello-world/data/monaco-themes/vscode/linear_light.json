@@ -43,6 +43,8 @@
     "tab.inactiveBackground": "#ffffff",
     "textLink.foreground": "#4161da",
     "titleBar.activeBackground": "#ececec",
-    "titleBar.activeForeground": "#5c5c5e"
+    "titleBar.activeForeground": "#5c5c5e",
+    "tree.inactiveIndentGuidesStroke": "#d4d4d4",
+    "tree.indentGuidesStroke": "#d4d4d4"
   }
 }

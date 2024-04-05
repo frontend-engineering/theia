@@ -1,10 +1,18 @@
-/* reset.css 暂时不用，theia 的样式依赖 ua 默认样式 */
-/*@import "./reset.css";*/
-@import "./global_styles.css";
-@import "@elastic/eui/dist/eui_theme_dark.css";
-@import "ag-grid-community/styles/ag-grid.css";
+.theia-icon {
+    background-image: url("../icons/linear.avif");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
 
-@import "./theia.css";
-@import "./ag-theme-quartz.css";
-@import "./eui.css";
-@import "./grid.css";
+#theia-main-content-panel {
+    background-image: url("../icons/linear.avif");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 15%;
+}
+
+.unclosable-window-icon {
+    -webkit-mask: url("window-icon.svg");
+    mask: url("window-icon.svg");
+}

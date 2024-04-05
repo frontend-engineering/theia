@@ -1,5 +1,5 @@
 // tslint:disable:file-header
-import '../../src/browser/style/branding.css'
+import '../../src/browser/style/index.css'
 import './resource/reference-preview'
 
 import { bindContribution, CommandContribution, FilterContribution, MenuContribution } from '@theia/core'

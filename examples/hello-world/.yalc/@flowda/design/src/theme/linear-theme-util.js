@@ -75,7 +75,9 @@ const linearToTheiaDict = {
     'scrollbarSlider.activeBackground': 'scrollbarBgActive',
     'list.focusHighlightForeground': 'controlBaseHighlight',
     'pickerGroup.foreground': 'controlBase',
-    'quickInput.background': 'bgBase'
+    'quickInput.background': 'bgBase',
+    'tree.indentGuidesStroke': 'bgBorderSolid',
+    'tree.inactiveIndentGuidesStroke': 'bgBorderSolid',
 };
 export function createTheiaThemeColors(theiaColor, linearColor) {
     const ret = omitBy(_.mapValues(linearToTheiaDict, v => {

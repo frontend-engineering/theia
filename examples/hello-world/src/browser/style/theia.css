@@ -4,7 +4,6 @@
     }
 
     /* 整体 box-sizing: border-box 后 这个样式需要 unset 下 */
-
     .p-TabBar-tabCloseIcon.action-label,
     .p-TabBar-tabIcon.codicon {
         box-sizing: unset;
@@ -15,28 +14,6 @@
         border: 1px solid var(--theia-menu-border);
         border-radius: 5px;
     }
-
-
-}
-
-
-.theia-icon {
-    background-image: url("../icons/linear.avif");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-}
-
-#theia-main-content-panel {
-    background-image: url("../icons/linear.avif");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: 15%;
-}
-
-.unclosable-window-icon {
-    -webkit-mask: url("window-icon.svg");
-    mask: url("window-icon.svg");
 }
 
 .custom-avatar-wrapper {
