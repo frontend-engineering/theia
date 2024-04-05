@@ -1,9 +1,21 @@
 .flowda {
+    .p-Widget.dialogOverlay {
+        .dialogTitle {
+            background: unset;
+            padding: calc(var(--theia-ui-padding) * 2);
+        }
+
+        .dialogControl {
+            border-top: 1px solid var(--theia-menu-border);
+        }
+    }
+
     .theia-notifications-container {
         z-index: 10000 !important;
     }
 
     /* 整体 box-sizing: border-box 后 这个样式需要 unset 下 */
+
     .p-TabBar-tabCloseIcon.action-label,
     .p-TabBar-tabIcon.codicon {
         box-sizing: unset;

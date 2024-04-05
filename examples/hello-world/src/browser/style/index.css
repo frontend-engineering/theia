@@ -46,6 +46,7 @@
 
     --theia-content-line-height: 27px;
     --ag-font-family: var(--font-regular);
+    --theia-quickInput-rowHeight: 46px;
 }
 
 .mac {

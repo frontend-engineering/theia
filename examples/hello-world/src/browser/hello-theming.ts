@@ -18,5 +18,11 @@ export class HelloThemeService extends ThemeServiceWithDB {
       editorTheme: 'linear-light',
     })
     super.init()
+
+    delete this.themes['dark']
+    delete this.themes['light']
+    delete this.themes['hc-theia']
+    delete this.themes['hc-theia-light']
+
   }
 }

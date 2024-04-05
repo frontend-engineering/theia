@@ -20,9 +20,12 @@ export class HelloFrontendContribution implements FrontendApplicationContributio
     this.login.handlers.info = this.messageService.info.bind(this.messageService)
     this.login.handlers.validate = this.trpcFactory().hello.validate.mutate
 
-    // 在 body 增加全局命名空间，在 style/*.css 里，如果是样式覆盖都套上 .flowda
-    document.body.classList.add('flowda')
-
+    if (this.themeService.getCurrentTheme().id === 'linear-light'
+      || this.themeService.getCurrentTheme().id === 'linear-magic-blue') {
+      // 在 body 增加全局命名空间，在 style/*.css 里，如果是样式覆盖都套上 .flowda
+      document.body.classList.add('flowda')
+    }
+    
     if (this.themeService.getCurrentTheme().type === 'light' || this.themeService.getCurrentTheme().type === 'hcLight') {
       document.body.classList.add('ag-theme-quartz')
       this.theme.setColorMode('light')
@@ -49,6 +52,12 @@ export class HelloFrontendContribution implements FrontendApplicationContributio
         this.theme.setColorMode('dark')
       }
       addOrUpdateEuiLinkTag(evt.newTheme.type)
+
+      if (evt.newTheme.id === 'linear-light' || evt.newTheme.id === 'linear-magic-blue') {
+        document.body.classList.add('flowda')
+      } else {
+        document.body.classList.remove('flowda')
+      }
     })
   }
 }
