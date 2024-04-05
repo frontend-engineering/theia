@@ -13,7 +13,7 @@
     "editor.foreground": "#e4e4ed",
     "editor.inactiveSelectionBackground": "#15161c",
     "editor.selectionHighlightBackground": "#e4e4ed",
-    "editorGroupHeader.tabsBackground": "#222430",
+    "editorGroupHeader.tabsBackground": "#15161c",
     "editorIndentGuide.background": "#222430",
     "focusBorder": "#2e303d",
     "icon.foreground": "#5d5e65",

@@ -1,0 +1,79 @@
+.flowda {
+    .theia-notifications-container {
+        z-index: 10000 !important;
+    }
+
+    /* 整体 box-sizing: border-box 后 这个样式需要 unset 下 */
+
+    .p-TabBar-tabCloseIcon.action-label,
+    .p-TabBar-tabIcon.codicon {
+        box-sizing: unset;
+    }
+
+    .quick-input-widget {
+        box-shadow: 0px 1px 6px var(--theia-widget-shadow);
+        border: 1px solid var(--theia-menu-border);
+        border-radius: 5px;
+    }
+
+
+}
+
+
+.theia-icon {
+    background-image: url("../icons/linear.avif");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#theia-main-content-panel {
+    background-image: url("../icons/linear.avif");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 15%;
+}
+
+.unclosable-window-icon {
+    -webkit-mask: url("window-icon.svg");
+    mask: url("window-icon.svg");
+}
+
+.custom-avatar-wrapper {
+    &:hover {
+        background: var(--theia-menubar-selectionBackground);
+    }
+
+    border-radius: 4px;
+    margin: 8px;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
+    width: 32px;
+    height: 32px;
+    font-size: 9px;
+}
+
+.custom-avatar {
+    transform: translate(-50%, 50%);
+    left: 50%;
+    bottom: 50%;
+    position: absolute;
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(192, 109, 37);
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease-in-out 0s;
+}

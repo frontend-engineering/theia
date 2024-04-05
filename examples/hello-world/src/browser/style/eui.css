@@ -1,0 +1,22 @@
+.flowda {
+
+    .euiFormLabel.euiFormLabel-isFocused {
+        color: var(--theia-textLink-foreground);
+    }
+
+    .euiFieldText--compressed:focus {
+        background-image: linear-gradient(to top, var(--theia-textLink-foreground), var(--theia-textLink-foreground) 2px, transparent 2px, transparent 100%);
+        background-color: var(--theia-sideBar-background);
+    }
+
+    .euiFieldText--compressed {
+        background-color: var(--theia-sideBar-background);
+    }
+
+    .euiFieldText--custom {
+        box-shadow: unset !important;
+        background-color: unset !important;
+        padding-left: 0 !important;
+    }
+
+}

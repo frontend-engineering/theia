@@ -5,13 +5,6 @@ import { ColorRegistry } from '@theia/core/lib/browser/color-registry'
 @injectable()
 export class SampleColorContribution implements ColorContribution {
   registerColors(colors: ColorRegistry): void {
-    /*
-    在 dark_linear 里进行覆盖
-    e.g. "custom.dialogTitleBackground": "#FFFFFF00",
-
-    其他主题的话，按照原先的 css var 设置好 fallback 策略
-    e.g. 原先 .dialogTitle 是 statusBar.background
-     */
     colors.register(
       {
         id: 'activityBar.border',
