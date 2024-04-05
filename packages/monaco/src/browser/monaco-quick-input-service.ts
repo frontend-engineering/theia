@@ -80,7 +80,7 @@ export class MonacoQuickInputImplementation implements IQuickInputService {
     protected readonly contextKeyService: VSCodeContextKeyService;
 
     protected container: HTMLElement;
-    private quickInputList: List<unknown>;
+    protected quickInputList: List<unknown>;
 
     protected inQuickOpen: IContextKey<boolean>;
 
@@ -198,7 +198,7 @@ export class MonacoQuickInputImplementation implements IQuickInputService {
         return { width: window.innerWidth, height: window.innerHeight };
     }
 
-    private getOptions(): IQuickInputOptions {
+    protected getOptions(): IQuickInputOptions {
         const options: IQuickInputOptions = {
             idPrefix: 'quickInput_',
             container: this.container,

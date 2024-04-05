@@ -24,8 +24,11 @@ export class HelloFrontendContribution implements FrontendApplicationContributio
       || this.themeService.getCurrentTheme().id === 'linear-magic-blue') {
       // 在 body 增加全局命名空间，在 style/*.css 里，如果是样式覆盖都套上 .flowda
       document.body.classList.add('flowda')
+      document.documentElement.style.setProperty('--theia-quickInput-rowHeight', '44px')
+    } else {
+      document.documentElement.style.setProperty('--theia-quickInput-rowHeight', '22px')
     }
-    
+
     if (this.themeService.getCurrentTheme().type === 'light' || this.themeService.getCurrentTheme().type === 'hcLight') {
       document.body.classList.add('ag-theme-quartz')
       this.theme.setColorMode('light')
@@ -55,8 +58,10 @@ export class HelloFrontendContribution implements FrontendApplicationContributio
 
       if (evt.newTheme.id === 'linear-light' || evt.newTheme.id === 'linear-magic-blue') {
         document.body.classList.add('flowda')
+        handleThemeChange(44)
       } else {
         document.body.classList.remove('flowda')
+        handleThemeChange(22)
       }
     })
   }
@@ -80,4 +85,15 @@ function addOrUpdateEuiLinkTag(type: ThemeType) {
       'https://assets-1306445775.cos.ap-shanghai.myqcloud.com/eui/eui_theme_dark.css'
   }
   ele.setAttribute('eui-theme', type)
+}
+
+function handleThemeChange(height: number) {
+  document.documentElement.style.setProperty('--theia-quickInput-rowHeight', `${height}px`)
+  const rowEles = document.querySelectorAll<HTMLElement>('.monaco-list-row')
+  rowEles.forEach((e, i) => {
+    e.style.top = `${height * i}px`
+    e.style.height = `${height}px`
+  })
+  document.querySelector<HTMLElement>('.monaco-list-rows')!.style.height = `${rowEles.length * height}px`
+  document.getElementById('quickInput_list')!.style.maxHeight = `${rowEles.length * height}px`
 }

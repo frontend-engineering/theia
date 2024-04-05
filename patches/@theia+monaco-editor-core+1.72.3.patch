@@ -1,0 +1,13 @@
+diff --git a/node_modules/@theia/monaco-editor-core/esm/vs/base/parts/quickinput/browser/quickInputList.js b/node_modules/@theia/monaco-editor-core/esm/vs/base/parts/quickinput/browser/quickInputList.js
+index 03da20e..65b9a05 100644
+--- a/node_modules/@theia/monaco-editor-core/esm/vs/base/parts/quickinput/browser/quickInputList.js
++++ b/node_modules/@theia/monaco-editor-core/esm/vs/base/parts/quickinput/browser/quickInputList.js
+@@ -216,7 +216,7 @@ class QuickInputList {
+         this.disposables = [];
+         this.id = id;
+         this.container = dom.append(this.parent, $('.quick-input-list'));
+-        const delegate = new ListElementDelegate();
++        const delegate = options.delegate || new ListElementDelegate();
+         const accessibilityProvider = new QuickInputAccessibilityProvider();
+         this.list = options.createList('QuickInput', this.container, delegate, [new ListElementRenderer()], {
+             identityProvider: { getId: element => element.saneLabel },

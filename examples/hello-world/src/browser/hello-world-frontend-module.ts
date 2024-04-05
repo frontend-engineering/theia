@@ -41,6 +41,8 @@ import { environment } from './environments/environment'
 import { HelloFrontendContribution } from './hello-frontend-contribution'
 import { ResourceGridModel } from './resource/resource-grid-model'
 import { SampleMenuContribution } from './sample-menu-contribution'
+import { MonacoQuickInputImplementation } from '@theia/monaco/lib/browser/monaco-quick-input-service'
+import { HelloMonacoQuickInputService, ListElementDelegate } from './monaco/hello-monaco-quick-input-service'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
@@ -121,5 +123,15 @@ export default new ContainerModule(
     bind(FrontendApplicationContribution)
       .to(HelloFrontendContribution)
       .inSingletonScope()
+
+    rebind(MonacoQuickInputImplementation).to(HelloMonacoQuickInputService).inSingletonScope()
+
+    bind(ListElementDelegate).toSelf().inSingletonScope()
+    bind<interfaces.Factory<ListElementDelegate>>('Factory<ListElementDelegate>').toFactory<ListElementDelegate>(context => {
+      return () => {
+        return context.container.get<ListElementDelegate>(ListElementDelegate)
+      }
+    })
+
   },
 )
