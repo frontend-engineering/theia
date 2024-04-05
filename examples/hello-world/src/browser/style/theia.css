@@ -37,6 +37,9 @@
         line-height: var(--theia-quickInput-rowHeight);
     }
 
+    #theia-main-content-panel .p-TabBar .p-TabBar-tab.p-mod-current {
+        border-top: 2px solid var(--theia-button-background);
+    }
 }
 
 .custom-avatar-wrapper {

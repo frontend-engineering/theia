@@ -40,7 +40,7 @@
     "statusBar.noFolderBackground": "#ececec",
     "tab.activeModifiedBorder": "#d8d8d8",
     "tab.border": "#dcdcdc",
-    "tab.inactiveBackground": "#ffffff",
+    "tab.inactiveBackground": "#ececec",
     "textLink.foreground": "#4161da",
     "titleBar.activeBackground": "#ececec",
     "titleBar.activeForeground": "#5c5c5e",

@@ -39,7 +39,7 @@ const linearToTheiaDict = {
     'list.highlightForeground': 'controlBase',
     'editorGroup.border': '',
     'editorGroupHeader.tabsBackground': 'bgSub',
-    'tab.inactiveBackground': 'controlSecondary',
+    'tab.inactiveBackground': 'bgSub',
     'tab.border': 'bgBorderThin',
     'tab.activeModifiedBorder': 'bgBorderHover',
     'statusBar.foreground': 'labelMuted',

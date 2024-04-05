@@ -40,9 +40,11 @@
     "statusBar.noFolderBackground": "#15161c",
     "tab.activeModifiedBorder": "#2e303d",
     "tab.border": "#2c2d3a",
-    "tab.inactiveBackground": "#252634",
+    "tab.inactiveBackground": "#15161c",
     "textLink.foreground": "#8182ff",
     "titleBar.activeBackground": "#15161c",
-    "titleBar.activeForeground": "#999aa1"
+    "titleBar.activeForeground": "#999aa1",
+    "tree.inactiveIndentGuidesStroke": "#313240",
+    "tree.indentGuidesStroke": "#313240"
   }
 }
