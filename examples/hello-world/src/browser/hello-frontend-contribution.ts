@@ -67,13 +67,13 @@ export class HelloFrontendContribution implements FrontendApplicationContributio
   }
 }
 
-const Eui_Link_Tag_Id = 'eui'
+const EUI_LINK_TAG_ID = 'eui'
 
 function addOrUpdateEuiLinkTag(type: ThemeType) {
-  let ele: HTMLLinkElement | null = document.getElementById(Eui_Link_Tag_Id) as HTMLLinkElement | null
+  let ele: HTMLLinkElement | null = document.getElementById(EUI_LINK_TAG_ID) as HTMLLinkElement | null
   if (ele == null) {
     ele = document.createElement('link')
-    ele.id = Eui_Link_Tag_Id
+    ele.id = EUI_LINK_TAG_ID
     ele.rel = 'stylesheet'
     ele.href = type === 'light' || type === 'hcLight' ?
       'https://assets-1306445775.cos.ap-shanghai.myqcloud.com/eui/eui_theme_light.css' :
