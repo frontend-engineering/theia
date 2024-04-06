@@ -2,7 +2,14 @@
 import '../../src/browser/style/index.css'
 import './resource/reference-preview'
 
-import { bindContribution, CommandContribution, FilterContribution, MenuContribution } from '@theia/core'
+import {
+  bindContribution,
+  CommandContribution,
+  CommandRegistry,
+  commandServicePath,
+  FilterContribution,
+  MenuContribution,
+} from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import {
   FrontendApplicationContribution,
@@ -10,12 +17,13 @@ import {
   OpenHandler,
   ShellLayoutRestorer,
   SidebarBottomMenuWidgetFactory,
+  WebSocketConnectionProvider,
   WidgetFactory,
 } from '@theia/core/lib/browser'
 import { HelloShellLayoutRestorer } from './hello-shell-layout-restorer'
 import { HelloFilterContribution } from './hello-filter-contribution'
 import { SampleCommandContribution } from './sample-command-contribution'
-import { FILE_NAVIGATOR_ID, NavigatorWidgetFactory } from '@theia/navigator/lib/browser'
+import { NavigatorWidgetFactory } from '@theia/navigator/lib/browser'
 import { createHelloFileNavigatorWidget } from './navigator/hello-navigator-container'
 import { HelloFileNavigatorWidget } from './navigator/hello-navigator-widget'
 import { HELLO_FILE_NAVIGATOR_ID, HelloNavigatorWidgetFactory } from './navigator/hello-navigator-widget-factory'
@@ -43,6 +51,9 @@ import { ResourceGridModel } from './resource/resource-grid-model'
 import { SampleMenuContribution } from './sample-menu-contribution'
 import { MonacoQuickInputImplementation } from '@theia/monaco/lib/browser/monaco-quick-input-service'
 import { HelloMonacoQuickInputService, ListElementDelegate } from './monaco/hello-monaco-quick-input-service'
+import { TabBarToolbarContribution } from '@theia/core/lib/browser/shell/tab-bar-toolbar'
+import { SampleTabBarToolbarContribution } from './sample-tab-bar-toolbar-contribution'
+import { SampleCommandRegistry } from './sample-command-registry'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
@@ -132,6 +143,11 @@ export default new ContainerModule(
         return context.container.get<ListElementDelegate>(ListElementDelegate)
       }
     })
+    bind(TabBarToolbarContribution).to(SampleTabBarToolbarContribution).inSingletonScope()
 
+    rebind(CommandRegistry).to(SampleCommandRegistry).inSingletonScope().onActivation(({ container }, registry) => {
+      WebSocketConnectionProvider.createHandler(container, commandServicePath, registry)
+      return registry
+    })
   },
 )
