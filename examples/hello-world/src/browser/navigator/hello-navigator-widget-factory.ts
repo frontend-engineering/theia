@@ -2,11 +2,10 @@ import { injectable } from '@theia/core/shared/inversify'
 import {
   EXPLORER_VIEW_CONTAINER_ID,
   EXPLORER_VIEW_CONTAINER_TITLE_OPTIONS,
-  FILE_NAVIGATOR_ID,
   NavigatorWidgetFactory,
 } from '@theia/navigator/lib/browser'
 import { ViewContainer } from '@theia/core/lib/browser'
-import { OpenEditorsWidget } from '@theia/navigator/lib/browser/open-editors-widget/navigator-open-editors-widget'
+export const HELLO_FILE_NAVIGATOR_ID = 'files-hello';
 
 @injectable()
 export class HelloNavigatorWidgetFactory extends NavigatorWidgetFactory {
@@ -18,7 +17,7 @@ export class HelloNavigatorWidgetFactory extends NavigatorWidgetFactory {
     viewContainer.setTitleOptions(EXPLORER_VIEW_CONTAINER_TITLE_OPTIONS)
     // const openEditorsWidget = await this.widgetManager.getOrCreateWidget(OpenEditorsWidget.ID)
     // const navigatorWidget = await this.widgetManager.getOrCreateWidget(FILE_NAVIGATOR_ID)
-    const helloNavigatorWidget = await this.widgetManager.getOrCreateWidget(FILE_NAVIGATOR_ID + '-hello')
+    const helloNavigatorWidget = await this.widgetManager.getOrCreateWidget(HELLO_FILE_NAVIGATOR_ID)
     // viewContainer.addWidget(navigatorWidget, this.fileNavigatorWidgetOptions)
     // viewContainer.addWidget(openEditorsWidget, this.openEditorsWidgetOptions)
     viewContainer.addWidget(helloNavigatorWidget, {

@@ -18,7 +18,7 @@ import { SampleCommandContribution } from './sample-command-contribution'
 import { FILE_NAVIGATOR_ID, NavigatorWidgetFactory } from '@theia/navigator/lib/browser'
 import { createHelloFileNavigatorWidget } from './navigator/hello-navigator-container'
 import { HelloFileNavigatorWidget } from './navigator/hello-navigator-widget'
-import { HelloNavigatorWidgetFactory } from './navigator/hello-navigator-widget-factory'
+import { HELLO_FILE_NAVIGATOR_ID, HelloNavigatorWidgetFactory } from './navigator/hello-navigator-widget-factory'
 import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 import { ResourceManager } from './resource/resource-manager'
 import { LoginDialog } from './login/login-dialog'
@@ -79,7 +79,7 @@ export default new ContainerModule(
     )
     bind(WidgetFactory)
       .toDynamicValue(({ container }) => ({
-        id: FILE_NAVIGATOR_ID + '-hello',
+        id: HELLO_FILE_NAVIGATOR_ID,
         createWidget: () => container.get(HelloFileNavigatorWidget),
       }))
       .inSingletonScope()
