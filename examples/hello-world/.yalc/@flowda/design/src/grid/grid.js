@@ -194,7 +194,7 @@ let Grid = class Grid extends Component {
     render() {
         return (_jsx(AgGridReact, { ref: ref => (this.gridRef = ref), defaultColDef: {
                 maxWidth: 400,
-            }, columnDefs: this.columnDefs(), pagination: true, paginationPageSize: 20, cacheBlockSize: 20, rowModelType: 'infinite', getRowId: (params) => params.data.id, onGridReady: this.onGridReady, onCellValueChanged: this.onCellValueChanged }));
+            }, rowHeight: 42, columnDefs: this.columnDefs(), pagination: true, paginationPageSize: 20, cacheBlockSize: 20, rowModelType: 'infinite', getRowId: (params) => params.data.id, onGridReady: this.onGridReady, onCellValueChanged: this.onCellValueChanged }));
     }
 };
 Grid = __decorate([

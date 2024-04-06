@@ -1,10 +1,12 @@
 .flowda {
     .theia-icon {
-        height: 21px;
-        background-image: url("logo.svg");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
+        -webkit-mask: url("logo.svg");
+        mask: url("logo.svg");
+        height: unset;
+        background-color: var(--theia-activityBar-foreground);
+        mask-repeat: no-repeat;
+        mask-size: auto 20px;
+        margin: 6px 0 5px 14px;
     }
 
     #theia-main-content-panel {
