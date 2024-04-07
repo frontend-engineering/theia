@@ -95,7 +95,7 @@ export class SampleCommandContribution implements CommandContribution {
       }, []),
 
       ...Object.values(KeymapsCommands)
-        .filter(command => command.id !== KeymapsCommands.OPEN_KEYMAPS.id)
+        // .filter(command => command.id !== KeymapsCommands.OPEN_KEYMAPS.id)
         .map(command => command.id),
       ...Object.values(PreferencesCommands)
         // .filter(command => [PreferencesCommands.OPEN_WORKSPACE_PREFERENCES.id].indexOf(command.id) === -1)
