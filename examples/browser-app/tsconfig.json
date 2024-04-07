@@ -12,9 +12,6 @@
       "path": "../../packages/core"
     },
     {
-      "path": "../../packages/getting-started"
-    },
-    {
       "path": "../../packages/messages"
     },
     {
@@ -24,16 +21,10 @@
       "path": "../../packages/navigator"
     },
     {
-      "path": "../../packages/outline-view"
-    },
-    {
       "path": "../../packages/preferences"
     },
     {
-      "path": "../../packages/property-view"
-    },
-    {
-      "path": "../../packages/toolbar"
+      "path": "../../packages/preview"
     },
     {
       "path": "../hello-world"

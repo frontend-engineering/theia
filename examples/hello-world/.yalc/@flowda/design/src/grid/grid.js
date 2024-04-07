@@ -5,16 +5,13 @@ import { AgGridReact } from 'ag-grid-react';
 import { observer } from 'mobx-react';
 import { shortenDatetime } from '../utils/time-utils';
 import dayjs from 'dayjs';
+import { InfiniteRowModelModule } from '@ag-grid-community/infinite-row-model';
 let Grid = class Grid extends Component {
     constructor(props) {
         super(props);
         this.gridRef = null;
-        this.onGridReady = this.onGridReady.bind(this);
-        this.onCellValueChanged = this.onCellValueChanged.bind(this);
-    }
-    onGridReady(params) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log('[Grid] onGridReady', this.props.model.schemaName);
+        this.onGridReady = (params) => __awaiter(this, void 0, void 0, function* () {
+            // console.log('[Grid] onGridReady', this.props.model.schemaName)
             this.props.model.gridApi = params.api;
             const datasource = {
                 getRows: (params) => __awaiter(this, void 0, void 0, function* () {
@@ -27,7 +24,7 @@ let Grid = class Grid extends Component {
                             sort: params.sortModel,
                             filterModel: params.filterModel,
                         });
-                        console.log(`[Grid] successCallback`);
+                        // console.log(`[Grid] successCallback`)
                         params.successCallback(ret.data, ret.pagination.total);
                         // this.props.model.gridApi?.setGridOption('pinnedTopRowData', [ret.data[0]])
                         // 只在第一次有值的时候做 resize 后续分页或者刷新就不要 resize 了
@@ -37,16 +34,17 @@ let Grid = class Grid extends Component {
                         this.props.model.isNotEmpty = ret.data != null;
                     }
                     else {
-                        console.warn('schemaName is null');
+                        // console.warn('schemaName is null')
+                        throw new Error('schemaName is null');
                     }
                 }),
             };
             params.api.setGridOption('datasource', datasource);
         });
-    }
-    onCellValueChanged(evt) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log(`[Grid] onCellValueChanged, id ${evt.data.id},col: ${evt.colDef.field}, ${evt.newValue} <- ${evt.oldValue}`);
+        this.onCellValueChanged = (evt) => __awaiter(this, void 0, void 0, function* () {
+            // console.log(
+            //   `[Grid] onCellValueChanged, id ${evt.data.id},col: ${evt.colDef.field}, ${evt.newValue} <- ${evt.oldValue}`,
+            // )
             yield this.props.model.putData(evt.data.id, {
                 [evt.colDef.field]: evt.newValue,
             });
@@ -184,7 +182,6 @@ let Grid = class Grid extends Component {
      todo 第一次调用之后 如果用户有调整过 则存储到 localStorage 优先用户本地存储
      */
     autoResizeAll() {
-        console.log(`[Grid] autoResizeAll`);
         const allColumnIds = [];
         this.gridRef.api.getColumns().forEach(column => {
             allColumnIds.push(column.getId());
@@ -192,9 +189,9 @@ let Grid = class Grid extends Component {
         this.gridRef.api.autoSizeColumns(allColumnIds, false);
     }
     render() {
-        return (_jsx(AgGridReact, { ref: ref => (this.gridRef = ref), defaultColDef: {
+        return (_jsx(AgGridReact, { modules: [InfiniteRowModelModule], ref: ref => (this.gridRef = ref), defaultColDef: {
                 maxWidth: 400,
-            }, rowHeight: 42, columnDefs: this.columnDefs(), pagination: true, paginationPageSize: 20, cacheBlockSize: 20, rowModelType: 'infinite', getRowId: (params) => params.data.id, onGridReady: this.onGridReady, onCellValueChanged: this.onCellValueChanged }));
+            }, columnDefs: this.columnDefs(), rowHeight: 42, pagination: true, paginationPageSize: 20, cacheBlockSize: 20, rowModelType: 'infinite', getRowId: (params) => params.data.id, onGridReady: this.onGridReady, onCellValueChanged: this.onCellValueChanged }));
     }
 };
 Grid = __decorate([

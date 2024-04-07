@@ -7,6 +7,7 @@ interface JSONObject {
     [x: string]: JSONValue;
 }
 
+declare const TreeGridModelSymbol: unique symbol;
 declare const GridModelSymbol: unique symbol;
 declare const PreviewModelSymbol: unique symbol;
 declare const LoginModelSymbol: unique symbol;
@@ -1222,4 +1223,4 @@ declare const PluginKeySchema: z.ZodEffects<z.ZodType<Record<`x-${string}`, unkn
 type PluginKey = z.infer<typeof PluginKeySchema>;
 type ColumUI = z.infer<typeof ColumnUISchema> & PluginKey;
 
-export { type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type PluginKey, PluginKeySchema, PreviewModelSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, ResourceUISchema, ThemeModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agSortSchema, callRendererInputSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, putResourceDataInputSchema, resourceAssociationSchema, resourceColumnSchema, resourceKeySchema, resourceSchema, selectOptionSchema };
+export { type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type PluginKey, PluginKeySchema, PreviewModelSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, ResourceUISchema, ThemeModelSymbol, TreeGridModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agSortSchema, callRendererInputSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, putResourceDataInputSchema, resourceAssociationSchema, resourceColumnSchema, resourceKeySchema, resourceSchema, selectOptionSchema };

@@ -8,9 +8,13 @@
     "tslib": "~2.6.2"
   },
   "dependencies": {
+    "@ag-grid-community/client-side-row-model": "31.1.1",
+    "@ag-grid-community/infinite-row-model": "31.1.1",
+    "@ag-grid-enterprise/menu": "31.1.1",
+    "@ag-grid-enterprise/row-grouping": "31.1.1",
     "@elastic/eui": "^93.2.0",
     "@emotion/react": "^11.11.4",
-    "ag-grid-community": "^31.1.1",
+    "ag-grid-community": "31.1.1",
     "ag-grid-react": "^31.1.1",
     "dayjs": "^1.11.10",
     "formik": "^1.5.8",
@@ -28,5 +32,5 @@
   },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "d84f5972540e80765b23e0c93eafa4b7"
+  "yalcSig": "c14a1be32ad519ed5df55dd61f6f8cd0"
 }

@@ -1,12 +1,41 @@
 /// <reference types="react" />
-import { ContainerModule, interfaces } from 'inversify';
 import * as React$1 from 'react';
 import { Component } from 'react';
-import { SortModelItem } from 'ag-grid-community/dist/lib/sortController';
-import { GridApi, GridReadyEvent, CellValueChangedEvent, ColDef } from 'ag-grid-community';
+import { GridApi, ColDef, SortModelItem } from 'ag-grid-community';
+import { ContainerModule, interfaces } from 'inversify';
 import { resourceColumnSchema, resourceSchema, agFilterSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, JSONObject, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
 import { FormikProps } from 'formik';
+
+declare class TreeGridModel {
+    gridApi: GridApi | null;
+    rowData: Array<{
+        hierarchy: string[];
+        id: number;
+        title?: string;
+        url?: string;
+        icon?: string;
+    }>;
+    columnDefs: ColDef<any, any>[];
+    handlers: Partial<{
+        message: (title: string) => void;
+    }>;
+    constructor();
+    getDataPath(data: unknown): string[];
+    addChild(id: string): void;
+    remove(id: string): void;
+}
+
+type TreeGridProps = {
+    model: TreeGridModel;
+};
+declare class TreeGrid extends Component<TreeGridProps> {
+    private gridRef;
+    private readonly onCellValueChanged;
+    private readonly onGridReady;
+    private readonly getContextMenuItems;
+    render(): JSX.Element;
+}
 
 declare const designModule: ContainerModule;
 declare const bindDesignModule: (bind: interfaces.Bind) => void;
@@ -73,8 +102,8 @@ type GridProps = {
 declare class Grid extends Component<GridProps> {
     private gridRef;
     constructor(props: GridProps);
-    onGridReady(params: GridReadyEvent): Promise<void>;
-    onCellValueChanged(evt: CellValueChangedEvent): Promise<void>;
+    private readonly onGridReady;
+    private readonly onCellValueChanged;
     columnDefs(): ColDef<any, any>[];
     autoResizeAll(): void;
     render(): JSX.Element;
@@ -109,4 +138,4 @@ declare class Login extends React$1.Component<{
     render(): JSX.Element;
 }
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, bindDesignModule, designModule, getFinalFilterModel, tryExtractFilterModelFromRef };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, designModule, getFinalFilterModel, tryExtractFilterModelFromRef };
