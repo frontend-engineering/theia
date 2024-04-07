@@ -54,6 +54,7 @@ import { HelloMonacoQuickInputService, ListElementDelegate } from './monaco/hell
 import { TabBarToolbarContribution } from '@theia/core/lib/browser/shell/tab-bar-toolbar'
 import { SampleTabBarToolbarContribution } from './sample-tab-bar-toolbar-contribution'
 import { SampleCommandRegistry } from './sample-command-registry'
+import { bindGettingStartedFrontendModule } from './getting-started/getting-started-frontend-module'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
@@ -149,5 +150,7 @@ export default new ContainerModule(
       WebSocketConnectionProvider.createHandler(container, commandServicePath, registry)
       return registry
     })
+
+    bindGettingStartedFrontendModule(bind)
   },
 )

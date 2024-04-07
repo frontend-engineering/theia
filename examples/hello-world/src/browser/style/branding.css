@@ -9,12 +9,12 @@
         margin: 6px 0 5px 14px;
     }
 
-    #theia-main-content-panel {
-        background-image: url("../icons/linear.avif");
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: 15%;
-    }
+    /*#theia-main-content-panel {*/
+    /*    background-image: url("../icons/linear.avif");*/
+    /*    background-position: center center;*/
+    /*    background-repeat: no-repeat;*/
+    /*    background-size: 15%;*/
+    /*}*/
 
 }
 

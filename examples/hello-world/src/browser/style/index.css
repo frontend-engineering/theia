@@ -9,6 +9,7 @@
 @import "./eui.css";
 @import "./grid.css";
 @import "./branding.css";
+@import "../getting-started/style/index.css";
 
 @font-face {
     font-family: "Inter UI";

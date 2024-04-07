@@ -26,7 +26,7 @@
     "@theia/monaco": "1.45.0",
     "@theia/preferences": "1.45.0",
     "@theia/navigator": "1.45.0",
-    "@theia/getting-started": "1.45.0",
+    "@theia/preview": "1.45.0",
     "@theia/hello-world": "1.45.0"
   },
   "scripts": {
