@@ -62,8 +62,8 @@ export class SampleCommandContribution implements CommandContribution {
         return input.colDef.column_type === 'reference'
       },
       isVisible: (...args) => {
-        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema>)
-        return input.colDef.column_type === 'reference'
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
+        return input?.colDef.column_type === 'reference'
       },
     })
     commandRegistry.registerCommand(ResourceGridCommands.EDIT_MENU, {
@@ -71,8 +71,8 @@ export class SampleCommandContribution implements CommandContribution {
         this.messageService.info('Edit Menu')
       },
       isEnabled: (...args) => {
-        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema>)
-        return input.colDef.column_type === 'Json'
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
+        return input?.colDef.column_type === 'Json'
       },
       isVisible: (...args) => true,
     })

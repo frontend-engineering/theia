@@ -11,7 +11,7 @@
           "files.enableTrash": false
         },
         "reloadOnReconnect": true,
-        "defaultTheme": "linear"
+        "defaultTheme": "linear-light"
       }
     },
     "backend": {
