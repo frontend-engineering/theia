@@ -9,6 +9,8 @@ import { z } from 'zod'
 import { handleContextMenuInputSchema } from '@flowda/types'
 
 export namespace ResourceGridCommands {
+  export const CONTEXT_MENU = ['resource-grid.context.menu']
+
   export const OPEN_REFERENCE: Command = {
     id: 'resource-grid.open-reference',
     category: 'Examples',
@@ -22,15 +24,12 @@ export namespace ResourceGridCommands {
   }
 }
 
-
 @injectable()
 export class ResourceGridModel extends GridModel {
   @inject(OpenerService) openerService: OpenerService
   @inject(HoverService) hoverService: HoverService
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer: ContextMenuRenderer
   @inject('trpcFactory') protected trpcFactory: () => CreateTRPCProxyClient<AppRouter>
-
-  static CONTEXT_MENU = ['resource-grid.context.menu']
 
   @postConstruct()
   postConstruct() {
@@ -60,18 +59,13 @@ export class ResourceGridModel extends GridModel {
     e.stopPropagation()
     const { clientX, clientY } = e
     this.contextMenuRenderer.render({
-      menuPath: ResourceGridModel.CONTEXT_MENU,
+      menuPath: ResourceGridCommands.CONTEXT_MENU,
       anchor: { x: clientX, y: clientY },
       args: [
         cellRendererInput,
         this,
       ],
     })
-  }
-
-  protected getContextMenuArgs(event: React.MouseEvent): unknown[] {
-    const args: unknown[] = [this]
-    return args
   }
 
   private readonly handleOnRefClick = (v: {

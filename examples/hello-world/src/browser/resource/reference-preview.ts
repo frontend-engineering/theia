@@ -1,6 +1,8 @@
 import { html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-
+/*
+  todo 实现 reference preview 未完全实现
+   */
 @customElement('reference-preview')
 export class ReferencePreview extends LitElement {
   @property() values: { label: string; value: string | number }[] = [
