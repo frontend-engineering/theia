@@ -61,6 +61,7 @@
     "yargs": "^15.3.1"
   },
   "scripts": {
+    "postinstall": "patch-package",
     "all": "yarn -s install && yarn -s lint && yarn -s build",
     "browser": "yarn -s --cwd examples/browser",
     "build": "yarn -s compile && yarn -s build:examples",
