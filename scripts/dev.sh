@@ -29,6 +29,13 @@ else
     echo -e "${GREEN}concurrently installed${RESET}"
 fi
 
+echo -e "${YELLOW}${BOLD}Check iterm2-tab-set...${RESET}"
+if command -v "tabset" >/dev/null 2>&1; then
+  tabset theia
+else
+    echo -e "${RED}not found iterm2-tab-set${RESET}"
+fi
+
 cd $SCRIPT_DIR
 cd ..
 
