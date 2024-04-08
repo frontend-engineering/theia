@@ -8,11 +8,20 @@ import { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
 import { z } from 'zod'
 import { handleContextMenuInputSchema } from '@flowda/types'
 
-export const GridCellCommand: Command = {
-  id: 'resource-grid-cell',
-  category: 'Examples',
-  label: 'Open reference',
+export namespace ResourceGridCommands {
+  export const OPEN_REFERENCE: Command = {
+    id: 'resource-grid.open-reference',
+    category: 'Examples',
+    label: 'Open reference',
+  }
+
+  export const EDIT_MENU: Command = {
+    id: 'resource-grid.edit-menu',
+    category: 'Examples',
+    label: 'Edit Menu',
+  }
 }
+
 
 @injectable()
 export class ResourceGridModel extends GridModel {

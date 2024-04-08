@@ -1,7 +1,7 @@
 import { inject, injectable } from '@theia/core/shared/inversify'
 import { CommandContribution, CommandRegistry, MessageService } from '@theia/core'
 import { LoginDialog } from './login/login-dialog'
-import { GridCellCommand } from './resource/resource-grid-model'
+import { ResourceGridCommands } from './resource/resource-grid-model'
 import { NavigatorDiffCommands } from '@theia/navigator/lib/browser/navigator-diff'
 import { OpenEditorsCommands } from '@theia/navigator/lib/browser/open-editors-widget/navigator-open-editors-commands'
 import { FileSystemCommands } from '@theia/filesystem/lib/browser/filesystem-frontend-contribution'
@@ -17,6 +17,8 @@ import { MiniBrowserCommands } from '@theia/mini-browser/lib/browser/mini-browse
 import { LIST_VARIABLES } from '@theia/variable-resolver/lib/browser/variable-resolver-frontend-contribution'
 import { EditorCommands } from '@theia/editor/lib/browser'
 import { PreviewCommands } from '@theia/preview/lib/browser/preview-contribution'
+import { z } from 'zod'
+import { handleContextMenuInputSchema } from '@flowda/types'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
@@ -51,19 +53,29 @@ export class SampleCommandContribution implements CommandContribution {
       },
     )
 
-    commandRegistry.registerCommand(GridCellCommand, {
+    commandRegistry.registerCommand(ResourceGridCommands.OPEN_REFERENCE, {
       execute: (widgetToActOn, address, variable) => {
         this.messageService.info('Open reference')
       },
       isEnabled: (...args) => {
-        return true
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema>)
+        return input.colDef.column_type === 'reference'
       },
       isVisible: (...args) => {
-        return true
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema>)
+        return input.colDef.column_type === 'reference'
       },
     })
-
-
+    commandRegistry.registerCommand(ResourceGridCommands.EDIT_MENU, {
+      execute: (widgetToActOn, address, variable) => {
+        this.messageService.info('Edit Menu')
+      },
+      isEnabled: (...args) => {
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema>)
+        return input.colDef.column_type === 'Json'
+      },
+      isVisible: (...args) => true,
+    })
     /*
     目前 theia packages 互相依赖，特别是 monaco 是强依赖
     过滤依赖可以在 FilterContribution 整体过滤
