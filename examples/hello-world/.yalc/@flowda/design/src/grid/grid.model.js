@@ -22,19 +22,28 @@ let GridModel = GridModel_1 = class GridModel {
         this.schema = null;
         this.filterModel = null;
         this.handlers = {};
+        this.apis = {};
         this.isNotEmpty = false;
         this.gridApi = null;
+        this.onMouseEnter = (e) => {
+            if (typeof this.handlers.onMouseEnter === 'function') {
+                this.handlers.onMouseEnter(e);
+            }
+        };
+        this.onContextMenu = (e) => {
+            if (typeof this.handlers.onContextMenu === 'function') {
+                this.handlers.onContextMenu(e);
+            }
+        };
         makeObservable(this);
-        this.onMouseEnter = this.onMouseEnter.bind(this);
-        this.onContextMenu = this.onContextMenu.bind(this);
     }
     getCol(schemaName) {
         return __awaiter(this, void 0, void 0, function* () {
             this.setSchemaName(schemaName);
-            if (typeof this.handlers.getResourceSchema !== 'function') {
+            if (typeof this.apis.getResourceSchema !== 'function') {
                 throw new Error('handlers.getResourceSchema is not implemented');
             }
-            const schemaRes = yield this.handlers.getResourceSchema({
+            const schemaRes = yield this.apis.getResourceSchema({
                 schemaName,
             });
             this.setColumnDefs(schemaRes.columns);
@@ -56,10 +65,10 @@ let GridModel = GridModel_1 = class GridModel {
                 setTimeout(() => { var _a; return (_a = this.gridApi) === null || _a === void 0 ? void 0 : _a.setFilterModel(this.filterModel); }, 0); // 等待 re render
             }
             localStorage.setItem(GridModel_1.KEY, JSON.stringify(resourceQuery));
-            if (typeof this.handlers.getResourceData !== 'function') {
+            if (typeof this.apis.getResourceData !== 'function') {
                 throw new Error('handlers.getResourceData is not implemented');
             }
-            const dataRet = yield this.handlers.getResourceData(Object.assign({}, params, { filterModel: this.filterModel }));
+            const dataRet = yield this.apis.getResourceData(Object.assign({}, params, { filterModel: this.filterModel }));
             const parseRet = getResourceDataOutputInnerSchema.safeParse(dataRet);
             if (parseRet.success) {
                 return parseRet.data;
@@ -84,25 +93,15 @@ let GridModel = GridModel_1 = class GridModel {
     }
     putData(id, updatedValue) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof this.handlers.putResourceData != 'function') {
+            if (typeof this.apis.putResourceData != 'function') {
                 throw new Error('handlers.putResourceData is not implemented');
             }
-            yield this.handlers.putResourceData({
+            yield this.apis.putResourceData({
                 schemaName: this.schemaName,
                 id: id,
                 updatedValue: updatedValue,
             });
         });
-    }
-    onMouseEnter(e) {
-        if (typeof this.handlers.onMouseEnter === 'function') {
-            this.handlers.onMouseEnter(e);
-        }
-    }
-    onContextMenu(e) {
-        if (typeof this.handlers.onContextMenu === 'function') {
-            this.handlers.onContextMenu(e);
-        }
     }
     onRefClick(field, value) {
         var _a;

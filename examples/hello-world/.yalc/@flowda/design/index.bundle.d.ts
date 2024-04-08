@@ -22,7 +22,7 @@ declare class TreeGridModel {
     }>;
     constructor();
     getDataPath(data: unknown): string[];
-    addChild(id: string): void;
+    addChild(id: number): void;
     remove(id: string): void;
 }
 
@@ -54,6 +54,8 @@ declare class GridModel {
         }) => void;
         onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
         onContextMenu: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    }>;
+    apis: Partial<{
         getResourceSchema: (input: z.infer<typeof getResourceInputSchema>) => Promise<z.infer<typeof resourceSchema>>;
         getResourceData: (input: z.infer<typeof getResourceDataInputSchema>) => Promise<z.infer<typeof getResourceDataOutputSchema>>;
         putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
@@ -79,8 +81,8 @@ declare class GridModel {
     }>;
     getResourceQuery(): JSONObject;
     putData(id: number, updatedValue: unknown): Promise<void>;
-    onMouseEnter(e: React.MouseEvent<HTMLElement, MouseEvent>): void;
-    onContextMenu(e: React.MouseEvent<HTMLElement, MouseEvent>): void;
+    readonly onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    readonly onContextMenu: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     onRefClick(field: string, value: number | string): void;
 }
 /**
