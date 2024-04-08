@@ -64,7 +64,10 @@ export class SampleMenuContribution implements MenuContribution {
     /* ag-grid */
     registry.registerMenuAction(
       ResourceGridModel.CONTEXT_MENU,
-      { commandId: GridCellCommand.id, label: GridCellCommand.label },
+      {
+        commandId: GridCellCommand.id,
+        label: GridCellCommand.label,
+      },
     )
     /* END ag-grid */
   }

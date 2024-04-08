@@ -90,7 +90,7 @@ let Grid = class Grid extends Component {
                         field: item.name,
                         headerName: item.display_name,
                         cellRenderer: (param) => {
-                            return (_jsx("div", { onContextMenu: this.props.model.onContextMenu, children: _jsx("a", { className: "grid-reference-field", href: "", onClick: e => {
+                            return (_jsx("div", { onContextMenu: (e) => this.props.model.onContextMenu(param, e), children: _jsx("a", { className: "grid-reference-field", href: "", onClick: e => {
                                         e.preventDefault();
                                         e.stopPropagation();
                                         this.props.model.onRefClick(param.colDef.field, param.value);
@@ -98,24 +98,26 @@ let Grid = class Grid extends Component {
                         },
                     };
                 }
-                case 'tag': {
-                    const options = item.format.select_options;
-                    const refData = options.reduce((acc, cur) => {
-                        acc[cur.value] = cur.label;
-                        return acc;
-                    }, {});
-                    return {
-                        editable: true,
-                        field: item.name,
-                        headerName: item.display_name,
-                        cellEditor: 'agSelectCellEditor',
-                        cellDataType: 'text',
-                        cellEditorParams: {
-                            values: options.map(o => o.value),
-                        },
-                        refData: refData,
-                    };
-                }
+                // todo: 更新 schema parser 后，暂时不支持 tag
+                // 这块属于 plugin
+                /*case 'tag': {
+                  const options = item.format!.select_options!
+                  const refData = options.reduce((acc, cur) => {
+                    acc[cur.value] = cur.label
+                    return acc
+                  }, {} as Record<string, string>)
+                  return {
+                    editable: true,
+                    field: item.name,
+                    headerName: item.display_name,
+                    cellEditor: 'agSelectCellEditor',
+                    cellDataType: 'text',
+                    cellEditorParams: {
+                      values: options.map(o => o.value),
+                    },
+                    refData: refData,
+                  }
+                }*/
                 case 'integer':
                     return {
                         field: item.name,
@@ -162,6 +164,15 @@ let Grid = class Grid extends Component {
                         cellDataType: 'text',
                         filter: true,
                         floatingFilter: true,
+                    };
+                case 'Json':
+                    return {
+                        editable: false,
+                        field: item.name,
+                        headerName: item.display_name,
+                        cellRenderer: (param) => {
+                            return (_jsx("div", { onContextMenu: (e) => this.props.model.onContextMenu(param, e), children: param.valueFormatted }));
+                        },
                     };
                 default:
                     return {

@@ -3,7 +3,7 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, SortModelItem } from 'ag-grid-community';
 import { ContainerModule, interfaces } from 'inversify';
-import { resourceColumnSchema, resourceSchema, agFilterSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, JSONObject, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
+import { ColumnUISchema, ResourceUISchema, agFilterSchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, JSONObject, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
 import { FormikProps } from 'formik';
 
@@ -42,9 +42,9 @@ declare const bindDesignModule: (bind: interfaces.Bind) => void;
 
 declare class GridModel {
     static KEY: string;
-    columnDefs: z.infer<typeof resourceColumnSchema>[];
+    columnDefs: z.infer<typeof ColumnUISchema>[];
     schemaName: string | null;
-    schema: z.infer<typeof resourceSchema> | null;
+    schema: z.infer<typeof ResourceUISchema> | null;
     filterModel: z.infer<typeof agFilterSchema> | null;
     handlers: Partial<{
         onRefClick: (v: {
@@ -53,17 +53,17 @@ declare class GridModel {
             id: number | string;
         }) => void;
         onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-        onContextMenu: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+        onContextMenu: (input: z.infer<typeof handleContextMenuInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
     apis: Partial<{
-        getResourceSchema: (input: z.infer<typeof getResourceInputSchema>) => Promise<z.infer<typeof resourceSchema>>;
+        getResourceSchema: (input: z.infer<typeof getResourceInputSchema>) => Promise<z.infer<typeof ResourceUISchema>>;
         getResourceData: (input: z.infer<typeof getResourceDataInputSchema>) => Promise<z.infer<typeof getResourceDataOutputSchema>>;
         putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
     }>;
     isNotEmpty: boolean;
     gridApi: GridApi | null;
     refresh(): void;
-    setColumnDefs(columnDefs: z.infer<typeof resourceColumnSchema>[]): void;
+    setColumnDefs(columnDefs: z.infer<typeof ColumnUISchema>[]): void;
     setSchemaName(schemaName: string): void;
     constructor();
     getCol(schemaName: string): Promise<void>;
@@ -82,8 +82,8 @@ declare class GridModel {
     getResourceQuery(): JSONObject;
     putData(id: number, updatedValue: unknown): Promise<void>;
     readonly onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    readonly onContextMenu: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    onRefClick(field: string, value: number | string): void;
+    readonly onContextMenu: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    onRefClick(field: string, value: any): void;
 }
 /**
  * 情况1：刷新 尝试从 localStorage 恢复

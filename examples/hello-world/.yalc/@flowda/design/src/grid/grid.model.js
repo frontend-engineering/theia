@@ -3,7 +3,7 @@ import { __awaiter, __decorate, __metadata } from "tslib";
 import { injectable } from 'inversify';
 import { action, makeObservable, observable } from 'mobx';
 import * as _ from 'radash';
-import { agFilterSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
+import { agFilterSchema, cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
 let GridModel = GridModel_1 = class GridModel {
     refresh() {
         if (this.gridApi && !this.gridApi.isDestroyed()) {
@@ -30,9 +30,18 @@ let GridModel = GridModel_1 = class GridModel {
                 this.handlers.onMouseEnter(e);
             }
         };
-        this.onContextMenu = (e) => {
+        this.onContextMenu = (cellRendererInput, e) => {
             if (typeof this.handlers.onContextMenu === 'function') {
-                this.handlers.onContextMenu(e);
+                if (!this.schema)
+                    throw new Error('schema is null');
+                const parsedRet = cellRendererInputSchema.parse(cellRendererInput);
+                const colDef = this.schema.columns.find(col => col.name === parsedRet.colDef.field);
+                if (!colDef)
+                    throw new Error(`no column def: ${this.schemaName}, ${parsedRet.colDef.field}`);
+                this.handlers.onContextMenu({
+                    colDef: colDef,
+                    value: parsedRet.value,
+                }, e);
             }
         };
         makeObservable(this);
@@ -106,6 +115,9 @@ let GridModel = GridModel_1 = class GridModel {
     onRefClick(field, value) {
         var _a;
         const ref = (_a = this.schema) === null || _a === void 0 ? void 0 : _a.columns.find(t => t.name === field);
+        if (ref == null || ref.reference == null) {
+            throw new Error(`field is not type reference, ${field}`);
+        }
         if (typeof this.handlers.onRefClick === 'function') {
             this.handlers.onRefClick({
                 schemaName: `resource.${this.schema.namespace}.${ref.reference.model_name}ResourceSchema`,

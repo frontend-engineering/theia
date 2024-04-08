@@ -55,8 +55,12 @@ export class SampleCommandContribution implements CommandContribution {
       execute: (widgetToActOn, address, variable) => {
         this.messageService.info('Open reference')
       },
-      isEnabled: () => true,
-      isVisible: () => true,
+      isEnabled: (...args) => {
+        return true
+      },
+      isVisible: (...args) => {
+        return true
+      },
     })
 
 

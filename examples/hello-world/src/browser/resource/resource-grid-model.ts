@@ -5,6 +5,8 @@ import { Command, URI } from '@theia/core'
 import * as React from '@theia/core/shared/react'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
+import { z } from 'zod'
+import { handleContextMenuInputSchema } from '@flowda/types'
 
 export const GridCellCommand: Command = {
   id: 'resource-grid-cell',
@@ -32,6 +34,9 @@ export class ResourceGridModel extends GridModel {
     this.apis.putResourceData = this.trpcFactory().hello.putResourceData.mutate
   }
 
+  /*
+  todo 实现 reference preview 未完全实现
+   */
   private readonly handleMouseEnter = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     // todo: 判断是否按照 command
     this.hoverService.requestHover({
@@ -41,14 +46,17 @@ export class ResourceGridModel extends GridModel {
     })
   }
 
-  private handleContextMenu = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  private handleContextMenu = (cellRendererInput: z.infer<typeof handleContextMenuInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     e.stopPropagation()
     const { clientX, clientY } = e
     this.contextMenuRenderer.render({
       menuPath: ResourceGridModel.CONTEXT_MENU,
       anchor: { x: clientX, y: clientY },
-      args: this.getContextMenuArgs(e),
+      args: [
+        cellRendererInput,
+        this,
+      ],
     })
   }
 

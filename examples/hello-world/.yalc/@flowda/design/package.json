@@ -4,33 +4,33 @@
   "peerDependencies": {
     "@anatine/zod-openapi": "*",
     "@flowda/types": "0.0.1",
-    "reflect-metadata": "^0.1.13",
-    "tslib": "~2.6.2"
+    "reflect-metadata": "0.1.14",
+    "tslib": "2.6.2"
   },
   "dependencies": {
     "@ag-grid-community/client-side-row-model": "31.1.1",
     "@ag-grid-community/infinite-row-model": "31.1.1",
     "@ag-grid-enterprise/menu": "31.1.1",
     "@ag-grid-enterprise/row-grouping": "31.1.1",
-    "@elastic/eui": "^93.2.0",
-    "@emotion/react": "^11.11.4",
+    "@elastic/eui": "93.2.0",
+    "@emotion/react": "11.11.4",
     "ag-grid-community": "31.1.1",
-    "ag-grid-react": "^31.1.1",
-    "dayjs": "^1.11.10",
-    "formik": "^1.5.8",
-    "inversify": "^6.0.2",
-    "lodash": "^4.17.21",
-    "mobx": "^6.6.2",
-    "mobx-react": "^7.6.0",
-    "moment": "^2.13.0",
-    "openapi3-ts": "^3.2.0",
-    "radash": "^12.0.0",
+    "ag-grid-react": "31.1.1",
+    "dayjs": "1.11.10",
+    "formik": "1.5.8",
+    "inversify": "6.0.2",
+    "lodash": "4.17.21",
+    "mobx": "6.12.0",
+    "mobx-react": "7.6.0",
+    "moment": "2.30.1",
+    "openapi3-ts": "3.2.0",
+    "radash": "12.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "zod": "^3.22.4",
-    "zod-formik-adapter": "^1.2.0"
+    "zod": "3.22.4",
+    "zod-formik-adapter": "1.2.0"
   },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "aa9a65703b4fab2f9acb890cd6fd806a"
+  "yalcSig": "a1065b7b1d6356e215921fbce9da9d4c"
 }
