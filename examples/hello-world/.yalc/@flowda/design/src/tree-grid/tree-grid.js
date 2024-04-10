@@ -1,12 +1,10 @@
-import { __decorate } from "tslib";
 import { jsx as _jsx } from "react/jsx-runtime";
 import { Component } from 'react';
-import { observer } from 'mobx-react';
 import { AgGridReact } from 'ag-grid-react';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 import { MenuModule } from '@ag-grid-enterprise/menu';
-let TreeGrid = class TreeGrid extends Component {
+export class TreeGrid extends Component {
     constructor() {
         super(...arguments);
         this.gridRef = null;
@@ -57,9 +55,5 @@ let TreeGrid = class TreeGrid extends Component {
                 },
             }, treeData: true, groupDefaultExpanded: -1, rowHeight: 42, getContextMenuItems: this.getContextMenuItems, getDataPath: this.props.model.getDataPath, onGridReady: this.onGridReady, onCellValueChanged: this.onCellValueChanged }));
     }
-};
-TreeGrid = __decorate([
-    observer
-], TreeGrid);
-export { TreeGrid };
+}
 //# sourceMappingURL=tree-grid.js.map

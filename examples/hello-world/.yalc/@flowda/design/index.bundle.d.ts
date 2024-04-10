@@ -1,45 +1,12 @@
 /// <reference types="react" />
 import * as React$1 from 'react';
 import { Component } from 'react';
-import { GridApi, ColDef, SortModelItem } from 'ag-grid-community';
-import { ContainerModule, interfaces } from 'inversify';
+import { GridApi, SortModelItem, ColDef } from 'ag-grid-community';
 import { ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, JSONObject, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
+import { ContainerModule, interfaces } from 'inversify';
 import { FormikProps } from 'formik';
 import { URI } from '@theia/core';
-
-declare class TreeGridModel {
-    gridApi: GridApi | null;
-    rowData: Array<{
-        hierarchy: string[];
-        id: number;
-        title?: string;
-        url?: string;
-        icon?: string;
-    }>;
-    columnDefs: ColDef<any, any>[];
-    handlers: Partial<{
-        message: (title: string) => void;
-    }>;
-    constructor();
-    getDataPath(data: unknown): string[];
-    addChild(id: number): void;
-    remove(id: string): void;
-}
-
-type TreeGridProps = {
-    model: TreeGridModel;
-};
-declare class TreeGrid extends Component<TreeGridProps> {
-    private gridRef;
-    private readonly onCellValueChanged;
-    private readonly onGridReady;
-    private readonly getContextMenuItems;
-    render(): JSX.Element;
-}
-
-declare const designModule: ContainerModule;
-declare const bindDesignModule: (bind: interfaces.Bind) => void;
 
 declare class GridModel {
     static KEY: string;
@@ -114,6 +81,43 @@ declare class GridModel {
 declare function getFinalFilterModel(param: z.infer<typeof agFilterSchema>, mem: z.infer<typeof agFilterSchema> | null, storage: JSONObject): z.infer<typeof agFilterSchema> | null;
 declare function tryExtractFilterModelFromRef(storage: JSONObject): z.infer<typeof agFilterSchema>;
 
+declare class TreeGridModel {
+    gridApi: GridApi | null;
+    private uri?;
+    rowData: Array<{
+        hierarchy: string[];
+        id: number;
+        title?: string;
+        url?: string;
+        icon?: string;
+    }>;
+    columnDefs: ColDef<any, any>[];
+    private gridModel?;
+    handlers: Partial<{
+        message: (title: string) => void;
+    }>;
+    setUri(uri: string): void;
+    loadData(): Promise<void>;
+    setGridModel(gridModel: GridModel): void;
+    getDataPath(data: unknown): string[];
+    addChild(id: number): void;
+    remove(id: string): void;
+}
+
+type TreeGridProps = {
+    model: TreeGridModel;
+};
+declare class TreeGrid extends Component<TreeGridProps> {
+    private gridRef;
+    private readonly onCellValueChanged;
+    private readonly onGridReady;
+    private readonly getContextMenuItems;
+    render(): JSX.Element;
+}
+
+declare const designModule: ContainerModule;
+declare const bindDesignModule: (bind: interfaces.Bind) => void;
+
 type GridProps = {
     uri?: string;
     model: GridModel;
@@ -163,5 +167,12 @@ declare function createTreeGridUri(uri: string | URI, id: string, field: string)
  * @deprecated
  */
 declare function uriWithoutId(uri: string): string;
+declare function convertTreeGridUriToGridUri(uriParam: string): string;
+declare function getTreeUriQuery(uriParam: string): {
+    id: string;
+    field: string;
+    schemaName: string;
+    displayName: string;
+};
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, createTreeGridUri, designModule, getFinalFilterModel, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef, uriWithoutId };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createTreeGridUri, designModule, getFinalFilterModel, getTreeUriQuery, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef, uriWithoutId };

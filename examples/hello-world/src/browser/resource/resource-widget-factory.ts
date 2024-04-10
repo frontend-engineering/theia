@@ -15,7 +15,7 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
   static override ID = 'resource-editor-opener'
   override readonly id = ResourceWidgetFactory.ID
 
-  private gridModelMap = new Map<string, GridModel>()
+  private resourceGridMap = new Map<string, unknown>()
 
   static override createID(uri: URI, counter?: number): string {
     return ResourceWidgetFactory.ID
@@ -23,28 +23,40 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       + (counter !== undefined ? `:${counter}` : '')
   }
 
-  public getOrCreateGridModel(uri: string) {
-    if (!this.gridModelMap.has(uri)) {
-      this.gridModelMap.set(uri, this.gridModelFactory())
+  public getOrCreateGridModel(uri: string): unknown {
+    if (!this.resourceGridMap.has(uri)) {
+      // todo: plugin model
+      const urii = new URI(uri)
+      switch (urii.scheme) {
+        case 'grid':
+          this.resourceGridMap.set(uri, this.gridModelFactory())
+          break
+        case 'tree-grid':
+          this.resourceGridMap.set(uri, this.treeGridModelFactory())
+          break
+        default:
+          throw new Error(`unknown uri, ${uri}`)
+      }
     }
-    return this.gridModelMap.get(uri)!
+    return this.resourceGridMap.get(uri)!
   }
 
   override async createWidget(options: NavigatableWidgetOptions): Promise<EditorWidget> {
     const uri = new URI(options.uri)
+    // todo: plugin model
     if (uri.scheme === 'tree-grid') {
       const treeGridModel = this.treeGridModelFactory()
       const widget = new MenuWidget({
         id: ResourceWidgetFactory.createID(uri),
         uri: options.uri,
-        title: 'hello edit menu',
+        title: getUriDisplayName(uri),
         model: treeGridModel,
       })
       return Promise.resolve(widget as unknown as EditorWidget)
     }
 
     if (uri.scheme === 'grid') {
-      const gridModel = this.getOrCreateGridModel(uri.toString())
+      const gridModel = this.getOrCreateGridModel(uri.toString()) as GridModel
       gridModel.resetRefPromise(uri.toString())
       const widget = new ResourceGridWidget({
         id: ResourceWidgetFactory.createID(uri),
@@ -55,7 +67,7 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       widget.id = ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter
       return Promise.resolve(widget as unknown as EditorWidget)
     }
-    
+
     return super.createWidget(options)
   }
 }

@@ -4,7 +4,7 @@ import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
 import { ReactWidget, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
-import { getUriSchemaName } from '@flowda/design'
+import { convertTreeGridUriToGridUri, getUriSchemaName, GridModel, TreeGridModel } from '@flowda/design'
 
 @injectable()
 export class ResourceManager extends EditorManager {
@@ -31,8 +31,17 @@ export class ResourceManager extends EditorManager {
       const uri = new URI(widget.uri)
       if (uri.scheme === 'grid') {
         this.logger.info(`[ResourceManager] onCurrentEditorChanged ${widget.uri}`)
-        const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri)
+        const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri) as GridModel
         gridModel!.getCol(`${uri.authority}.${getUriSchemaName(uri)}`)
+      }
+      if (uri.scheme === 'tree-grid') {
+        this.logger.info(`[ResourceManager] onCurrentEditorChanged ${widget.uri}`)
+        const treeGridModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri) as TreeGridModel
+        treeGridModel.setUri(widget.uri)
+        const gridUri = convertTreeGridUriToGridUri(widget.uri)
+        const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(gridUri) as GridModel
+        treeGridModel.setGridModel(gridModel)
+        treeGridModel.loadData()
       }
     })
   }

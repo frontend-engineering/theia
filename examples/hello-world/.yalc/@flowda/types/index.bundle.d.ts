@@ -371,6 +371,22 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         } | undefined;
     };
 }>;
+declare const treeGridUriQuerySchema: z.ZodObject<{
+    schemaName: z.ZodString;
+    displayName: z.ZodString;
+    id: z.ZodString;
+    field: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    id: string;
+    field: string;
+    schemaName: string;
+    displayName: string;
+}, {
+    id: string;
+    field: string;
+    schemaName: string;
+    displayName: string;
+}>;
 
 declare const selectOptionSchema: z.ZodObject<{
     value: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
@@ -406,9 +422,8 @@ declare const getResourceInputSchema: z.ZodObject<{
 }, {
     schemaName: string;
 }>;
-declare const getResourceDataInputSchema: z.ZodObject<{
+declare const findManyResourceDataInputSchema: z.ZodObject<{
     schemaName: z.ZodString;
-    id: z.ZodOptional<z.ZodNumber>;
     current: z.ZodNumber;
     pageSize: z.ZodNumber;
     sort: z.ZodArray<z.ZodObject<{
@@ -426,13 +441,13 @@ declare const getResourceDataInputSchema: z.ZodObject<{
         type: z.ZodEnum<["contains", "equals"]>;
         filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
     }, "strip", z.ZodTypeAny, {
-        filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
+        filterType: "number" | "text";
     }, {
-        filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
+        filterType: "number" | "text";
     }>, z.ZodObject<{
         filterType: z.ZodEnum<["text"]>;
         operator: z.ZodEnum<["OR", "AND"]>;
@@ -441,29 +456,29 @@ declare const getResourceDataInputSchema: z.ZodObject<{
             type: z.ZodEnum<["contains", "equals"]>;
             filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
         }, "strip", z.ZodTypeAny, {
-            filterType: "number" | "text";
             filter: string | number;
             type: "contains" | "equals";
+            filterType: "number" | "text";
         }, {
-            filterType: "number" | "text";
             filter: string | number;
             type: "contains" | "equals";
+            filterType: "number" | "text";
         }>, "many">;
     }, "strip", z.ZodTypeAny, {
         filterType: "text";
         operator: "OR" | "AND";
         conditions: {
-            filterType: "number" | "text";
             filter: string | number;
             type: "contains" | "equals";
+            filterType: "number" | "text";
         }[];
     }, {
         filterType: "text";
         operator: "OR" | "AND";
         conditions: {
-            filterType: "number" | "text";
             filter: string | number;
             type: "contains" | "equals";
+            filterType: "number" | "text";
         }[];
     }>]>>, z.ZodObject<{
         _ref: z.ZodOptional<z.ZodString>;
@@ -473,82 +488,239 @@ declare const getResourceDataInputSchema: z.ZodObject<{
         _ref?: string | undefined;
     }>]>;
 }, "strip", z.ZodTypeAny, {
+    schemaName: string;
     sort: {
         sort: "asc" | "desc";
         colId: string;
     }[];
-    schemaName: string;
     current: number;
     pageSize: number;
     filterModel: (Record<string, {
-        filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
+        filterType: "number" | "text";
     } | {
         filterType: "text";
         operator: "OR" | "AND";
         conditions: {
-            filterType: "number" | "text";
             filter: string | number;
             type: "contains" | "equals";
+            filterType: "number" | "text";
         }[];
     }> | {
         _ref?: string | undefined;
     }) & (Record<string, {
-        filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
+        filterType: "number" | "text";
     } | {
         filterType: "text";
         operator: "OR" | "AND";
         conditions: {
-            filterType: "number" | "text";
             filter: string | number;
             type: "contains" | "equals";
+            filterType: "number" | "text";
         }[];
     }> | {
         _ref?: string | undefined;
     } | undefined);
-    id?: number | undefined;
 }, {
+    schemaName: string;
     sort: {
         sort: "asc" | "desc";
         colId: string;
     }[];
-    schemaName: string;
     current: number;
     pageSize: number;
     filterModel: (Record<string, {
-        filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
+        filterType: "number" | "text";
     } | {
         filterType: "text";
         operator: "OR" | "AND";
         conditions: {
-            filterType: "number" | "text";
             filter: string | number;
             type: "contains" | "equals";
+            filterType: "number" | "text";
         }[];
     }> | {
         _ref?: string | undefined;
     }) & (Record<string, {
-        filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
+        filterType: "number" | "text";
     } | {
         filterType: "text";
         operator: "OR" | "AND";
         conditions: {
-            filterType: "number" | "text";
             filter: string | number;
             type: "contains" | "equals";
+            filterType: "number" | "text";
         }[];
     }> | {
         _ref?: string | undefined;
     } | undefined);
-    id?: number | undefined;
 }>;
+declare const findUniqueResourceDataInputSchema: z.ZodObject<{
+    schemaName: z.ZodString;
+    id: z.ZodNumber;
+}, "strip", z.ZodTypeAny, {
+    schemaName: string;
+    id: number;
+}, {
+    schemaName: string;
+    id: number;
+}>;
+declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
+    schemaName: z.ZodString;
+    current: z.ZodNumber;
+    pageSize: z.ZodNumber;
+    sort: z.ZodArray<z.ZodObject<{
+        colId: z.ZodString;
+        sort: z.ZodEnum<["asc", "desc"]>;
+    }, "strip", z.ZodTypeAny, {
+        sort: "asc" | "desc";
+        colId: string;
+    }, {
+        sort: "asc" | "desc";
+        colId: string;
+    }>, "many">;
+    filterModel: z.ZodUnion<[z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
+        filterType: z.ZodEnum<["text", "number"]>;
+        type: z.ZodEnum<["contains", "equals"]>;
+        filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
+    }, "strip", z.ZodTypeAny, {
+        filter: string | number;
+        type: "contains" | "equals";
+        filterType: "number" | "text";
+    }, {
+        filter: string | number;
+        type: "contains" | "equals";
+        filterType: "number" | "text";
+    }>, z.ZodObject<{
+        filterType: z.ZodEnum<["text"]>;
+        operator: z.ZodEnum<["OR", "AND"]>;
+        conditions: z.ZodArray<z.ZodObject<{
+            filterType: z.ZodEnum<["text", "number"]>;
+            type: z.ZodEnum<["contains", "equals"]>;
+            filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
+        }, "strip", z.ZodTypeAny, {
+            filter: string | number;
+            type: "contains" | "equals";
+            filterType: "number" | "text";
+        }, {
+            filter: string | number;
+            type: "contains" | "equals";
+            filterType: "number" | "text";
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        filterType: "text";
+        operator: "OR" | "AND";
+        conditions: {
+            filter: string | number;
+            type: "contains" | "equals";
+            filterType: "number" | "text";
+        }[];
+    }, {
+        filterType: "text";
+        operator: "OR" | "AND";
+        conditions: {
+            filter: string | number;
+            type: "contains" | "equals";
+            filterType: "number" | "text";
+        }[];
+    }>]>>, z.ZodObject<{
+        _ref: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        _ref?: string | undefined;
+    }, {
+        _ref?: string | undefined;
+    }>]>;
+}, "strip", z.ZodTypeAny, {
+    schemaName: string;
+    sort: {
+        sort: "asc" | "desc";
+        colId: string;
+    }[];
+    current: number;
+    pageSize: number;
+    filterModel: (Record<string, {
+        filter: string | number;
+        type: "contains" | "equals";
+        filterType: "number" | "text";
+    } | {
+        filterType: "text";
+        operator: "OR" | "AND";
+        conditions: {
+            filter: string | number;
+            type: "contains" | "equals";
+            filterType: "number" | "text";
+        }[];
+    }> | {
+        _ref?: string | undefined;
+    }) & (Record<string, {
+        filter: string | number;
+        type: "contains" | "equals";
+        filterType: "number" | "text";
+    } | {
+        filterType: "text";
+        operator: "OR" | "AND";
+        conditions: {
+            filter: string | number;
+            type: "contains" | "equals";
+            filterType: "number" | "text";
+        }[];
+    }> | {
+        _ref?: string | undefined;
+    } | undefined);
+}, {
+    schemaName: string;
+    sort: {
+        sort: "asc" | "desc";
+        colId: string;
+    }[];
+    current: number;
+    pageSize: number;
+    filterModel: (Record<string, {
+        filter: string | number;
+        type: "contains" | "equals";
+        filterType: "number" | "text";
+    } | {
+        filterType: "text";
+        operator: "OR" | "AND";
+        conditions: {
+            filter: string | number;
+            type: "contains" | "equals";
+            filterType: "number" | "text";
+        }[];
+    }> | {
+        _ref?: string | undefined;
+    }) & (Record<string, {
+        filter: string | number;
+        type: "contains" | "equals";
+        filterType: "number" | "text";
+    } | {
+        filterType: "text";
+        operator: "OR" | "AND";
+        conditions: {
+            filter: string | number;
+            type: "contains" | "equals";
+            filterType: "number" | "text";
+        }[];
+    }> | {
+        _ref?: string | undefined;
+    } | undefined);
+}>, z.ZodObject<{
+    schemaName: z.ZodString;
+    id: z.ZodNumber;
+}, "strip", z.ZodTypeAny, {
+    schemaName: string;
+    id: number;
+}, {
+    schemaName: string;
+    id: number;
+}>]>;
 declare const getResourceDataOutputInnerSchema: z.ZodObject<{
     pagination: z.ZodObject<{
         total: z.ZodNumber;
@@ -594,12 +766,12 @@ declare const putResourceDataInputSchema: z.ZodObject<{
     id: z.ZodNumber;
     updatedValue: z.ZodAny;
 }, "strip", z.ZodTypeAny, {
-    id: number;
     schemaName: string;
+    id: number;
     updatedValue?: any;
 }, {
-    id: number;
     schemaName: string;
+    id: number;
     updatedValue?: any;
 }>;
 
@@ -1009,4 +1181,4 @@ declare const PluginKeySchema: z.ZodEffects<z.ZodType<Record<`x-${string}`, unkn
 type PluginKey = z.infer<typeof PluginKeySchema>;
 type ColumUI = z.infer<typeof ColumnUISchema> & PluginKey;
 
-export { type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type PluginKey, PluginKeySchema, PreviewModelSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, ResourceUISchema, ThemeModelSymbol, TreeGridModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agSortSchema, cellRendererInputSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema };
+export { type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type PluginKey, PluginKeySchema, PreviewModelSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, ResourceUISchema, ThemeModelSymbol, TreeGridModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agSortSchema, cellRendererInputSchema, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, treeGridUriQuerySchema };

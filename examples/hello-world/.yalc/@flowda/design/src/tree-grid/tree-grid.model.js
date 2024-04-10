@@ -1,7 +1,8 @@
-import { __decorate, __metadata } from "tslib";
+import { __decorate } from "tslib";
 import { injectable } from 'inversify';
-import { makeObservable } from 'mobx';
 import * as _ from 'radash';
+import { URI } from '@theia/core';
+import { getTreeUriQuery } from '../uri/uri-utils';
 let TreeGridModel = class TreeGridModel {
     constructor() {
         this.gridApi = null;
@@ -12,7 +13,26 @@ let TreeGridModel = class TreeGridModel {
             { field: 'icon', editable: true },
         ];
         this.handlers = {};
-        makeObservable(this);
+    }
+    setUri(uri) {
+        this.uri = uri;
+    }
+    async loadData() {
+        if (!this.gridModel)
+            throw new Error(`this.gridModel is null, call setGridModel() first`);
+        if (!this.uri)
+            throw new Error(`this.uri is null, call setUri() first`);
+        if (typeof this.gridModel.apis.getResourceData !== 'function')
+            throw new Error('handlers.getResourceData is not implemented');
+        const uri = new URI(this.uri);
+        const query = getTreeUriQuery(this.uri);
+        const ret = await this.gridModel.apis.getResourceData({
+            schemaName: `${uri.authority}.${query.schemaName}`,
+            id: Number(query.id),
+        });
+    }
+    setGridModel(gridModel) {
+        this.gridModel = gridModel;
     }
     getDataPath(data) {
         // @ts-expect-error
@@ -53,8 +73,7 @@ let TreeGridModel = class TreeGridModel {
     }
 };
 TreeGridModel = __decorate([
-    injectable(),
-    __metadata("design:paramtypes", [])
+    injectable()
 ], TreeGridModel);
 export { TreeGridModel };
 //# sourceMappingURL=tree-grid.model.js.map
