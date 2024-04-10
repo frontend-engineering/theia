@@ -69,7 +69,6 @@ export class SampleCommandContribution implements CommandContribution {
     })
     commandRegistry.registerCommand(ResourceGridCommands.EDIT_MENU, {
       execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
-        this.messageService.info('Edit Menu')
         const uri = createTreeGridUri(input.uri, input.cellRendererInput.data.id, input.cellRendererInput.colDef.field)
         open(this.openerService, uri, {
           mode: 'reveal',

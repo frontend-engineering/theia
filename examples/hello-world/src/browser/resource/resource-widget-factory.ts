@@ -9,13 +9,12 @@ import { ResourceGridWidget } from './widgets/resource-grid-widget'
 
 @injectable()
 export class ResourceWidgetFactory extends EditorWidgetFactory {
-  @inject('Factory<GridModel>') public readonly gridModelFactory: () => GridModel
-  @inject('Factory<TreeGridModel>') public readonly treeGridModelFactory: () => TreeGridModel
+  @inject('Factory<GridModel>') private readonly gridModelFactory: () => GridModel
+  @inject('Factory<TreeGridModel>') private readonly treeGridModelFactory: () => TreeGridModel
+  private resourceGridMap = new Map<string, unknown>()
 
   static override ID = 'resource-editor-opener'
   override readonly id = ResourceWidgetFactory.ID
-
-  private resourceGridMap = new Map<string, unknown>()
 
   static override createID(uri: URI, counter?: number): string {
     return ResourceWidgetFactory.ID
@@ -45,7 +44,8 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
     const uri = new URI(options.uri)
     // todo: plugin model
     if (uri.scheme === 'tree-grid') {
-      const treeGridModel = this.treeGridModelFactory()
+      const treeGridModel = this.getOrCreateGridModel(options.uri) as TreeGridModel
+      treeGridModel.resetGridReadyPromise(options.uri)
       const widget = new MenuWidget({
         id: ResourceWidgetFactory.createID(uri),
         uri: options.uri,

@@ -775,6 +775,47 @@ declare const putResourceDataInputSchema: z.ZodObject<{
     updatedValue?: any;
 }>;
 
+declare const baseMenuItemSchema: z.ZodObject<{
+    name: z.ZodString;
+    slug: z.ZodString;
+    id: z.ZodString;
+    icon: z.ZodOptional<z.ZodString>;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    slug: string;
+    id: string;
+    icon?: string | undefined;
+}, {
+    name: string;
+    slug: string;
+    id: string;
+    icon?: string | undefined;
+}>;
+type MenuItem = z.infer<typeof baseMenuItemSchema> & {
+    children?: MenuItem[];
+    parent?: MenuItem;
+};
+declare const menuItemSchema: z.ZodType<MenuItem>;
+declare const agMenuItemSchema: z.ZodObject<{
+    name: z.ZodString;
+    slug: z.ZodString;
+    id: z.ZodString;
+    icon: z.ZodOptional<z.ZodString>;
+    hierarchy: z.ZodArray<z.ZodString, "many">;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    slug: string;
+    id: string;
+    hierarchy: string[];
+    icon?: string | undefined;
+}, {
+    name: string;
+    slug: string;
+    id: string;
+    hierarchy: string[];
+    icon?: string | undefined;
+}>;
+
 type ColumnKey = {
     column_type: string;
     display_name: string;
@@ -1181,4 +1222,4 @@ declare const PluginKeySchema: z.ZodEffects<z.ZodType<Record<`x-${string}`, unkn
 type PluginKey = z.infer<typeof PluginKeySchema>;
 type ColumUI = z.infer<typeof ColumnUISchema> & PluginKey;
 
-export { type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type PluginKey, PluginKeySchema, PreviewModelSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, ResourceUISchema, ThemeModelSymbol, TreeGridModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agSortSchema, cellRendererInputSchema, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, treeGridUriQuerySchema };
+export { type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type MenuItem, type PluginKey, PluginKeySchema, PreviewModelSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, ResourceUISchema, ThemeModelSymbol, TreeGridModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agMenuItemSchema, agSortSchema, baseMenuItemSchema, cellRendererInputSchema, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, menuItemSchema, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, treeGridUriQuerySchema };

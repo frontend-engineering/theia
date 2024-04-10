@@ -19,7 +19,7 @@ declare class GridModel {
      * 等待 setRef 也就是 widget render 然后才能调用 this.ref.setColDefs
      * 原因是 setColDefs 有 React（cellRenderer）不能放在 grid.model 里
      */
-    refPromise?: Promise<boolean>;
+    private refPromise?;
     handlers: Partial<{
         onRefClick: (v: {
             schemaName: string;
@@ -83,7 +83,6 @@ declare function tryExtractFilterModelFromRef(storage: JSONObject): z.infer<type
 
 declare class TreeGridModel {
     gridApi: GridApi | null;
-    private uri?;
     rowData: Array<{
         hierarchy: string[];
         id: number;
@@ -92,10 +91,18 @@ declare class TreeGridModel {
         icon?: string;
     }>;
     columnDefs: ColDef<any, any>[];
+    private uri?;
     private gridModel?;
+    /**
+    * 等待 onGridReady 对 gridApi 赋值
+    */
+    private gridReadyPromise?;
+    private gridReadyResolve?;
     handlers: Partial<{
         message: (title: string) => void;
     }>;
+    resetGridReadyPromise(uri: string): void;
+    setGridApi(gridApi: GridApi): void;
     setUri(uri: string): void;
     loadData(): Promise<void>;
     setGridModel(gridModel: GridModel): void;

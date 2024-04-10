@@ -12,7 +12,7 @@ export class TreeGrid extends Component {
             console.log(`[Grid] onCellValueChanged, id ${evt.data.hierarchy},col: ${evt.colDef.field}, ${evt.newValue} <- ${evt.oldValue}`);
         };
         this.onGridReady = (params) => {
-            this.props.model.gridApi = params.api;
+            this.props.model.setGridApi(params.api);
         };
         /*
         暂时先用 ag-grid 内置 menu
@@ -44,7 +44,7 @@ export class TreeGrid extends Component {
                 ClientSideRowModelModule,
                 RowGroupingModule,
                 MenuModule,
-            ], ref: ref => (this.gridRef = ref), rowData: this.props.model.rowData, columnDefs: this.props.model.columnDefs, defaultColDef: {
+            ], ref: ref => (this.gridRef = ref), columnDefs: this.props.model.columnDefs, defaultColDef: {
                 flex: 1,
             }, autoGroupColumnDef: {
                 headerName: '#',

@@ -3,19 +3,41 @@ import { injectable } from 'inversify';
 import * as _ from 'radash';
 import { URI } from '@theia/core';
 import { getTreeUriQuery } from '../uri/uri-utils';
+import { convertMenuDataToAgTreeData } from './tree-grid-utils';
 let TreeGridModel = class TreeGridModel {
     constructor() {
         this.gridApi = null;
         this.rowData = [];
         this.columnDefs = [
-            { field: 'title', editable: true },
-            { field: 'url', editable: true },
+            { field: 'name', editable: true },
+            { field: 'slug', editable: true },
             { field: 'icon', editable: true },
         ];
         this.handlers = {};
     }
+    resetGridReadyPromise(uri) {
+        this.setUri(uri);
+        this.gridReadyPromise = new Promise((resolve) => {
+            this.gridReadyResolve = resolve;
+        });
+    }
+    setGridApi(gridApi) {
+        this.gridApi = gridApi;
+        if (!this.gridReadyResolve)
+            throw new Error('gridReadyResolve is null, call resetGridReadyPromise() first');
+        this.gridReadyResolve(true);
+    }
     setUri(uri) {
-        this.uri = uri;
+        if (uri != null) {
+            if (this.uri == null) {
+                this.uri = uri;
+            }
+            else {
+                // double check 下 防止 gridModel grid 未对应
+                if (uri !== this.uri)
+                    throw new Error(`setRef uri is not matched, current: ${this.uri}, input: ${uri}`);
+            }
+        }
     }
     async loadData() {
         if (!this.gridModel)
@@ -26,10 +48,18 @@ let TreeGridModel = class TreeGridModel {
             throw new Error('handlers.getResourceData is not implemented');
         const uri = new URI(this.uri);
         const query = getTreeUriQuery(this.uri);
+        // todo: any
         const ret = await this.gridModel.apis.getResourceData({
             schemaName: `${uri.authority}.${query.schemaName}`,
             id: Number(query.id),
         });
+        const treeData = convertMenuDataToAgTreeData(ret[query.field]);
+        if (!this.gridReadyPromise)
+            throw new Error('gridReadyPromise is null, call resetGridReadyPromise() first');
+        await this.gridReadyPromise;
+        if (!this.gridApi)
+            throw new Error('gridApi is null');
+        this.gridApi.setGridOption('rowData', treeData);
     }
     setGridModel(gridModel) {
         this.gridModel = gridModel;
