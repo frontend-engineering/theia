@@ -30,4 +30,34 @@ export function traverseUp(tree, visit) {
     }
     return ret;
 }
+export function convertAgTreeDataToTreeData(input) {
+    const rootNodes = [];
+    const nodeMap = {};
+    input.forEach((node) => {
+        node.children = [];
+        nodeMap[node.id] = node;
+    });
+    input.forEach((node) => {
+        const { hierarchy } = node, rest = __rest(node, ["hierarchy"]);
+        const parentNode = hierarchy.length > 1 ? nodeMap[hierarchy[hierarchy.length - 2]] : null;
+        if (parentNode) {
+            if (parentNode.children == null)
+                parentNode.children = [];
+            parentNode.children.push(node);
+        }
+        else {
+            rootNodes.push(node);
+        }
+    });
+    return JSON.parse(stringifyMenuData(rootNodes));
+}
+export function stringifyMenuData(input) {
+    return JSON.stringify(input, (k, value) => {
+        if (value.hierarchy)
+            delete value.hierarchy;
+        if (value.children && value.children.length === 0)
+            delete value.children;
+        return value;
+    });
+}
 //# sourceMappingURL=tree-grid-utils.js.map

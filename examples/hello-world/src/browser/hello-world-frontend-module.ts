@@ -8,6 +8,7 @@ import {
   CommandRegistry,
   FilterContribution,
   MenuContribution,
+  MessageService,
 } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import {
@@ -111,7 +112,10 @@ export default new ContainerModule(
 
     bind<interfaces.Factory<TreeGridModel>>('Factory<TreeGridModel>').toFactory<TreeGridModel>(context => {
       return () => {
-        return context.container.get<TreeGridModel>(TreeGridModelSymbol)
+        const treeGridModel = context.container.get<TreeGridModel>(TreeGridModelSymbol)
+        const messageService = context.container.get(MessageService)
+        treeGridModel.handlers.message = messageService.info.bind(messageService)
+        return treeGridModel
       }
     })
 

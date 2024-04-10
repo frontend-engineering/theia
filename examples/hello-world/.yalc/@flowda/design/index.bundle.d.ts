@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import * as React$1 from 'react';
 import { Component } from 'react';
-import { GridApi, SortModelItem, ColDef } from 'ag-grid-community';
+import { GridApi, SortModelItem, ColDef, IRowNode, CellValueChangedEvent } from 'ag-grid-community';
 import { ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, JSONObject, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
 import { ContainerModule, interfaces } from 'inversify';
@@ -83,19 +83,12 @@ declare function tryExtractFilterModelFromRef(storage: JSONObject): z.infer<type
 
 declare class TreeGridModel {
     gridApi: GridApi | null;
-    rowData: Array<{
-        hierarchy: string[];
-        id: number;
-        title?: string;
-        url?: string;
-        icon?: string;
-    }>;
     columnDefs: ColDef<any, any>[];
     private uri?;
     private gridModel?;
     /**
-    * 等待 onGridReady 对 gridApi 赋值
-    */
+     * 等待 onGridReady 对 gridApi 赋值
+     */
     private gridReadyPromise?;
     private gridReadyResolve?;
     handlers: Partial<{
@@ -107,8 +100,10 @@ declare class TreeGridModel {
     loadData(): Promise<void>;
     setGridModel(gridModel: GridModel): void;
     getDataPath(data: unknown): string[];
+    private convertAndSaveMenuData;
     addChild(id: number): void;
-    remove(id: string): void;
+    remove(node: IRowNode | null): void;
+    handleCellValueChanged: (evt: CellValueChangedEvent) => void;
 }
 
 type TreeGridProps = {

@@ -9,7 +9,6 @@ export class TreeGrid extends Component {
         super(...arguments);
         this.gridRef = null;
         this.onCellValueChanged = async (evt) => {
-            console.log(`[Grid] onCellValueChanged, id ${evt.data.hierarchy},col: ${evt.colDef.field}, ${evt.newValue} <- ${evt.oldValue}`);
         };
         this.onGridReady = (params) => {
             this.props.model.setGridApi(params.api);
@@ -21,19 +20,19 @@ export class TreeGrid extends Component {
         this.getContextMenuItems = (params) => {
             if (!params.node)
                 throw new Error(`Add child to ${params.value} but node is null`);
-            const title = params.node.data.title;
+            const name = params.node.data.name || params.node.key;
             const id = params.node.data.id;
             return [
                 {
-                    name: `Add child to ${title}`,
+                    name: `Add child to ${name}`,
                     action: () => {
                         this.props.model.addChild(id);
                     },
                 },
                 {
-                    name: `Remove ${title}`,
+                    name: `Remove ${name}`,
                     action: () => {
-                        this.props.model.remove(id);
+                        this.props.model.remove(params.node);
                     },
                 },
             ];
@@ -53,7 +52,7 @@ export class TreeGrid extends Component {
                     suppressCount: true,
                     checkbox: true,
                 },
-            }, treeData: true, groupDefaultExpanded: -1, rowHeight: 42, getContextMenuItems: this.getContextMenuItems, getDataPath: this.props.model.getDataPath, onGridReady: this.onGridReady, onCellValueChanged: this.onCellValueChanged }));
+            }, treeData: true, groupDefaultExpanded: -1, rowHeight: 42, getContextMenuItems: this.getContextMenuItems, getDataPath: this.props.model.getDataPath, onGridReady: this.onGridReady, onCellValueChanged: this.props.model.handleCellValueChanged }));
     }
 }
 //# sourceMappingURL=tree-grid.js.map
