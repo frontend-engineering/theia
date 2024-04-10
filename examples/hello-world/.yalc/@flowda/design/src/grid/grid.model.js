@@ -30,11 +30,7 @@ let GridModel = GridModel_1 = class GridModel {
                 if (this.uri == null)
                     throw new Error('uri is null');
                 const uri = createTreeGridUri(this.uri, cellRendererInput.data.id, cellRendererInput.colDef.field);
-                this.handlers.onContextMenu({
-                    uri,
-                    colDef,
-                    value: parsedRet.value,
-                }, e);
+                this.handlers.onContextMenu(uri, e);
             }
         };
     }

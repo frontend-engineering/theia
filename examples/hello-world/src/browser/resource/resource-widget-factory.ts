@@ -31,22 +31,18 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
   }
 
   override async createWidget(options: NavigatableWidgetOptions): Promise<EditorWidget> {
-    try {
-      const cellRendererInput = JSON.parse(options.uri)
+    const uri = new URI(options.uri)
+    if (uri.scheme === 'tree-grid') {
       const treeGridModel = this.treeGridModelFactory()
-      treeGridModel.rowData = cellRendererInput.value
       const widget = new MenuWidget({
-        id: ResourceWidgetFactory.createID(new URI()),
-        // eslint-disable-next-line deprecation/deprecation
+        id: ResourceWidgetFactory.createID(uri),
+        uri: options.uri,
         title: 'hello edit menu',
         model: treeGridModel,
       })
       return Promise.resolve(widget as unknown as EditorWidget)
-    } catch (e) {
-      //
     }
 
-    const uri = new URI(options.uri)
     if (uri.scheme === 'grid') {
       const gridModel = this.getOrCreateGridModel(uri.toString())
       gridModel.resetRefPromise(uri.toString())
@@ -59,6 +55,7 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       widget.id = ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter
       return Promise.resolve(widget as unknown as EditorWidget)
     }
+    
     return super.createWidget(options)
   }
 }

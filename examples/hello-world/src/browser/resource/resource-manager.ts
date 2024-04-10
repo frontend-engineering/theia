@@ -1,12 +1,9 @@
-import { EditorManager, EditorOpenerOptions, EditorWidget, WidgetId } from '@theia/editor/lib/browser'
+import { EditorManager, EditorWidget, WidgetId } from '@theia/editor/lib/browser'
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
-import { NavigatableWidgetOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
-import { ResourceGridWidget } from './widgets/resource-grid-widget'
+import { ReactWidget, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
-import { handleContextMenuInputSchema } from '@flowda/types'
-import { MenuWidget } from './widgets/menu-widget'
 import { getUriSchemaName } from '@flowda/design'
 
 @injectable()
@@ -45,35 +42,16 @@ export class ResourceManager extends EditorManager {
   }
 
   protected override extractIdFromWidget(widget: unknown): WidgetId {
-    // todo: 整体判断是否有 widget.uri，则不认识为 widget.editor.uri
-    if (widget instanceof MenuWidget) {
-      return {
-        id: 0,
-        uri: '',
-      }
+    if (widget instanceof EditorWidget) {
+      return super.extractIdFromWidget(widget as EditorWidget)
     }
-    if (widget instanceof ResourceGridWidget) {
-      if (!widget.uri) throw new Error('widget.uri is null')
+    if (widget instanceof ReactWidget) {
+      if (!('uri' in widget) || typeof widget.uri !== 'string') throw new Error('widget.uri is null or not string')
       const uri = widget.uri
       const id = Number(widget.id.slice(widget.id.lastIndexOf(':') + 1))
       return { id, uri }
-    } else {
-      return super.extractIdFromWidget(widget as EditorWidget)
     }
-  }
-
-  protected override createWidgetOptions(uri: URI, options?: EditorOpenerOptions): NavigatableWidgetOptions {
-    // todo: 改成 scheme 整个这个方法就不需要 override 了
-    const parseRet = handleContextMenuInputSchema.safeParse(uri)
-    if (parseRet.success) {
-      return {
-        counter: options?.counter,
-        kind: 'navigatable',
-        uri: JSON.stringify(parseRet.data),
-      }
-    }
-    const ret = super.createWidgetOptions(uri, options)
-    return ret
+    throw new Error(`widget is not valid`)
   }
 
   protected override getCounterForUri(uri: URI): number | undefined {

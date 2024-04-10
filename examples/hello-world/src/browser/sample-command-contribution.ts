@@ -17,8 +17,6 @@ import { MiniBrowserCommands } from '@theia/mini-browser/lib/browser/mini-browse
 import { LIST_VARIABLES } from '@theia/variable-resolver/lib/browser/variable-resolver-frontend-contribution'
 import { EditorCommands } from '@theia/editor/lib/browser'
 import { PreviewCommands } from '@theia/preview/lib/browser/preview-contribution'
-import { z } from 'zod'
-import { cellRendererInputSchema, handleContextMenuInputSchema } from '@flowda/types'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
@@ -57,27 +55,18 @@ export class SampleCommandContribution implements CommandContribution {
       execute: (widgetToActOn, address, variable) => {
         this.messageService.info('Open reference')
       },
-      isEnabled: (...args) => {
-        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema>)
-        return input.colDef.column_type === 'reference'
-      },
-      isVisible: (...args) => {
-        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
-        return input?.colDef.column_type === 'reference'
-      },
+      isEnabled: (...args) => true,
+      isVisible: (...args) => true,
     })
     commandRegistry.registerCommand(ResourceGridCommands.EDIT_MENU, {
-      execute: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, resourceGridModel: ResourceGridModel, __) => {
+      execute: (uri: string, resourceGridModel: ResourceGridModel, __) => {
         this.messageService.info('Edit Menu')
-        open(this.openerService, cellRendererInput as unknown as URI, {
+        open(this.openerService, new URI(uri), {
           mode: 'reveal',
           preview: true,
         })
       },
-      isEnabled: (...args) => {
-        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
-        return input?.colDef.column_type === 'Json'
-      },
+      isEnabled: (...args) => true,
       isVisible: (...args) => true,
     })
     /*
