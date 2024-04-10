@@ -6,4 +6,5 @@ export * from './grid/grid.model';
 export * from './login/login';
 export * from './login/login.model';
 export * from './theme/theme.model';
+export * from './uri/uri-utils';
 //# sourceMappingURL=index.js.map

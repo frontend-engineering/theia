@@ -8,7 +8,8 @@
       "config": {
         "applicationName": "Flowda - Redefined Application as a Service",
         "preferences": {
-          "files.enableTrash": false
+          "files.enableTrash": false,
+          "workbench.editor.revealIfOpen": true
         },
         "reloadOnReconnect": true,
         "defaultTheme": "linear-light"

@@ -1,4 +1,4 @@
-import { __awaiter, __decorate } from "tslib";
+import { __decorate } from "tslib";
 import { jsx as _jsx } from "react/jsx-runtime";
 import { Component } from 'react';
 import { observer } from 'mobx-react';
@@ -10,9 +10,9 @@ let TreeGrid = class TreeGrid extends Component {
     constructor() {
         super(...arguments);
         this.gridRef = null;
-        this.onCellValueChanged = (evt) => __awaiter(this, void 0, void 0, function* () {
+        this.onCellValueChanged = async (evt) => {
             console.log(`[Grid] onCellValueChanged, id ${evt.data.hierarchy},col: ${evt.colDef.field}, ${evt.newValue} <- ${evt.oldValue}`);
-        });
+        };
         this.onGridReady = (params) => {
             this.props.model.gridApi = params.api;
         };

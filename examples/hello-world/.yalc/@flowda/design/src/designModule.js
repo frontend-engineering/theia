@@ -1,6 +1,6 @@
 import { ContainerModule } from 'inversify';
 import { LoginModel } from './login/login.model';
-import { LoginModelSymbol, PreviewModelSymbol, GridModelSymbol, ThemeModelSymbol, TreeGridModelSymbol } from '@flowda/types';
+import { GridModelSymbol, LoginModelSymbol, PreviewModelSymbol, ThemeModelSymbol, TreeGridModelSymbol, } from '@flowda/types';
 import { PreviewModel } from './preview/preview.model';
 import { GridModel } from './grid/grid.model';
 import { ThemeModel } from './theme/theme.model';

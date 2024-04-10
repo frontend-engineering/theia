@@ -1,6 +1,6 @@
 import { __decorate, __metadata } from "tslib";
-import { injectable } from "inversify";
-import { makeObservable, observable } from "mobx";
+import { injectable } from 'inversify';
+import { makeObservable, observable } from 'mobx';
 let ThemeModel = class ThemeModel {
     constructor() {
         this.colorMode = 'light';

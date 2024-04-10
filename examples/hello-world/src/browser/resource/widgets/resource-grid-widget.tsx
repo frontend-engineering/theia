@@ -2,8 +2,10 @@ import { ReactWidget } from '@theia/core/lib/browser'
 import * as React from '@theia/core/shared/react'
 import { Grid, GridModel } from '@flowda/design'
 
-export class ResourceWidget extends ReactWidget {
-  static readonly ID = 'resource-widget'
+export class ResourceGridWidget extends ReactWidget {
+  static readonly ID = 'grid-widget'
+
+  uri?: string
 
   constructor(private option: { id: string; title: string, model: GridModel }) {
     super()
@@ -16,6 +18,8 @@ export class ResourceWidget extends ReactWidget {
   }
 
   protected render(): React.ReactNode {
-    return <Grid model={this.option.model}/>
+    return <Grid
+      ref={ref => this.option.model.setRef(ref, this.id)}
+      model={this.option.model} uri={this.id}/>
   }
 }

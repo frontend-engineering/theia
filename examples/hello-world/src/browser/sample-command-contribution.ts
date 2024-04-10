@@ -1,12 +1,12 @@
 import { inject, injectable } from '@theia/core/shared/inversify'
-import { CommandContribution, CommandRegistry, MessageService } from '@theia/core'
+import { CommandContribution, CommandRegistry, MessageService, URI } from '@theia/core'
 import { LoginDialog } from './login/login-dialog'
-import { ResourceGridCommands } from './resource/resource-grid-model'
+import { ResourceGridCommands, type ResourceGridModel } from './resource/resource-grid-model'
 import { NavigatorDiffCommands } from '@theia/navigator/lib/browser/navigator-diff'
 import { OpenEditorsCommands } from '@theia/navigator/lib/browser/open-editors-widget/navigator-open-editors-commands'
 import { FileSystemCommands } from '@theia/filesystem/lib/browser/filesystem-frontend-contribution'
 import { FileDownloadCommands } from '@theia/filesystem/lib/browser/download/file-download-command-contribution'
-import { CommonCommands, KeyboardCommands } from '@theia/core/lib/browser'
+import { CommonCommands, KeyboardCommands, open, OpenerService } from '@theia/core/lib/browser'
 import { WorkspaceCommands } from '@theia/workspace/lib/browser'
 import { ThemeService } from '@theia/core/lib/browser/theming'
 import { WindowCommands } from '@theia/core/lib/browser/window-contribution'
@@ -18,14 +18,14 @@ import { LIST_VARIABLES } from '@theia/variable-resolver/lib/browser/variable-re
 import { EditorCommands } from '@theia/editor/lib/browser'
 import { PreviewCommands } from '@theia/preview/lib/browser/preview-contribution'
 import { z } from 'zod'
-import { handleContextMenuInputSchema } from '@flowda/types'
+import { cellRendererInputSchema, handleContextMenuInputSchema } from '@flowda/types'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
   @inject(MessageService) protected readonly messageService: MessageService
   @inject(LoginDialog) protected readonly loginDialog: LoginDialog
   @inject(ThemeService) protected readonly themeService: ThemeService
-
+  @inject(OpenerService) protected readonly openerService: OpenerService
 
   registerCommands(commandRegistry: CommandRegistry): void {
     commandRegistry.registerCommand(
@@ -67,8 +67,12 @@ export class SampleCommandContribution implements CommandContribution {
       },
     })
     commandRegistry.registerCommand(ResourceGridCommands.EDIT_MENU, {
-      execute: (widgetToActOn, address, variable) => {
+      execute: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, resourceGridModel: ResourceGridModel, __) => {
         this.messageService.info('Edit Menu')
+        open(this.openerService, cellRendererInput as unknown as URI, {
+          mode: 'reveal',
+          preview: true,
+        })
       },
       isEnabled: (...args) => {
         const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)

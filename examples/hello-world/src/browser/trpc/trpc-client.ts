@@ -1,4 +1,4 @@
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
+import { createTRPCProxyClient, httpLink } from '@trpc/client'
 import type { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
 import { customLink } from './custom-link'
 // eslint-disable-next-line @theia/runtime-import-check
@@ -10,14 +10,14 @@ import { environment } from '../environments/environment'
 export class TrpcProxyClient {
   constructor(
     @inject(CommandRegistry) protected readonly commandRegistry: CommandRegistry,
-  ) {}
+  ) { }
 
   private trpcProxyClient = createTRPCProxyClient<AppRouter>({
     links: [
       customLink({
         commandRegistry: this.commandRegistry,
       }),
-      httpBatchLink({
+      httpLink({
         url: environment.FLOWDA_URL,
         // You can pass any HTTP headers you wish here
         async headers() {

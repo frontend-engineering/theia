@@ -22,7 +22,7 @@ import { ConnectionSource } from './connection-source';
 import { ConnectionCloseService, connectionCloseServicePath } from '../../common/messaging/connection-management';
 import { WebSocketConnectionProvider } from './ws-connection-provider';
 
-const backendServiceProvider = Symbol('backendServiceProvider');
+export const backendServiceProvider = Symbol('backendServiceProvider');
 
 export const messagingFrontendModule = new ContainerModule(bind => {
     bind(ConnectionCloseService).toDynamicValue(ctx => WebSocketConnectionProvider.createProxy(ctx.container, connectionCloseServicePath)).inSingletonScope();

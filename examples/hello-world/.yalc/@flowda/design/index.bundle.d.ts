@@ -3,9 +3,10 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, SortModelItem } from 'ag-grid-community';
 import { ContainerModule, interfaces } from 'inversify';
-import { ColumnUISchema, ResourceUISchema, agFilterSchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, JSONObject, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
+import { ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, JSONObject, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
 import { FormikProps } from 'formik';
+import { URI } from '@theia/core';
 
 declare class TreeGridModel {
     gridApi: GridApi | null;
@@ -45,7 +46,13 @@ declare class GridModel {
     columnDefs: z.infer<typeof ColumnUISchema>[];
     schemaName: string | null;
     schema: z.infer<typeof ResourceUISchema> | null;
-    filterModel: z.infer<typeof agFilterSchema> | null;
+    isNotEmpty: boolean;
+    gridApi: GridApi | null;
+    /**
+     * 等待 setRef 也就是 widget render 然后才能调用 this.ref.setColDefs
+     * 原因是 setColDefs 有 React（cellRenderer）不能放在 grid.model 里
+     */
+    refPromise?: Promise<boolean>;
     handlers: Partial<{
         onRefClick: (v: {
             schemaName: string;
@@ -60,12 +67,21 @@ declare class GridModel {
         getResourceData: (input: z.infer<typeof getResourceDataInputSchema>) => Promise<z.infer<typeof getResourceDataOutputSchema>>;
         putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
     }>;
-    isNotEmpty: boolean;
-    gridApi: GridApi | null;
+    private filterModel;
+    private ref;
+    private uri?;
+    private refResolve?;
+    /**
+     * 在 ResourceWidgetFactory#createWidget 重置 promise
+     * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
+     */
+    resetRefPromise(uri: string): void;
     refresh(): void;
-    setColumnDefs(columnDefs: z.infer<typeof ColumnUISchema>[]): void;
+    /**
+     * `<Grid ref={ref => this.setRef(ref)} />`
+     */
+    setRef(ref: unknown, uri?: string): void;
     setSchemaName(schemaName: string): void;
-    constructor();
     getCol(schemaName: string): Promise<void>;
     getData(params: {
         schemaName: string;
@@ -99,14 +115,14 @@ declare function getFinalFilterModel(param: z.infer<typeof agFilterSchema>, mem:
 declare function tryExtractFilterModelFromRef(storage: JSONObject): z.infer<typeof agFilterSchema>;
 
 type GridProps = {
+    uri?: string;
     model: GridModel;
 };
-declare class Grid extends Component<GridProps> {
+declare class Grid extends React$1.Component<GridProps> {
     private gridRef;
-    constructor(props: GridProps);
     private readonly onGridReady;
     private readonly onCellValueChanged;
-    columnDefs(): ColDef<any, any>[];
+    setColDefs: () => void;
     autoResizeAll(): void;
     render(): JSX.Element;
 }
@@ -140,4 +156,7 @@ declare class Login extends React$1.Component<{
     render(): JSX.Element;
 }
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, designModule, getFinalFilterModel, tryExtractFilterModelFromRef };
+declare function getUriDisplayName(uri: URI): string;
+declare function getUriSchemaName(uri: URI): string;
+
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, designModule, getFinalFilterModel, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef };

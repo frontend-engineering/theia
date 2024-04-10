@@ -1,12 +1,11 @@
 // tslint:disable:file-header
 import '../../src/browser/style/index.css'
-import './resource/reference-preview'
+import './resource/widgets/reference-preview'
 
 import {
   bindContribution,
   CommandContribution,
   CommandRegistry,
-  commandServicePath,
   FilterContribution,
   MenuContribution,
 } from '@theia/core'
@@ -17,7 +16,6 @@ import {
   OpenHandler,
   ShellLayoutRestorer,
   SidebarBottomMenuWidgetFactory,
-  WebSocketConnectionProvider,
   WidgetFactory,
 } from '@theia/core/lib/browser'
 import { HelloShellLayoutRestorer } from './hello-shell-layout-restorer'
@@ -32,7 +30,6 @@ import { ResourceManager } from './resource/resource-manager'
 import { LoginDialog } from './login/login-dialog'
 import { HelloKeybindingRegistry } from './hello-keybinding'
 import { TrpcProxyClient } from './trpc/trpc-client'
-// import { ResourceModel } from './resource/resource.model'
 import { SampleColorContribution } from './sample-color-contribution'
 import { ColorContribution } from '@theia/core/lib/browser/color-application-contribution'
 
@@ -41,10 +38,10 @@ import { HelloThemeService } from './hello-theming'
 import { MonacoThemeRegistry } from '@theia/monaco/lib/browser/textmate/monaco-theme-registry'
 import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry'
 import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-widget'
-import { bindDesignModule, GridModel } from '@flowda/design'
+import { bindDesignModule, GridModel, TreeGridModel } from '@flowda/design'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import type { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
-import { GridModelSymbol } from '@flowda/types'
+import { GridModelSymbol, TreeGridModelSymbol } from '@flowda/types'
 import { environment } from './environments/environment'
 import { HelloFrontendContribution } from './hello-frontend-contribution'
 import { ResourceGridModel } from './resource/resource-grid-model'
@@ -112,6 +109,12 @@ export default new ContainerModule(
       }
     })
 
+    bind<interfaces.Factory<TreeGridModel>>('Factory<TreeGridModel>').toFactory<TreeGridModel>(context => {
+      return () => {
+        return context.container.get<TreeGridModel>(TreeGridModelSymbol)
+      }
+    })
+
     bind(ResourceManager).toSelf().inSingletonScope()
     bind(OpenHandler).toService(ResourceManager)
 
@@ -147,10 +150,30 @@ export default new ContainerModule(
     bind(TabBarToolbarContribution).to(SampleTabBarToolbarContribution).inSingletonScope()
 
     rebind(CommandRegistry).to(SampleCommandRegistry).inSingletonScope().onActivation(({ container }, registry) => {
-      WebSocketConnectionProvider.createHandler(container, commandServicePath, registry)
+      // WebSocketConnectionProvider.createHandler(container, commandServicePath, registry)
       return registry
     })
 
     bindGettingStartedFrontendModule(bind)
+
+
+    /*bind(HelloWsConnectionSource).toSelf().inSingletonScope()
+    if (isBound(WebSocketConnectionSource)) {
+      rebind(WebSocketConnectionSource).to(HelloWsConnectionSource).inSingletonScope()
+    } else {
+      bind(WebSocketConnectionSource).to(HelloWsConnectionSource).inSingletonScope()
+    }
+
+    if (isBound(ConnectionSource)) {
+      rebind(ConnectionSource).toService(HelloWsConnectionSource)
+    } else {
+      bind(ConnectionSource).toService(HelloWsConnectionSource)
+    }
+
+    rebind(backendServiceProvider).toDynamicValue(ctx => {
+      rebind(ServiceConnectionProvider).toSelf().inSingletonScope()
+      const container = ctx.container.createChild()
+      return container.get(ServiceConnectionProvider)
+    }).inSingletonScope()*/
   },
 )

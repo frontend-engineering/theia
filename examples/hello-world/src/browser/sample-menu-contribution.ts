@@ -1,6 +1,6 @@
 import { injectable } from '@theia/core/shared/inversify'
 import { MANAGE_MENU, MenuContribution, MenuModelRegistry } from '@theia/core'
-import { ResourceGridCommands, ResourceGridModel } from './resource/resource-grid-model'
+import { ResourceGridCommands } from './resource/resource-grid-model'
 import { nls } from '@theia/core/lib/common/nls'
 import { CommonCommands } from '@theia/core/lib/browser'
 import { KeymapsCommands } from '@theia/keymaps/lib/browser'
@@ -63,11 +63,11 @@ export class SampleMenuContribution implements MenuContribution {
 
     /* ag-grid */
     registry.registerMenuAction(
-      ResourceGridModel.CONTEXT_MENU,
+      ResourceGridCommands.CONTEXT_MENU,
       { commandId: ResourceGridCommands.OPEN_REFERENCE.id, label: ResourceGridCommands.OPEN_REFERENCE.label },
     )
     registry.registerMenuAction(
-      ResourceGridModel.CONTEXT_MENU,
+      ResourceGridCommands.CONTEXT_MENU,
       { commandId: ResourceGridCommands.EDIT_MENU.id, label: ResourceGridCommands.EDIT_MENU.label },
     )
     /* END ag-grid */
