@@ -225,8 +225,43 @@ declare class loginOutputSchemaDto extends loginOutputSchemaDto_base {
 
 declare const handleContextMenuInputSchema: z.ZodObject<{
     uri: z.ZodString;
-    value: z.ZodOptional<z.ZodUnknown>;
-    colDef: z.ZodObject<{
+    cellRendererInput: z.ZodObject<{
+        value: z.ZodAny;
+        data: z.ZodObject<{
+            id: z.ZodEffects<z.ZodUnion<[z.ZodString, z.ZodNumber]>, string, string | number>;
+        }, "strip", z.ZodTypeAny, {
+            id: string;
+        }, {
+            id: string | number;
+        }>;
+        valueFormatted: z.ZodString;
+        colDef: z.ZodObject<{
+            field: z.ZodString;
+        }, "strip", z.ZodTypeAny, {
+            field: string;
+        }, {
+            field: string;
+        }>;
+    }, "strip", z.ZodTypeAny, {
+        data: {
+            id: string;
+        };
+        valueFormatted: string;
+        colDef: {
+            field: string;
+        };
+        value?: any;
+    }, {
+        data: {
+            id: string | number;
+        };
+        valueFormatted: string;
+        colDef: {
+            field: string;
+        };
+        value?: any;
+    }>;
+    column: z.ZodObject<{
         column_type: z.ZodString;
         display_name: z.ZodString;
         description: z.ZodOptional<z.ZodString>;
@@ -283,7 +318,17 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
     }>;
 }, "strip", z.ZodTypeAny, {
     uri: string;
-    colDef: {
+    cellRendererInput: {
+        data: {
+            id: string;
+        };
+        valueFormatted: string;
+        colDef: {
+            field: string;
+        };
+        value?: any;
+    };
+    column: {
         column_type: string;
         display_name: string;
         name: string;
@@ -298,10 +343,19 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
             primary_key: string;
         } | undefined;
     };
-    value?: unknown;
 }, {
     uri: string;
-    colDef: {
+    cellRendererInput: {
+        data: {
+            id: string | number;
+        };
+        valueFormatted: string;
+        colDef: {
+            field: string;
+        };
+        value?: any;
+    };
+    column: {
         column_type: string;
         display_name: string;
         name: string;
@@ -316,7 +370,6 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
             primary_key: string;
         } | undefined;
     };
-    value?: unknown;
 }>;
 
 declare const selectOptionSchema: z.ZodObject<{

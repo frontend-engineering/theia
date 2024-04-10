@@ -5,6 +5,8 @@ import { Command, URI } from '@theia/core'
 import * as React from '@theia/core/shared/react'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
+import { handleContextMenuInputSchema } from '@flowda/types'
+import { z } from 'zod'
 
 export namespace ResourceGridCommands {
   export const CONTEXT_MENU = ['resource-grid.context.menu']
@@ -52,7 +54,7 @@ export class ResourceGridModel extends GridModel {
     })
   }
 
-  private handleContextMenu = (uri: string, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  private handleContextMenu = (input: z.infer<typeof handleContextMenuInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     e.stopPropagation()
     const { clientX, clientY } = e
@@ -60,7 +62,7 @@ export class ResourceGridModel extends GridModel {
       menuPath: ResourceGridCommands.CONTEXT_MENU,
       anchor: { x: clientX, y: clientY },
       args: [
-        uri,
+        input,
         this,
       ],
     })

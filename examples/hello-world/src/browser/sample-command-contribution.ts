@@ -1,5 +1,5 @@
 import { inject, injectable } from '@theia/core/shared/inversify'
-import { CommandContribution, CommandRegistry, MessageService, URI } from '@theia/core'
+import { CommandContribution, CommandRegistry, MessageService } from '@theia/core'
 import { LoginDialog } from './login/login-dialog'
 import { ResourceGridCommands, type ResourceGridModel } from './resource/resource-grid-model'
 import { NavigatorDiffCommands } from '@theia/navigator/lib/browser/navigator-diff'
@@ -17,6 +17,9 @@ import { MiniBrowserCommands } from '@theia/mini-browser/lib/browser/mini-browse
 import { LIST_VARIABLES } from '@theia/variable-resolver/lib/browser/variable-resolver-frontend-contribution'
 import { EditorCommands } from '@theia/editor/lib/browser'
 import { PreviewCommands } from '@theia/preview/lib/browser/preview-contribution'
+import { z } from 'zod'
+import { handleContextMenuInputSchema } from '@flowda/types'
+import { createTreeGridUri } from '@flowda/design'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
@@ -55,19 +58,32 @@ export class SampleCommandContribution implements CommandContribution {
       execute: (widgetToActOn, address, variable) => {
         this.messageService.info('Open reference')
       },
-      isEnabled: (...args) => true,
-      isVisible: (...args) => true,
+      isEnabled: (...args) => {
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
+        return input?.column.column_type === 'reference'
+      },
+      isVisible: (...args) => {
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
+        return input?.column.column_type === 'reference'
+      },
     })
     commandRegistry.registerCommand(ResourceGridCommands.EDIT_MENU, {
-      execute: (uri: string, resourceGridModel: ResourceGridModel, __) => {
+      execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
         this.messageService.info('Edit Menu')
-        open(this.openerService, new URI(uri), {
+        const uri = createTreeGridUri(input.uri, input.cellRendererInput.data.id, input.cellRendererInput.colDef.field)
+        open(this.openerService, uri, {
           mode: 'reveal',
           preview: true,
         })
       },
-      isEnabled: (...args) => true,
-      isVisible: (...args) => true,
+      isEnabled: (...args) => {
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
+        return input?.column.column_type === 'Json'
+      },
+      isVisible: (...args) => {
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
+        return input?.column.column_type === 'Json'
+      },
     })
     /*
     目前 theia packages 互相依赖，特别是 monaco 是强依赖

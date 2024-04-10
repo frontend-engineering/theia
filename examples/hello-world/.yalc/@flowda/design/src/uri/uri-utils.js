@@ -16,7 +16,7 @@ export function createTreeGridUri(uri, id, field) {
     if (typeof uri === 'string') {
         uri = new URI(uri);
     }
-    return `tree-grid://${uri.authority}?schema=${getUriSchemaName(uri)}&id=${id}&field=${field}`;
+    return new URI(`tree-grid://${uri.authority}?schema=${getUriSchemaName(uri)}&id=${id}&field=${field}`);
 }
 /**
  * @deprecated

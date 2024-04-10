@@ -3,7 +3,7 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, SortModelItem } from 'ag-grid-community';
 import { ContainerModule, interfaces } from 'inversify';
-import { ColumnUISchema, ResourceUISchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, JSONObject, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
+import { ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, JSONObject, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
 import { FormikProps } from 'formik';
 import { URI } from '@theia/core';
@@ -60,7 +60,7 @@ declare class GridModel {
             id: number | string;
         }) => void;
         onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-        onContextMenu: (uri: string, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+        onContextMenu: (input: z.infer<typeof handleContextMenuInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
     apis: Partial<{
         getResourceSchema: (input: z.infer<typeof getResourceInputSchema>) => Promise<z.infer<typeof ResourceUISchema>>;
@@ -158,7 +158,7 @@ declare class Login extends React$1.Component<{
 
 declare function getUriDisplayName(uri: URI): string;
 declare function getUriSchemaName(uri: URI): string;
-declare function createTreeGridUri(uri: string | URI, id: string, field: string): string;
+declare function createTreeGridUri(uri: string | URI, id: string, field: string): URI;
 /**
  * @deprecated
  */

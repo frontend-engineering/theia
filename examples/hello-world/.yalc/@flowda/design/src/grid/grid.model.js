@@ -3,7 +3,6 @@ import { __decorate } from "tslib";
 import { injectable } from 'inversify';
 import * as _ from 'radash';
 import { agFilterSchema, cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
-import { createTreeGridUri } from '../uri/uri-utils';
 let GridModel = GridModel_1 = class GridModel {
     constructor() {
         this.columnDefs = [];
@@ -21,16 +20,20 @@ let GridModel = GridModel_1 = class GridModel {
         };
         this.onContextMenu = (cellRendererInput, e) => {
             if (typeof this.handlers.onContextMenu === 'function') {
-                if (!this.schema)
-                    throw new Error('schema is null');
                 const parsedRet = cellRendererInputSchema.parse(cellRendererInput);
-                const colDef = this.schema.columns.find(col => col.name === parsedRet.colDef.field);
-                if (!colDef)
-                    throw new Error(`no column def: ${this.schemaName}, ${parsedRet.colDef.field}`);
                 if (this.uri == null)
                     throw new Error('uri is null');
-                const uri = createTreeGridUri(this.uri, cellRendererInput.data.id, cellRendererInput.colDef.field);
-                this.handlers.onContextMenu(uri, e);
+                if (this.schema == null)
+                    throw new Error('schema is null');
+                const column = this.schema.columns.find(col => col.name === parsedRet.colDef.field);
+                if (!column)
+                    throw new Error(`no column def: ${this.schemaName}, ${parsedRet.colDef.field}`);
+                // const uri = createTreeGridUri(this.uri, parsedRet.data.id, parsedRet.colDef.field)
+                this.handlers.onContextMenu({
+                    uri: this.uri,
+                    cellRendererInput: parsedRet,
+                    column
+                }, e);
             }
         };
     }
