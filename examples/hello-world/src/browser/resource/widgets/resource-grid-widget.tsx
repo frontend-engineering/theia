@@ -4,12 +4,12 @@ import { Grid, GridModel } from '@flowda/design'
 
 export class ResourceGridWidget extends ReactWidget {
   static readonly ID = 'grid-widget'
+  uri: string
 
-  uri?: string
-
-  constructor(private option: { id: string; title: string, model: GridModel }) {
+  constructor(private option: { id: string; uri: string, title: string, model: GridModel }) {
     super()
     this.id = option.id
+    this.uri = option.uri
     this.title.caption = option.title
     this.title.label = option.title
     this.title.iconClass = 'unclosable-window-icon'
@@ -19,7 +19,7 @@ export class ResourceGridWidget extends ReactWidget {
 
   protected render(): React.ReactNode {
     return <Grid
-      ref={ref => this.option.model.setRef(ref, this.id)}
-      model={this.option.model} uri={this.id}/>
+      ref={ref => this.option.model.setRef(ref, this.uri)}
+      model={this.option.model} uri={this.uri}/>
   }
 }

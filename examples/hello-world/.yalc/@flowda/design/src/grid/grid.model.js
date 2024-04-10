@@ -3,6 +3,7 @@ import { __decorate } from "tslib";
 import { injectable } from 'inversify';
 import * as _ from 'radash';
 import { agFilterSchema, cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
+import { createTreeGridUri } from '../uri/uri-utils';
 let GridModel = GridModel_1 = class GridModel {
     constructor() {
         this.columnDefs = [];
@@ -26,8 +27,12 @@ let GridModel = GridModel_1 = class GridModel {
                 const colDef = this.schema.columns.find(col => col.name === parsedRet.colDef.field);
                 if (!colDef)
                     throw new Error(`no column def: ${this.schemaName}, ${parsedRet.colDef.field}`);
+                if (this.uri == null)
+                    throw new Error('uri is null');
+                const uri = createTreeGridUri(this.uri, cellRendererInput.data.id, cellRendererInput.colDef.field);
                 this.handlers.onContextMenu({
-                    colDef: colDef,
+                    uri,
+                    colDef,
                     value: parsedRet.value,
                 }, e);
             }
@@ -53,7 +58,16 @@ let GridModel = GridModel_1 = class GridModel {
      */
     setRef(ref, uri) {
         this.ref = ref;
-        this.uri = uri;
+        if (uri != null) {
+            if (this.uri == null) {
+                this.uri = uri;
+            }
+            else {
+                // double check 下 防止 gridModel grid 未对应
+                if (uri !== this.uri)
+                    throw new Error(`setRef uri is not matched, current: ${this.uri}, input: ${uri}`);
+            }
+        }
         this.refResolve(true);
     }
     setSchemaName(schemaName) {

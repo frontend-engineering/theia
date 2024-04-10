@@ -171,7 +171,9 @@ export class Grid extends React.Component {
                             field: item.name,
                             headerName: item.display_name,
                             cellRenderer: (param) => {
-                                return (_jsx("div", { onContextMenu: (e) => this.props.model.onContextMenu(param, e), children: param.valueFormatted }));
+                                return (_jsx("div", { onContextMenu: (e) => {
+                                        this.props.model.onContextMenu(param, e);
+                                    }, children: param.valueFormatted }));
                             },
                         };
                     default:

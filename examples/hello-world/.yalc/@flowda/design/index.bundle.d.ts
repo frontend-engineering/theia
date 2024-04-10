@@ -158,5 +158,10 @@ declare class Login extends React$1.Component<{
 
 declare function getUriDisplayName(uri: URI): string;
 declare function getUriSchemaName(uri: URI): string;
+declare function createTreeGridUri(uri: string | URI, id: string, field: string): string;
+/**
+ * @deprecated
+ */
+declare function uriWithoutId(uri: string): string;
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, designModule, getFinalFilterModel, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, createTreeGridUri, designModule, getFinalFilterModel, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef, uriWithoutId };

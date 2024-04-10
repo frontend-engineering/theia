@@ -52,11 +52,11 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       gridModel.resetRefPromise(uri.toString())
       const widget = new ResourceGridWidget({
         id: ResourceWidgetFactory.createID(uri),
+        uri: options.uri,
         title: getUriDisplayName(uri),
         model: gridModel,
       })
       widget.id = ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter
-      widget.uri = options.uri
       return Promise.resolve(widget as unknown as EditorWidget)
     }
     return super.createWidget(options)
