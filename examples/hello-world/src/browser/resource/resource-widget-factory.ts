@@ -3,7 +3,7 @@ import { inject, injectable } from '@theia/core/shared/inversify'
 import { EditorWidget } from '@theia/editor/lib/browser'
 import { NavigatableWidgetOptions } from '@theia/core/lib/browser'
 import { URI } from '@theia/core'
-import { getUriDisplayName, GridModel, TreeGridModel } from '@flowda/design'
+import { getUriDisplayName, GridModel, gridUriAsKey, TreeGridModel, treeGridUriAsKey } from '@flowda/design'
 import { MenuWidget } from './widgets/menu-widget'
 import { ResourceGridWidget } from './widgets/resource-grid-widget'
 
@@ -23,19 +23,21 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
   }
 
   public getOrCreateGridModel(uri: URI): unknown {
-    const key = uri.withoutQuery().toString()
+    let key
+    let factory: () => unknown
+
+    if (uri.scheme === 'grid') {
+      key = gridUriAsKey(uri)
+      factory = this.gridModelFactory
+    } else if (uri.scheme === 'tree-grid') {
+      key = treeGridUriAsKey(uri)
+      factory = this.treeGridModelFactory
+    } else {
+      throw new Error(`unknown uri, ${uri}`)
+    }
+
     if (!this.resourceGridMap.has(key)) {
-      // todo: plugin model
-      switch (uri.scheme) {
-        case 'grid':
-          this.resourceGridMap.set(key, this.gridModelFactory())
-          break
-        case 'tree-grid':
-          this.resourceGridMap.set(key, this.treeGridModelFactory())
-          break
-        default:
-          throw new Error(`unknown uri, ${uri}`)
-      }
+      this.resourceGridMap.set(key, factory())
     }
     return this.resourceGridMap.get(key)!
   }

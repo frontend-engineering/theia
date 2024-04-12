@@ -166,6 +166,8 @@ declare class Login extends React$1.Component<{
 declare function getUriDisplayName(uri: URI): string;
 declare function getUriSchemaName(uri: URI): string;
 declare function createTreeGridUri(uri: string | URI, id: string, field: string): URI;
+declare function gridUriAsKey(uri: URI): string;
+declare function treeGridUriAsKey(uri: URI): string;
 declare function uriWithoutId(uri: string): string;
 declare function convertTreeGridUriToGridUri(uriParam: string): string;
 declare function getTreeUriQuery(uriParam: string): {
@@ -176,4 +178,4 @@ declare function getTreeUriQuery(uriParam: string): {
 };
 declare function createRefUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createRefUri, createTreeGridUri, designModule, getFinalFilterModel, getTreeUriQuery, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef, uriWithoutId };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createRefUri, createTreeGridUri, designModule, getFinalFilterModel, getTreeUriQuery, getUriDisplayName, getUriSchemaName, gridUriAsKey, treeGridUriAsKey, tryExtractFilterModelFromRef, uriWithoutId };

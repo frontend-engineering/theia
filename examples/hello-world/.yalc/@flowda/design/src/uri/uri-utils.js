@@ -20,6 +20,13 @@ export function createTreeGridUri(uri, id, field) {
     const displayName = getUriDisplayName(uri);
     return new URI(`tree-grid://${uri.authority}?schemaName=${encodeURIComponent(`${getUriSchemaName(uri)}&displayName=${displayName}#${id}:${field}`)}&id=${id}&field=${field}`);
 }
+export function gridUriAsKey(uri) {
+    return `${uri.scheme}://${uri.authority}?schemaName=${getUriSchemaName(uri)}`;
+}
+export function treeGridUriAsKey(uri) {
+    const query = qs.parse(uri.query);
+    return `${uri.scheme}://${uri.authority}?schemaName=${getUriSchemaName(uri)}&field=${query.field}`;
+}
 export function uriWithoutId(uri) {
     return uri.slice(0, uri.lastIndexOf(':'));
 }
