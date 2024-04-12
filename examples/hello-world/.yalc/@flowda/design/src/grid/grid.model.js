@@ -1,8 +1,8 @@
 import { __decorate } from "tslib";
 import { injectable } from 'inversify';
 import * as _ from 'radash';
-import { agFilterSchema, cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
-import { updateUriFilterModel } from '../uri/uri-utils';
+import { cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
+import { isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel } from '../uri/uri-utils';
 let GridModel = class GridModel {
     constructor() {
         this.columnDefs = [];
@@ -12,6 +12,7 @@ let GridModel = class GridModel {
         this.gridApi = null;
         this.handlers = {};
         this.apis = {};
+        this._isFirstGetRows = true;
         this.onMouseEnter = (e) => {
             if (typeof this.handlers.onMouseEnter === 'function') {
                 this.handlers.onMouseEnter(e);
@@ -35,6 +36,9 @@ let GridModel = class GridModel {
             }
         };
     }
+    get isFirstGetRows() {
+        return this._isFirstGetRows;
+    }
     getUri() {
         if (!this.uri)
             throw new Error('uri is null');
@@ -46,6 +50,7 @@ let GridModel = class GridModel {
      */
     resetRefPromise(uri) {
         this.uri = uri;
+        this._isFirstGetRows = true;
         this.refPromise = new Promise((resolve) => {
             this.refResolve = resolve;
         });
@@ -66,7 +71,7 @@ let GridModel = class GridModel {
             }
             else {
                 // double check 下 防止 gridModel grid 未对应
-                if (uri !== this.uri)
+                if (!isUriAsKeyLikeEqual(uri, this.uri))
                     throw new Error(`setRef uri is not matched, current: ${this.uri}, input: ${uri}`);
             }
         }
@@ -109,15 +114,15 @@ let GridModel = class GridModel {
         // setTimeout(() => this.gridApi?.setFilterModel({}), 0) // 等待 re render
     }
     async getData(params) {
+        var _a;
         if (typeof this.apis.getResourceData !== 'function') {
             throw new Error('apis.getResourceData is not implemented');
         }
-        if (!_.isEmpty(params.filterModel)) {
-            if (this.uri == null)
-                throw new Error('uri is null');
-            const uri = updateUriFilterModel(this.uri, params.filterModel);
-            this.uri = uri.toString();
-        }
+        this._isFirstGetRows = false;
+        params.filterModel = mergeUriFilterModel(this.getUri(), params.filterModel);
+        (_a = this.gridApi) === null || _a === void 0 ? void 0 : _a.setFilterModel(params.filterModel);
+        const uri = updateUriFilterModel(this.getUri(), params.filterModel);
+        this.uri = uri.toString();
         const dataRet = await this.apis.getResourceData(params);
         const parseRet = getResourceDataOutputInnerSchema.safeParse(dataRet);
         if (parseRet.success) {
@@ -157,42 +162,4 @@ GridModel = __decorate([
     injectable()
 ], GridModel);
 export { GridModel };
-/**
- * @deprecated 改成从 uri 恢复，任何 filter 手动修改都同步修改 uri
- * 之前设计太复杂了，因为之前不清楚 vscode-uri 的机制，以及 edit-manager 如何管理 uri
- * 就临时外接了一套管理 filter 持久化的
- *
- * 情况1：刷新 尝试从 localStorage 恢复
- *       注意：非刷新 关闭 tab 则认为清空条件
- * 情况2：非刷新，跳转修改 filter，则覆盖
- * 情况3：非刷新 手动修改 优先级最高
- *
- * @param param ag grid 前端传入
- * @param mem 内存 grid model 维护
- * @param storage localStorage
- */
-export function getFinalFilterModel(param, mem, storage) {
-    const parseRet = agFilterSchema.safeParse(storage);
-    if ( /*情况1*/mem == null && parseRet.success) {
-        return tryExtractFilterModelFromRef(storage);
-    }
-    if ( /*情况2*/parseRet.success && parseRet.data._ref === '1') {
-        const parseRet2 = agFilterSchema.safeParse(_.omit(storage, ['_ref']));
-        if (parseRet2.success) {
-            return parseRet2.data;
-        }
-    }
-    /*情况3*/
-    return param;
-}
-export function tryExtractFilterModelFromRef(storage) {
-    const parseRet = agFilterSchema.parse(storage);
-    if (parseRet._ref === '1') {
-        const parseRet2 = agFilterSchema.safeParse(_.omit(storage, ['_ref']));
-        if (parseRet2.success) {
-            return parseRet2.data;
-        }
-    }
-    return parseRet;
-}
 //# sourceMappingURL=grid.model.js.map

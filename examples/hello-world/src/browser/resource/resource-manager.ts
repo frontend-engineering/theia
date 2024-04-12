@@ -4,7 +4,15 @@ import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
 import { ReactWidget, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
-import { convertTreeGridUriToGridUri, getUriSchemaName, GridModel, TreeGridModel, uriWithoutId } from '@flowda/design'
+import {
+  convertTreeGridUriToGridUri,
+  extractId,
+  getUriSchemaName,
+  GridModel,
+  TreeGridModel,
+  uriAsKey,
+  uriWithoutId,
+} from '@flowda/design'
 
 @injectable()
 export class ResourceManager extends EditorManager {
@@ -61,8 +69,14 @@ export class ResourceManager extends EditorManager {
   }
 
   protected override getCounterForUri(uri: URI): number | undefined {
-    const idWithoutCounter = ResourceWidgetFactory.createID(uri)
-    const counterOfMostRecentlyVisibleEditor = this.recentlyVisibleIds.find(id => id.startsWith(idWithoutCounter))?.slice(idWithoutCounter.length + 1)
-    return counterOfMostRecentlyVisibleEditor === undefined ? undefined : parseInt(counterOfMostRecentlyVisibleEditor)
+    const counterOfMostRecentlyVisibleEditor = this.recentlyVisibleIds.find(id => {
+      const uri1 = uriWithoutId(id.replace(`${this.id}:`, ''))
+      return uriAsKey(uri1) === uriAsKey(uri)
+    })
+    if (counterOfMostRecentlyVisibleEditor) {
+      return extractId(counterOfMostRecentlyVisibleEditor)
+    } else {
+      return undefined
+    }
   }
 }

@@ -24,6 +24,7 @@ export namespace ResourceGridCommands {
   }
 }
 
+// todo: 将 api handlers 赋值放在 bind onActivation 里 不需要做一个子类
 @injectable()
 export class ResourceGridModel extends GridModel {
   @inject(OpenerService) openerService: OpenerService

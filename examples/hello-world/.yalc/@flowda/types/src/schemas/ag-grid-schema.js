@@ -16,9 +16,7 @@ exports.agFilterInner2Schema = zod_1.z.object({
     // operator: z.string(),
     conditions: zod_1.z.array(exports.agFilterInnerSchema),
 });
-exports.agFilterSchema = zod_1.z
-    .record(exports.agFilterInnerSchema.or(exports.agFilterInner2Schema))
-    .or(zod_1.z.object({ _ref: zod_1.z.string().optional() }));
+exports.agFilterSchema = zod_1.z.record(exports.agFilterInnerSchema.or(exports.agFilterInner2Schema));
 exports.agSortSchema = zod_1.z.array(zod_1.z.object({
     colId: zod_1.z.string(),
     sort: zod_1.z.enum(['asc', 'desc']),

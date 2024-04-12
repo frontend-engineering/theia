@@ -59,7 +59,7 @@ declare const agFilterInner2Schema: z.ZodObject<{
         type: "contains" | "equals";
     }[];
 }>;
-declare const agFilterSchema: z.ZodUnion<[z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
+declare const agFilterSchema: z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
     filterType: z.ZodEnum<["text", "number"]>;
     type: z.ZodEnum<["contains", "equals"]>;
     filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
@@ -103,13 +103,7 @@ declare const agFilterSchema: z.ZodUnion<[z.ZodRecord<z.ZodString, z.ZodUnion<[z
         filter: string | number;
         type: "contains" | "equals";
     }[];
-}>]>>, z.ZodObject<{
-    _ref: z.ZodOptional<z.ZodString>;
-}, "strip", z.ZodTypeAny, {
-    _ref?: string | undefined;
-}, {
-    _ref?: string | undefined;
-}>]>;
+}>]>>;
 declare const agSortSchema: z.ZodArray<z.ZodObject<{
     colId: z.ZodString;
     sort: z.ZodEnum<["asc", "desc"]>;
@@ -277,15 +271,15 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         }, "strip", z.ZodTypeAny, {
             display_name: string;
             model_name: string;
+            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
-            reference_type: "belongs_to" | "has_one";
         }, {
             display_name: string;
             model_name: string;
+            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
-            reference_type: "belongs_to" | "has_one";
         }>>;
     }, "strip", z.ZodTypeAny, {
         column_type: string;
@@ -297,9 +291,9 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         reference?: {
             display_name: string;
             model_name: string;
+            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
-            reference_type: "belongs_to" | "has_one";
         } | undefined;
     }, {
         column_type: string;
@@ -311,9 +305,9 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         reference?: {
             display_name: string;
             model_name: string;
+            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
-            reference_type: "belongs_to" | "has_one";
         } | undefined;
     }>;
 }, "strip", z.ZodTypeAny, {
@@ -338,9 +332,9 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         reference?: {
             display_name: string;
             model_name: string;
+            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
-            reference_type: "belongs_to" | "has_one";
         } | undefined;
     };
 }, {
@@ -365,9 +359,9 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         reference?: {
             display_name: string;
             model_name: string;
+            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
-            reference_type: "belongs_to" | "has_one";
         } | undefined;
     };
 }>;
@@ -436,7 +430,7 @@ declare const findManyResourceDataInputSchema: z.ZodObject<{
         sort: "asc" | "desc";
         colId: string;
     }>, "many">;
-    filterModel: z.ZodUnion<[z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
+    filterModel: z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
         filterType: z.ZodEnum<["text", "number"]>;
         type: z.ZodEnum<["contains", "equals"]>;
         filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
@@ -480,13 +474,7 @@ declare const findManyResourceDataInputSchema: z.ZodObject<{
             filter: string | number;
             type: "contains" | "equals";
         }[];
-    }>]>>, z.ZodObject<{
-        _ref: z.ZodOptional<z.ZodString>;
-    }, "strip", z.ZodTypeAny, {
-        _ref?: string | undefined;
-    }, {
-        _ref?: string | undefined;
-    }>]>;
+    }>]>>;
 }, "strip", z.ZodTypeAny, {
     sort: {
         sort: "asc" | "desc";
@@ -495,7 +483,7 @@ declare const findManyResourceDataInputSchema: z.ZodObject<{
     schemaName: string;
     current: number;
     pageSize: number;
-    filterModel: (Record<string, {
+    filterModel: Record<string, {
         filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
@@ -507,23 +495,7 @@ declare const findManyResourceDataInputSchema: z.ZodObject<{
             filter: string | number;
             type: "contains" | "equals";
         }[];
-    }> | {
-        _ref?: string | undefined;
-    }) & (Record<string, {
-        filterType: "number" | "text";
-        filter: string | number;
-        type: "contains" | "equals";
-    } | {
-        filterType: "text";
-        operator: "OR" | "AND";
-        conditions: {
-            filterType: "number" | "text";
-            filter: string | number;
-            type: "contains" | "equals";
-        }[];
-    }> | {
-        _ref?: string | undefined;
-    } | undefined);
+    }>;
 }, {
     sort: {
         sort: "asc" | "desc";
@@ -532,7 +504,7 @@ declare const findManyResourceDataInputSchema: z.ZodObject<{
     schemaName: string;
     current: number;
     pageSize: number;
-    filterModel: (Record<string, {
+    filterModel: Record<string, {
         filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
@@ -544,23 +516,7 @@ declare const findManyResourceDataInputSchema: z.ZodObject<{
             filter: string | number;
             type: "contains" | "equals";
         }[];
-    }> | {
-        _ref?: string | undefined;
-    }) & (Record<string, {
-        filterType: "number" | "text";
-        filter: string | number;
-        type: "contains" | "equals";
-    } | {
-        filterType: "text";
-        operator: "OR" | "AND";
-        conditions: {
-            filterType: "number" | "text";
-            filter: string | number;
-            type: "contains" | "equals";
-        }[];
-    }> | {
-        _ref?: string | undefined;
-    } | undefined);
+    }>;
 }>;
 declare const findUniqueResourceDataInputSchema: z.ZodObject<{
     schemaName: z.ZodString;
@@ -586,7 +542,7 @@ declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
         sort: "asc" | "desc";
         colId: string;
     }>, "many">;
-    filterModel: z.ZodUnion<[z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
+    filterModel: z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
         filterType: z.ZodEnum<["text", "number"]>;
         type: z.ZodEnum<["contains", "equals"]>;
         filter: z.ZodUnion<[z.ZodString, z.ZodNumber]>;
@@ -630,13 +586,7 @@ declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
             filter: string | number;
             type: "contains" | "equals";
         }[];
-    }>]>>, z.ZodObject<{
-        _ref: z.ZodOptional<z.ZodString>;
-    }, "strip", z.ZodTypeAny, {
-        _ref?: string | undefined;
-    }, {
-        _ref?: string | undefined;
-    }>]>;
+    }>]>>;
 }, "strip", z.ZodTypeAny, {
     sort: {
         sort: "asc" | "desc";
@@ -645,7 +595,7 @@ declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
     schemaName: string;
     current: number;
     pageSize: number;
-    filterModel: (Record<string, {
+    filterModel: Record<string, {
         filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
@@ -657,23 +607,7 @@ declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
             filter: string | number;
             type: "contains" | "equals";
         }[];
-    }> | {
-        _ref?: string | undefined;
-    }) & (Record<string, {
-        filterType: "number" | "text";
-        filter: string | number;
-        type: "contains" | "equals";
-    } | {
-        filterType: "text";
-        operator: "OR" | "AND";
-        conditions: {
-            filterType: "number" | "text";
-            filter: string | number;
-            type: "contains" | "equals";
-        }[];
-    }> | {
-        _ref?: string | undefined;
-    } | undefined);
+    }>;
 }, {
     sort: {
         sort: "asc" | "desc";
@@ -682,7 +616,7 @@ declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
     schemaName: string;
     current: number;
     pageSize: number;
-    filterModel: (Record<string, {
+    filterModel: Record<string, {
         filterType: "number" | "text";
         filter: string | number;
         type: "contains" | "equals";
@@ -694,23 +628,7 @@ declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
             filter: string | number;
             type: "contains" | "equals";
         }[];
-    }> | {
-        _ref?: string | undefined;
-    }) & (Record<string, {
-        filterType: "number" | "text";
-        filter: string | number;
-        type: "contains" | "equals";
-    } | {
-        filterType: "text";
-        operator: "OR" | "AND";
-        conditions: {
-            filterType: "number" | "text";
-            filter: string | number;
-            type: "contains" | "equals";
-        }[];
-    }> | {
-        _ref?: string | undefined;
-    } | undefined);
+    }>;
 }>, z.ZodObject<{
     schemaName: z.ZodString;
     id: z.ZodNumber;

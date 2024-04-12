@@ -2,7 +2,7 @@
 import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, SortModelItem, ColDef, IRowNode, CellValueChangedEvent } from 'ag-grid-community';
-import { ManageableModel, ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, cellRendererInputSchema, JSONObject, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
+import { ManageableModel, ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
 import { ContainerModule, interfaces } from 'inversify';
 import { FormikProps } from 'formik';
@@ -14,6 +14,7 @@ declare class GridModel implements ManageableModel {
     schema: z.infer<typeof ResourceUISchema> | null;
     isNotEmpty: boolean;
     gridApi: GridApi | null;
+    get isFirstGetRows(): boolean;
     /**
      * 等待 setRef 也就是 widget render 然后才能调用 this.ref.setColDefs
      * 原因是 setColDefs 有 React（cellRenderer）不能放在 grid.model 里
@@ -36,6 +37,7 @@ declare class GridModel implements ManageableModel {
     private ref;
     private uri?;
     private refResolve?;
+    private _isFirstGetRows;
     getUri(): string;
     /**
      * 在 ResourceWidgetFactory#createWidget 重置 promise
@@ -66,22 +68,6 @@ declare class GridModel implements ManageableModel {
     readonly onContextMenu: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     onRefClick(field: string, value: any): void;
 }
-/**
- * @deprecated 改成从 uri 恢复，任何 filter 手动修改都同步修改 uri
- * 之前设计太复杂了，因为之前不清楚 vscode-uri 的机制，以及 edit-manager 如何管理 uri
- * 就临时外接了一套管理 filter 持久化的
- *
- * 情况1：刷新 尝试从 localStorage 恢复
- *       注意：非刷新 关闭 tab 则认为清空条件
- * 情况2：非刷新，跳转修改 filter，则覆盖
- * 情况3：非刷新 手动修改 优先级最高
- *
- * @param param ag grid 前端传入
- * @param mem 内存 grid model 维护
- * @param storage localStorage
- */
-declare function getFinalFilterModel(param: z.infer<typeof agFilterSchema>, mem: z.infer<typeof agFilterSchema> | null, storage: JSONObject): z.infer<typeof agFilterSchema> | null;
-declare function tryExtractFilterModelFromRef(storage: JSONObject): z.infer<typeof agFilterSchema>;
 
 declare class TreeGridModel implements ManageableModel {
     gridApi: GridApi | null;
@@ -168,8 +154,9 @@ declare class Login extends React$1.Component<{
 declare function getUriDisplayName(uri: URI): string;
 declare function getUriSchemaName(uri: URI): string;
 declare function createTreeGridUri(uri: string | URI, id: string, field: string): URI;
-declare function uriAsKey(uri: URI): string;
+declare function uriAsKey(uri: URI | string): string;
 declare function uriWithoutId(uri: string): string;
+declare function extractId(id: string): number;
 declare function convertTreeGridUriToGridUri(uriParam: string): string;
 declare function getTreeUriQuery(uriParam: string): {
     id: string;
@@ -178,6 +165,10 @@ declare function getTreeUriQuery(uriParam: string): {
     displayName: string;
 };
 declare function createRefUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
+declare function getUriFilterModel(uri: URI | string): z.infer<typeof agFilterSchema>;
+declare function mergeUriFilterModel(uri: URI | string, filterModel: z.infer<typeof agFilterSchema>): z.infer<typeof agFilterSchema>;
 declare function updateUriFilterModel(uri: URI | string, filterModel: z.infer<typeof agFilterSchema>): URI;
+declare function isUriLikeEqual(a: URI | string, b: URI | string): boolean;
+declare function isUriAsKeyLikeEqual(a: URI | string, b: URI | string): boolean;
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createRefUri, createTreeGridUri, designModule, getFinalFilterModel, getTreeUriQuery, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef, updateUriFilterModel, uriAsKey, uriWithoutId };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createRefUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };

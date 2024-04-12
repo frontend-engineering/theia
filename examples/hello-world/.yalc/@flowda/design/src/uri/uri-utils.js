@@ -2,6 +2,7 @@ import { __rest } from "tslib";
 import { treeGridUriQuerySchema } from '@flowda/types';
 import { URI } from '@theia/core';
 import * as qs from 'qs';
+import * as _ from 'radash';
 export function getUriDisplayName(uri) {
     const query = qs.parse(uri.query);
     if (!('displayName' in query) || typeof query.displayName !== 'string')
@@ -22,12 +23,18 @@ export function createTreeGridUri(uri, id, field) {
     return new URI(`tree-grid://${uri.authority}?schemaName=${encodeURIComponent(`${getUriSchemaName(uri)}&displayName=${displayName}#${id}:${field}`)}&id=${id}&field=${field}`);
 }
 export function uriAsKey(uri) {
+    if (typeof uri === 'string')
+        uri = new URI(uri);
     const query = qs.parse(uri.query);
     const { displayName, filterModel } = query, rest = __rest(query, ["displayName", "filterModel"]);
     return `${uri.scheme}://${uri.authority}?${qs.stringify(rest)}`;
 }
 export function uriWithoutId(uri) {
     return uri.slice(0, uri.lastIndexOf(':'));
+}
+export function extractId(id) {
+    const count = parseInt(id.slice(id.lastIndexOf(':') + 1));
+    return count;
 }
 export function convertTreeGridUriToGridUri(uriParam) {
     const query = getTreeUriQuery(uriParam);
@@ -52,19 +59,78 @@ export function createRefUri(input) {
     const id = (_b = (_a = input.cellRendererInput) === null || _a === void 0 ? void 0 : _a.value) === null || _b === void 0 ? void 0 : _b[input.column.reference.primary_key];
     if (id == null)
         throw new Error(`column:${input.column.name} ${input.column.reference.primary_key} value is null`);
-    const schemaName = input.column.reference.model_name;
+    const schemaName = `${input.column.reference.model_name}ResourceSchema`;
     //    ^?
-    const retUri = `grid://${uri.authority}?schemaName=${schemaName}ResourceSchema&displayName=${input.column.reference.display_name}&${input.column.reference.primary_key}=${id}`;
+    const query = {
+        schemaName,
+        displayName: input.column.reference.display_name,
+        filterModel: {
+            [input.column.reference.primary_key]: {
+                filterType: 'number',
+                type: 'equals',
+                filter: id,
+            },
+        }
+    };
+    const retUri = `grid://${uri.authority}?${qs.stringify(query)}`;
     return new URI(retUri);
+}
+export function getUriFilterModel(uri) {
+    if (typeof uri === 'string') {
+        uri = new URI(uri);
+    }
+    const query = qs.parse(uri.query);
+    const ret = qs.parse(query['filterModel']);
+    return _.mapValues(ret, (v) => {
+        if (v.filterType === 'number')
+            v.filter = Number(v.filter);
+        return v;
+    });
+}
+export function mergeUriFilterModel(uri, filterModel) {
+    const origFilterModel = getUriFilterModel(uri);
+    const ret = Object.assign(Object.assign({}, origFilterModel), filterModel);
+    const ret2 = Object.keys(ret).reduce((acc, k) => {
+        if (filterModel[k] === undefined) {
+            return acc;
+        }
+        const v = ret[k];
+        if (v.filterType === 'number')
+            v.filter = Number(v.filter);
+        acc[k] = v;
+        return acc;
+    }, {});
+    return ret2;
 }
 export function updateUriFilterModel(uri, filterModel) {
     if (typeof uri === 'string') {
         uri = new URI(uri);
     }
     const query = qs.parse(uri.query);
-    const origFilterModel = qs.parse(query['filterModel']);
-    query['filterModel'] = qs.stringify(Object.assign(Object.assign({}, origFilterModel), { filterModel }));
-    const ret = uri.withQuery(qs.stringify(query));
+    const query2 = Object.assign(Object.assign({}, query), { filterModel });
+    const ret = uri.withQuery(qs.stringify(query2));
     return ret;
+}
+export function isUriLikeEqual(a, b) {
+    if (typeof a === 'string')
+        a = new URI(a);
+    if (typeof b === 'string')
+        b = new URI(b);
+    return a.scheme === b.scheme
+        && a.authority === b.authority
+        && a.path.toString() === b.path.toString()
+        && _.isEqual(qs.parse(a.query), qs.parse(b.query))
+        && a.fragment === b.fragment;
+}
+export function isUriAsKeyLikeEqual(a, b) {
+    if (typeof a === 'string')
+        a = new URI(a);
+    if (typeof b === 'string')
+        b = new URI(b);
+    return a.scheme === b.scheme
+        && a.authority === b.authority
+        && a.path.toString() === b.path.toString()
+        && _.isEqual(qs.parse(a.query), qs.parse(b.query))
+        && a.fragment === b.fragment;
 }
 //# sourceMappingURL=uri-utils.js.map

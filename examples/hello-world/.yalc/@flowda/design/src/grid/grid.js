@@ -5,6 +5,7 @@ import { shortenDatetime } from '../utils/time-utils';
 import dayjs from 'dayjs';
 import { InfiniteRowModelModule } from '@ag-grid-community/infinite-row-model';
 import { getReferenceDisplay } from './grid-utils';
+import { getUriFilterModel } from '../uri/uri-utils';
 export class Grid extends React.Component {
     constructor() {
         super(...arguments);
@@ -27,7 +28,7 @@ export class Grid extends React.Component {
                         current: params.endRow / (params.endRow - params.startRow),
                         pageSize: params.endRow - params.startRow,
                         sort: params.sortModel,
-                        filterModel: params.filterModel,
+                        filterModel: this.props.model.isFirstGetRows ? Object.assign(Object.assign({}, params.filterModel), getUriFilterModel(this.props.model.getUri())) : params.filterModel,
                     });
                     evt.api.hideOverlay(); // 不清楚为什么，突然需要手动 hideOverlay
                     params.successCallback(ret.data, ret.pagination.total);
