@@ -22,29 +22,29 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       + (counter !== undefined ? `:${counter}` : '')
   }
 
-  public getOrCreateGridModel(uri: string): unknown {
-    if (!this.resourceGridMap.has(uri)) {
+  public getOrCreateGridModel(uri: URI): unknown {
+    const key = uri.withoutQuery().toString()
+    if (!this.resourceGridMap.has(key)) {
       // todo: plugin model
-      const urii = new URI(uri)
-      switch (urii.scheme) {
+      switch (uri.scheme) {
         case 'grid':
-          this.resourceGridMap.set(uri, this.gridModelFactory())
+          this.resourceGridMap.set(key, this.gridModelFactory())
           break
         case 'tree-grid':
-          this.resourceGridMap.set(uri, this.treeGridModelFactory())
+          this.resourceGridMap.set(key, this.treeGridModelFactory())
           break
         default:
           throw new Error(`unknown uri, ${uri}`)
       }
     }
-    return this.resourceGridMap.get(uri)!
+    return this.resourceGridMap.get(key)!
   }
 
   override async createWidget(options: NavigatableWidgetOptions): Promise<EditorWidget> {
     const uri = new URI(options.uri)
     // todo: plugin model
     if (uri.scheme === 'tree-grid') {
-      const treeGridModel = this.getOrCreateGridModel(options.uri) as TreeGridModel
+      const treeGridModel = this.getOrCreateGridModel(uri) as TreeGridModel
       treeGridModel.resetGridReadyPromise(options.uri)
       const widget = new MenuWidget({
         id: ResourceWidgetFactory.createID(uri),
@@ -52,11 +52,12 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
         title: getUriDisplayName(uri),
         model: treeGridModel,
       })
+      widget.id = ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter
       return Promise.resolve(widget as unknown as EditorWidget)
     }
 
     if (uri.scheme === 'grid') {
-      const gridModel = this.getOrCreateGridModel(uri.toString()) as GridModel
+      const gridModel = this.getOrCreateGridModel(uri) as GridModel
       gridModel.resetRefPromise(uri.toString())
       const widget = new ResourceGridWidget({
         id: ResourceWidgetFactory.createID(uri),

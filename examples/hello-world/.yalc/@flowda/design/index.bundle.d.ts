@@ -2,14 +2,13 @@
 import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, SortModelItem, ColDef, IRowNode, CellValueChangedEvent } from 'ag-grid-community';
-import { ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, JSONObject, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
+import { ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, cellRendererInputSchema, JSONObject, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
 import { ContainerModule, interfaces } from 'inversify';
 import { FormikProps } from 'formik';
 import { URI } from '@theia/core';
 
 declare class GridModel {
-    static KEY: string;
     columnDefs: z.infer<typeof ColumnUISchema>[];
     schemaName: string | null;
     schema: z.infer<typeof ResourceUISchema> | null;
@@ -34,7 +33,6 @@ declare class GridModel {
         getResourceData: (input: z.infer<typeof getResourceDataInputSchema>) => Promise<z.infer<typeof getResourceDataOutputSchema>>;
         putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
     }>;
-    private filterModel;
     private ref;
     private uri?;
     private refResolve?;
@@ -62,13 +60,16 @@ declare class GridModel {
             total: number;
         };
     }>;
-    getResourceQuery(): JSONObject;
     putData(id: number, updatedValue: unknown): Promise<void>;
     readonly onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     readonly onContextMenu: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     onRefClick(field: string, value: any): void;
 }
 /**
+ * @deprecated 改成从 uri 恢复，任何 filter 手动修改都同步修改 uri
+ * 之前设计太复杂了，因为之前不清楚 vscode-uri 的机制，以及 edit-manager 如何管理 uri
+ * 就临时外接了一套管理 filter 持久化的
+ *
  * 情况1：刷新 尝试从 localStorage 恢复
  *       注意：非刷新 关闭 tab 则认为清空条件
  * 情况2：非刷新，跳转修改 filter，则覆盖
@@ -165,9 +166,6 @@ declare class Login extends React$1.Component<{
 declare function getUriDisplayName(uri: URI): string;
 declare function getUriSchemaName(uri: URI): string;
 declare function createTreeGridUri(uri: string | URI, id: string, field: string): URI;
-/**
- * @deprecated
- */
 declare function uriWithoutId(uri: string): string;
 declare function convertTreeGridUriToGridUri(uriParam: string): string;
 declare function getTreeUriQuery(uriParam: string): {
@@ -176,5 +174,6 @@ declare function getTreeUriQuery(uriParam: string): {
     schemaName: string;
     displayName: string;
 };
+declare function createRefUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createTreeGridUri, designModule, getFinalFilterModel, getTreeUriQuery, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef, uriWithoutId };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createRefUri, createTreeGridUri, designModule, getFinalFilterModel, getTreeUriQuery, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef, uriWithoutId };

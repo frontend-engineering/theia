@@ -1,9 +1,8 @@
-var GridModel_1;
 import { __decorate } from "tslib";
 import { injectable } from 'inversify';
 import * as _ from 'radash';
 import { agFilterSchema, cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
-let GridModel = GridModel_1 = class GridModel {
+let GridModel = class GridModel {
     constructor() {
         this.columnDefs = [];
         this.schemaName = null;
@@ -12,7 +11,6 @@ let GridModel = GridModel_1 = class GridModel {
         this.gridApi = null;
         this.handlers = {};
         this.apis = {};
-        this.filterModel = null;
         this.onMouseEnter = (e) => {
             if (typeof this.handlers.onMouseEnter === 'function') {
                 this.handlers.onMouseEnter(e);
@@ -28,7 +26,6 @@ let GridModel = GridModel_1 = class GridModel {
                 const column = this.schema.columns.find(col => col.name === parsedRet.colDef.field);
                 if (!column)
                     throw new Error(`no column def: ${this.schemaName}, ${parsedRet.colDef.field}`);
-                // const uri = createTreeGridUri(this.uri, parsedRet.data.id, parsedRet.colDef.field)
                 this.handlers.onContextMenu({
                     uri: this.uri,
                     cellRendererInput: parsedRet,
@@ -102,25 +99,14 @@ let GridModel = GridModel_1 = class GridModel {
         }
         // @ts-expect-error
         this.ref['setColDefs']();
-        if (!_.isEmpty(this.filterModel)) {
-            setTimeout(() => { var _a; return (_a = this.gridApi) === null || _a === void 0 ? void 0 : _a.setFilterModel(this.filterModel); }, 0); // 等待 re render
-        }
+        // todo: 改成直接从 uri -> filterModel
+        // setTimeout(() => this.gridApi?.setFilterModel({}), 0) // 等待 re render
     }
     async getData(params) {
-        const resourceQuery = this.getResourceQuery();
-        const schemaQuery = resourceQuery[params.schemaName];
-        this.filterModel = getFinalFilterModel(params.filterModel, this.filterModel, schemaQuery);
-        if (this.filterModel != null) {
-            resourceQuery[params.schemaName] = this.filterModel;
-        }
-        if (this.columnDefs && this.columnDefs.length > 0 && params.filterModel != this.filterModel && !_.isEmpty(this.filterModel)) {
-            setTimeout(() => { var _a; return (_a = this.gridApi) === null || _a === void 0 ? void 0 : _a.setFilterModel(this.filterModel); }, 0); // 等待 re render
-        }
-        localStorage.setItem(GridModel_1.KEY, JSON.stringify(resourceQuery));
         if (typeof this.apis.getResourceData !== 'function') {
             throw new Error('handlers.getResourceData is not implemented');
         }
-        const dataRet = await this.apis.getResourceData(Object.assign({}, params, { filterModel: this.filterModel }));
+        const dataRet = await this.apis.getResourceData(params);
         const parseRet = getResourceDataOutputInnerSchema.safeParse(dataRet);
         if (parseRet.success) {
             return parseRet.data;
@@ -129,18 +115,6 @@ let GridModel = GridModel_1 = class GridModel {
             data: [dataRet],
             pagination: { total: 1 },
         };
-    }
-    getResourceQuery() {
-        const prev = localStorage.getItem(GridModel_1.KEY);
-        if (prev != null) {
-            try {
-                return JSON.parse(prev);
-            }
-            catch (e) {
-                //
-            }
-        }
-        return {};
     }
     async putData(id, updatedValue) {
         if (typeof this.apis.putResourceData != 'function') {
@@ -167,12 +141,15 @@ let GridModel = GridModel_1 = class GridModel {
         }
     }
 };
-GridModel.KEY = 'resourceQuery';
-GridModel = GridModel_1 = __decorate([
+GridModel = __decorate([
     injectable()
 ], GridModel);
 export { GridModel };
 /**
+ * @deprecated 改成从 uri 恢复，任何 filter 手动修改都同步修改 uri
+ * 之前设计太复杂了，因为之前不清楚 vscode-uri 的机制，以及 edit-manager 如何管理 uri
+ * 就临时外接了一套管理 filter 持久化的
+ *
  * 情况1：刷新 尝试从 localStorage 恢复
  *       注意：非刷新 关闭 tab 则认为清空条件
  * 情况2：非刷新，跳转修改 filter，则覆盖

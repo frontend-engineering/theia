@@ -4,12 +4,12 @@ import { AgGridReact } from 'ag-grid-react';
 import { shortenDatetime } from '../utils/time-utils';
 import dayjs from 'dayjs';
 import { InfiniteRowModelModule } from '@ag-grid-community/infinite-row-model';
+import { getReferenceDisplay } from './grid-utils';
 export class Grid extends React.Component {
     constructor() {
         super(...arguments);
         this.gridRef = null;
         this.onGridReady = async (evt) => {
-            // console.log('[Grid] onGridReady', this.props.model.schemaName)
             this.props.model.gridApi = evt.api;
             const datasource = {
                 getRows: async (params) => {
@@ -29,8 +29,7 @@ export class Grid extends React.Component {
                         sort: params.sortModel,
                         filterModel: params.filterModel,
                     });
-                    // console.log(`[Grid] successCallback`)
-                    evt.api.hideOverlay();
+                    evt.api.hideOverlay(); // 不清楚为什么，突然需要手动 hideOverlay
                     params.successCallback(ret.data, ret.pagination.total);
                     // this.props.model.gridApi?.setGridOption('pinnedTopRowData', [ret.data[0]])
                     // 只在第一次有值的时候做 resize 后续分页或者刷新就不要 resize 了
@@ -43,9 +42,6 @@ export class Grid extends React.Component {
             evt.api.setGridOption('datasource', datasource);
         };
         this.onCellValueChanged = async (evt) => {
-            // console.log(
-            //   `[Grid] onCellValueChanged, id ${evt.data.id},col: ${evt.colDef.field}, ${evt.newValue} <- ${evt.oldValue}`,
-            // )
             await this.props.model.putData(evt.data.id, {
                 [evt.colDef.field]: evt.newValue,
             });
@@ -54,30 +50,34 @@ export class Grid extends React.Component {
             const colDefs = this.props.model.columnDefs.map(item => {
                 var _a;
                 // todo: 图片需要搞一个 modal 并且上传修改
-                if (item.name === 'image') {
-                    return {
-                        field: item.name,
-                        headerName: item.display_name,
-                        cellDataType: 'text',
-                        cellRenderer: (param) => {
-                            if (!param.value)
-                                return param.value;
-                            return (_jsx("img", { style: {
-                                    cursor: 'pointer',
-                                    width: 38,
-                                    borderRadius: '50%',
-                                    border: '0.5px solid white',
-                                    boxShadow: '0px 1px 6px rgba(0, 0, 0, 0.2)',
-                                }, src: param.value }));
-                        },
-                    };
-                }
+                // if (item.name === 'image') { // todo: 这里用 plugin model 实现
+                //   return {
+                //     field: item.name,
+                //     headerName: item.display_name,
+                //     cellDataType: 'text',
+                //     cellRenderer: (param: z.infer<typeof cellRendererInputSchema>) => {
+                //       if (!param.value) return param.value
+                //       return (
+                //         <img
+                //           style={{
+                //             cursor: 'pointer',
+                //             width: 38,
+                //             borderRadius: '50%',
+                //             border: '0.5px solid white',
+                //             boxShadow: '0px 1px 6px rgba(0, 0, 0, 0.2)',
+                //           }}
+                //           src={param.value as string}
+                //         />
+                //       )
+                //     },
+                //   }
+                // }
                 if (item.name === ((_a = this.props.model.schema) === null || _a === void 0 ? void 0 : _a.primary_key)) {
                     return {
                         minWidth: 110,
                         field: item.name,
                         headerName: item.display_name,
-                        cellDataType: 'number',
+                        cellDataType: item.column_type === 'String' ? 'string' : 'number',
                         pinned: 'left',
                         filter: true,
                         floatingFilter: true,
@@ -90,11 +90,26 @@ export class Grid extends React.Component {
                             field: item.name,
                             headerName: item.display_name,
                             cellRenderer: (param) => {
-                                return (_jsx("div", { onContextMenu: (e) => this.props.model.onContextMenu(param, e), children: _jsx("a", { className: "grid-reference-field", href: "", onClick: e => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            this.props.model.onRefClick(param.colDef.field, param.value);
-                                        }, onMouseEnter: this.props.model.onMouseEnter, children: param.value }) }));
+                                if (!param.value) {
+                                    return _jsx("span", { children: "." });
+                                }
+                                /* 做到一半的 hover
+                                <a
+                                  className="grid-reference-field"
+                                  href=""
+                                  onClick={e => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    this.props.model.onRefClick(param.colDef.field, param.value)
+                                  }}
+                                  onMouseEnter={this.props.model.onMouseEnter}
+                                >
+                                  {getReferenceDisplay(item.reference!, param.value)}
+                                </a>
+                                */
+                                return (_jsx("div", { onContextMenu: (e) => {
+                                        this.props.model.onContextMenu(param, e);
+                                    }, children: getReferenceDisplay(item.reference, param.value) }));
                             },
                         };
                     }

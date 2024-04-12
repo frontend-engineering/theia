@@ -28,7 +28,7 @@ exports.cellRendererInputSchema = zod_1.z.object({
     data: zod_1.z.object({
         id: zod_1.z.union([zod_1.z.string(), zod_1.z.number()]).transform(arg => arg.toString())
     }),
-    valueFormatted: zod_1.z.string(),
+    valueFormatted: zod_1.z.string().nullable(),
     colDef: zod_1.z.object({
         field: zod_1.z.string(),
     }),

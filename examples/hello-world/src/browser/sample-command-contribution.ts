@@ -19,7 +19,7 @@ import { EditorCommands } from '@theia/editor/lib/browser'
 import { PreviewCommands } from '@theia/preview/lib/browser/preview-contribution'
 import { z } from 'zod'
 import { handleContextMenuInputSchema } from '@flowda/types'
-import { createTreeGridUri } from '@flowda/design'
+import { createRefUri, createTreeGridUri } from '@flowda/design'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
@@ -55,8 +55,12 @@ export class SampleCommandContribution implements CommandContribution {
     )
 
     commandRegistry.registerCommand(ResourceGridCommands.OPEN_REFERENCE, {
-      execute: (widgetToActOn, address, variable) => {
-        this.messageService.info('Open reference')
+      execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
+        const uri = createRefUri(input)
+        open(this.openerService, uri, {
+          mode: 'reveal',
+          preview: true,
+        })
       },
       isEnabled: (...args) => {
         const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)

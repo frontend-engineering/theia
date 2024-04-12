@@ -34,5 +34,5 @@
   },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "03322c0cd8a2d90af52dc001cfc56a75"
+  "yalcSig": "c549905943996cfced0f94eac1cba37b"
 }

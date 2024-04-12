@@ -4,7 +4,7 @@ import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
 import { ReactWidget, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
-import { convertTreeGridUriToGridUri, getUriSchemaName, GridModel, TreeGridModel } from '@flowda/design'
+import { convertTreeGridUriToGridUri, getUriSchemaName, GridModel, TreeGridModel, uriWithoutId } from '@flowda/design'
 
 @injectable()
 export class ResourceManager extends EditorManager {
@@ -23,23 +23,21 @@ export class ResourceManager extends EditorManager {
         this.logger.warn(`onCurrentEditorChanged widget is null`)
         return
       }
-      if (!('uri' in widget) || typeof widget.uri !== 'string') {
-        this.logger.warn(`widget no uri or not string type`)
-        return
-      }
 
-      const uri = new URI(widget.uri)
+      const uri = new URI(uriWithoutId(widget.id.replace(`${ResourceWidgetFactory.ID}:`, '')))
+      this.logger.info(`[ResourceManager] onCurrentEditorChanged ${uri.toString()}`)
+
       if (uri.scheme === 'grid') {
-        this.logger.info(`[ResourceManager] onCurrentEditorChanged ${widget.uri}`)
-        const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri) as GridModel
+        const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as GridModel
+
         gridModel!.getCol(`${uri.authority}.${getUriSchemaName(uri)}`)
       }
       if (uri.scheme === 'tree-grid') {
-        this.logger.info(`[ResourceManager] onCurrentEditorChanged ${widget.uri}`)
-        const treeGridModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri) as TreeGridModel
-        treeGridModel.setUri(widget.uri)
-        const gridUri = convertTreeGridUriToGridUri(widget.uri)
+        const treeGridModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as TreeGridModel
+        const gridUri = new URI(convertTreeGridUriToGridUri(uri.toString()))
         const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(gridUri) as GridModel
+
+        treeGridModel.setUri(uri.toString())
         treeGridModel.setGridModel(gridModel)
         treeGridModel.loadData()
       }
@@ -55,8 +53,7 @@ export class ResourceManager extends EditorManager {
       return super.extractIdFromWidget(widget as EditorWidget)
     }
     if (widget instanceof ReactWidget) {
-      if (!('uri' in widget) || typeof widget.uri !== 'string') throw new Error('widget.uri is null or not string')
-      const uri = widget.uri
+      const uri = uriWithoutId(widget.id.replace(`${this.id}:`, ''))
       const id = Number(widget.id.slice(widget.id.lastIndexOf(':') + 1))
       return { id, uri }
     }

@@ -1,7 +1,7 @@
 import { GridModel } from '@flowda/design'
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
-import { ContextMenuRenderer, HoverService, open, OpenerService } from '@theia/core/lib/browser'
-import { Command, URI } from '@theia/core'
+import { ContextMenuRenderer, HoverService, OpenerService } from '@theia/core/lib/browser'
+import { Command } from '@theia/core'
 import * as React from '@theia/core/shared/react'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
@@ -33,8 +33,8 @@ export class ResourceGridModel extends GridModel {
 
   @postConstruct()
   postConstruct() {
-    this.handlers.onRefClick = this.handleOnRefClick
-    this.handlers.onMouseEnter = this.handleMouseEnter
+    // this.handlers.onRefClick = this.handleOnRefClick
+    // this.handlers.onMouseEnter = this.handleMouseEnter
     this.handlers.onContextMenu = this.handleContextMenu
 
     this.apis.getResourceData = this.trpcFactory().hello.getResourceData.query
@@ -45,14 +45,14 @@ export class ResourceGridModel extends GridModel {
   /*
   todo 实现 reference preview 未完全实现
    */
-  private readonly handleMouseEnter = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  /*private readonly handleMouseEnter = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     // todo: 判断是否按照 command
     this.hoverService.requestHover({
       content: document.createElement('reference-preview'),
       target: e.currentTarget,
       position: 'right',
     })
-  }
+  }*/
 
   private handleContextMenu = (input: z.infer<typeof handleContextMenuInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
@@ -68,7 +68,8 @@ export class ResourceGridModel extends GridModel {
     })
   }
 
-  private readonly handleOnRefClick = (v: {
+  // todo: 改成 uri
+  /*private readonly handleOnRefClick = (v: {
     schemaName: string;
     name: string;
     id: number;
@@ -97,6 +98,5 @@ export class ResourceGridModel extends GridModel {
       mode: 'reveal',
       preview: true,
     })
-  }
-
+  }*/
 }

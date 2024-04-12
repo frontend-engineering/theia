@@ -4,12 +4,10 @@ import { TreeGrid, type TreeGridModel } from '@flowda/design'
 
 export class MenuWidget extends ReactWidget {
   static readonly ID = 'menu-widget'
-  uri: string
 
   constructor(private option: { id: string; uri: string, title: string, model: TreeGridModel }) {
     super()
     this.id = option.id
-    this.uri = option.uri
     this.title.caption = option.title
     this.title.label = option.title
     this.title.iconClass = 'unclosable-window-icon'
