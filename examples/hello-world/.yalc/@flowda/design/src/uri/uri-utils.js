@@ -60,7 +60,6 @@ export function createRefUri(input) {
     if (id == null)
         throw new Error(`column:${input.column.name} ${input.column.reference.primary_key} value is null`);
     const schemaName = `${input.column.reference.model_name}ResourceSchema`;
-    //    ^?
     const query = {
         schemaName,
         displayName: input.column.reference.display_name,

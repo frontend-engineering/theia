@@ -68,15 +68,53 @@ export class ResourceManager extends EditorManager {
     throw new Error(`widget is not valid`)
   }
 
+  protected override addRecentlyVisible(widget: unknown): void {
+    if (widget instanceof EditorWidget) {
+      super.addRecentlyVisible(widget)
+    } else if (widget instanceof ReactWidget) {
+      this.removeRecentlyVisible(widget)
+      this.recentlyVisibleIds.unshift(getKey(widget.id))
+    } else {
+      throw new Error(`widget is not valid`)
+    }
+  }
+
+  protected override removeRecentlyVisible(widget: unknown): void {
+    if (widget instanceof EditorWidget) {
+      super.removeRecentlyVisible(widget)
+    } else if (widget instanceof ReactWidget) {
+      const key = getKey(widget.id)
+      const index = this.recentlyVisibleIds.indexOf(key)
+      if (index !== -1) {
+        this.recentlyVisibleIds.splice(index, 1)
+      }
+    } else {
+      throw new Error(`widget is not valid`)
+    }
+  }
+
+  protected override get recentlyVisible(): EditorWidget | undefined {
+    const key = this.recentlyVisibleIds[0]
+    if (key) {
+      const ret = this.all.find(w => getKey(w.id) === key)
+      return ret
+    }
+    return undefined
+  }
+
   protected override getCounterForUri(uri: URI): number | undefined {
-    const counterOfMostRecentlyVisibleEditor = this.recentlyVisibleIds.find(id => {
-      const uri1 = uriWithoutId(id.replace(`${this.id}:`, ''))
-      return uriAsKey(uri1) === uriAsKey(uri)
+    const counterOfMostRecentlyVisibleEditor = this.recentlyVisibleIds.find(key => {
+      return key === uriAsKey(uri)
     })
     if (counterOfMostRecentlyVisibleEditor) {
-      return extractId(counterOfMostRecentlyVisibleEditor)
+      return 0
     } else {
       return undefined
     }
   }
+}
+
+function getKey(id: string) {
+  const uri = uriWithoutId(id.replace(`${ResourceWidgetFactory.ID}:`, ''))
+  return uriAsKey(uri)
 }

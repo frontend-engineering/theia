@@ -1,4 +1,12 @@
 .flowda {
+    .p-Menu {
+        background-color: var(--ag-control-panel-background-color);
+    }
+
+    .p-Menu-item.p-mod-active > div {
+        background-color: var(--ag-row-hover-color);
+    }
+
     .p-Widget.dialogOverlay {
         .dialogTitle {
             background: unset;
