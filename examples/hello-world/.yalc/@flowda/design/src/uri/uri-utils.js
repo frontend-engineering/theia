@@ -1,3 +1,4 @@
+import { __rest } from "tslib";
 import { treeGridUriQuerySchema } from '@flowda/types';
 import { URI } from '@theia/core';
 import * as qs from 'qs';
@@ -20,12 +21,10 @@ export function createTreeGridUri(uri, id, field) {
     const displayName = getUriDisplayName(uri);
     return new URI(`tree-grid://${uri.authority}?schemaName=${encodeURIComponent(`${getUriSchemaName(uri)}&displayName=${displayName}#${id}:${field}`)}&id=${id}&field=${field}`);
 }
-export function gridUriAsKey(uri) {
-    return `${uri.scheme}://${uri.authority}?schemaName=${getUriSchemaName(uri)}`;
-}
-export function treeGridUriAsKey(uri) {
+export function uriAsKey(uri) {
     const query = qs.parse(uri.query);
-    return `${uri.scheme}://${uri.authority}?schemaName=${getUriSchemaName(uri)}&field=${query.field}`;
+    const { displayName, filterModel } = query, rest = __rest(query, ["displayName", "filterModel"]);
+    return `${uri.scheme}://${uri.authority}?${qs.stringify(rest)}`;
 }
 export function uriWithoutId(uri) {
     return uri.slice(0, uri.lastIndexOf(':'));
@@ -57,5 +56,15 @@ export function createRefUri(input) {
     //    ^?
     const retUri = `grid://${uri.authority}?schemaName=${schemaName}ResourceSchema&displayName=${input.column.reference.display_name}&${input.column.reference.primary_key}=${id}`;
     return new URI(retUri);
+}
+export function updateUriFilterModel(uri, filterModel) {
+    if (typeof uri === 'string') {
+        uri = new URI(uri);
+    }
+    const query = qs.parse(uri.query);
+    const origFilterModel = qs.parse(query['filterModel']);
+    query['filterModel'] = qs.stringify(Object.assign(Object.assign({}, origFilterModel), { filterModel }));
+    const ret = uri.withQuery(qs.stringify(query));
+    return ret;
 }
 //# sourceMappingURL=uri-utils.js.map

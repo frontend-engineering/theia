@@ -2,6 +2,7 @@ import { __decorate } from "tslib";
 import { injectable } from 'inversify';
 import * as _ from 'radash';
 import { agFilterSchema, cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
+import { updateUriFilterModel } from '../uri/uri-utils';
 let GridModel = class GridModel {
     constructor() {
         this.columnDefs = [];
@@ -33,6 +34,11 @@ let GridModel = class GridModel {
                 }, e);
             }
         };
+    }
+    getUri() {
+        if (!this.uri)
+            throw new Error('uri is null');
+        return this.uri;
     }
     /**
      * 在 ResourceWidgetFactory#createWidget 重置 promise
@@ -104,7 +110,13 @@ let GridModel = class GridModel {
     }
     async getData(params) {
         if (typeof this.apis.getResourceData !== 'function') {
-            throw new Error('handlers.getResourceData is not implemented');
+            throw new Error('apis.getResourceData is not implemented');
+        }
+        if (!_.isEmpty(params.filterModel)) {
+            if (this.uri == null)
+                throw new Error('uri is null');
+            const uri = updateUriFilterModel(this.uri, params.filterModel);
+            this.uri = uri.toString();
         }
         const dataRet = await this.apis.getResourceData(params);
         const parseRet = getResourceDataOutputInnerSchema.safeParse(dataRet);

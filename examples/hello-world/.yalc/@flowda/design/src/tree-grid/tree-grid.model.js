@@ -20,6 +20,11 @@ let TreeGridModel = class TreeGridModel {
             this.convertAndSaveMenuData();
         };
     }
+    getUri() {
+        if (!this.uri)
+            throw new Error('uri is null');
+        return this.uri;
+    }
     resetGridReadyPromise(uri) {
         this.setUri(uri);
         this.gridReadyPromise = new Promise((resolve) => {

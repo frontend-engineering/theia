@@ -3,15 +3,16 @@ import { inject, injectable } from '@theia/core/shared/inversify'
 import { EditorWidget } from '@theia/editor/lib/browser'
 import { NavigatableWidgetOptions } from '@theia/core/lib/browser'
 import { URI } from '@theia/core'
-import { getUriDisplayName, GridModel, gridUriAsKey, TreeGridModel, treeGridUriAsKey } from '@flowda/design'
+import { getUriDisplayName, GridModel, TreeGridModel, uriAsKey } from '@flowda/design'
 import { MenuWidget } from './widgets/menu-widget'
 import { ResourceGridWidget } from './widgets/resource-grid-widget'
+import type { ManageableModel } from '@flowda/types'
 
 @injectable()
 export class ResourceWidgetFactory extends EditorWidgetFactory {
   @inject('Factory<GridModel>') private readonly gridModelFactory: () => GridModel
   @inject('Factory<TreeGridModel>') private readonly treeGridModelFactory: () => TreeGridModel
-  private resourceGridMap = new Map<string, unknown>()
+  private resourceGridMap = new Map<string, ManageableModel>()
 
   static override ID = 'resource-editor-opener'
   override readonly id = ResourceWidgetFactory.ID
@@ -22,15 +23,13 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       + (counter !== undefined ? `:${counter}` : '')
   }
 
-  public getOrCreateGridModel(uri: URI): unknown {
-    let key
-    let factory: () => unknown
+  public getOrCreateGridModel(uri: URI): ManageableModel {
+    const key = uriAsKey(uri)
+    let factory: () => ManageableModel
 
     if (uri.scheme === 'grid') {
-      key = gridUriAsKey(uri)
       factory = this.gridModelFactory
     } else if (uri.scheme === 'tree-grid') {
-      key = treeGridUriAsKey(uri)
       factory = this.treeGridModelFactory
     } else {
       throw new Error(`unknown uri, ${uri}`)
@@ -49,12 +48,11 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       const treeGridModel = this.getOrCreateGridModel(uri) as TreeGridModel
       treeGridModel.resetGridReadyPromise(options.uri)
       const widget = new MenuWidget({
-        id: ResourceWidgetFactory.createID(uri),
+        id: ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter,
         uri: options.uri,
         title: getUriDisplayName(uri),
         model: treeGridModel,
       })
-      widget.id = ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter
       return Promise.resolve(widget as unknown as EditorWidget)
     }
 
@@ -62,12 +60,11 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       const gridModel = this.getOrCreateGridModel(uri) as GridModel
       gridModel.resetRefPromise(uri.toString())
       const widget = new ResourceGridWidget({
-        id: ResourceWidgetFactory.createID(uri),
+        id: ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter,
         uri: options.uri,
         title: getUriDisplayName(uri),
         model: gridModel,
       })
-      widget.id = ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter
       return Promise.resolve(widget as unknown as EditorWidget)
     }
 

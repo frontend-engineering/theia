@@ -2,13 +2,13 @@
 import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, SortModelItem, ColDef, IRowNode, CellValueChangedEvent } from 'ag-grid-community';
-import { ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, cellRendererInputSchema, JSONObject, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
+import { ManageableModel, ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, cellRendererInputSchema, JSONObject, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
 import { ContainerModule, interfaces } from 'inversify';
 import { FormikProps } from 'formik';
 import { URI } from '@theia/core';
 
-declare class GridModel {
+declare class GridModel implements ManageableModel {
     columnDefs: z.infer<typeof ColumnUISchema>[];
     schemaName: string | null;
     schema: z.infer<typeof ResourceUISchema> | null;
@@ -36,6 +36,7 @@ declare class GridModel {
     private ref;
     private uri?;
     private refResolve?;
+    getUri(): string;
     /**
      * 在 ResourceWidgetFactory#createWidget 重置 promise
      * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
@@ -82,7 +83,7 @@ declare class GridModel {
 declare function getFinalFilterModel(param: z.infer<typeof agFilterSchema>, mem: z.infer<typeof agFilterSchema> | null, storage: JSONObject): z.infer<typeof agFilterSchema> | null;
 declare function tryExtractFilterModelFromRef(storage: JSONObject): z.infer<typeof agFilterSchema>;
 
-declare class TreeGridModel {
+declare class TreeGridModel implements ManageableModel {
     gridApi: GridApi | null;
     columnDefs: ColDef<any, any>[];
     private uri?;
@@ -95,6 +96,7 @@ declare class TreeGridModel {
     handlers: Partial<{
         message: (title: string) => void;
     }>;
+    getUri(): string;
     resetGridReadyPromise(uri: string): void;
     setGridApi(gridApi: GridApi): void;
     setUri(uri: string): void;
@@ -166,8 +168,7 @@ declare class Login extends React$1.Component<{
 declare function getUriDisplayName(uri: URI): string;
 declare function getUriSchemaName(uri: URI): string;
 declare function createTreeGridUri(uri: string | URI, id: string, field: string): URI;
-declare function gridUriAsKey(uri: URI): string;
-declare function treeGridUriAsKey(uri: URI): string;
+declare function uriAsKey(uri: URI): string;
 declare function uriWithoutId(uri: string): string;
 declare function convertTreeGridUriToGridUri(uriParam: string): string;
 declare function getTreeUriQuery(uriParam: string): {
@@ -177,5 +178,6 @@ declare function getTreeUriQuery(uriParam: string): {
     displayName: string;
 };
 declare function createRefUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
+declare function updateUriFilterModel(uri: URI | string, filterModel: z.infer<typeof agFilterSchema>): URI;
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createRefUri, createTreeGridUri, designModule, getFinalFilterModel, getTreeUriQuery, getUriDisplayName, getUriSchemaName, gridUriAsKey, treeGridUriAsKey, tryExtractFilterModelFromRef, uriWithoutId };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createRefUri, createTreeGridUri, designModule, getFinalFilterModel, getTreeUriQuery, getUriDisplayName, getUriSchemaName, tryExtractFilterModelFromRef, updateUriFilterModel, uriAsKey, uriWithoutId };

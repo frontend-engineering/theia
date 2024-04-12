@@ -18,6 +18,7 @@ import {
   ShellLayoutRestorer,
   SidebarBottomMenuWidgetFactory,
   WidgetFactory,
+  WidgetManager,
 } from '@theia/core/lib/browser'
 import { HelloShellLayoutRestorer } from './hello-shell-layout-restorer'
 import { HelloFilterContribution } from './hello-filter-contribution'
@@ -53,6 +54,7 @@ import { TabBarToolbarContribution } from '@theia/core/lib/browser/shell/tab-bar
 import { SampleTabBarToolbarContribution } from './sample-tab-bar-toolbar-contribution'
 import { SampleCommandRegistry } from './sample-command-registry'
 import { bindGettingStartedFrontendModule } from './getting-started/getting-started-frontend-module'
+import { HelloWidgetManager } from './hello-widget-manager'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
@@ -159,7 +161,7 @@ export default new ContainerModule(
     })
 
     bindGettingStartedFrontendModule(bind)
-
+    rebind(WidgetManager).to(HelloWidgetManager).inSingletonScope()
 
     /*bind(HelloWsConnectionSource).toSelf().inSingletonScope()
     if (isBound(WebSocketConnectionSource)) {
