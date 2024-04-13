@@ -4,9 +4,9 @@ import { Component } from 'react';
 import { GridApi, SortModelItem, ColDef, IRowNode, CellValueChangedEvent } from 'ag-grid-community';
 import { ManageableModel, ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
 import { z } from 'zod';
+import { URI } from '@theia/core';
 import { ContainerModule, interfaces } from 'inversify';
 import { FormikProps } from 'formik';
-import { URI } from '@theia/core';
 
 declare class GridModel implements ManageableModel {
     columnDefs: z.infer<typeof ColumnUISchema>[];
@@ -43,7 +43,7 @@ declare class GridModel implements ManageableModel {
      * 在 ResourceWidgetFactory#createWidget 重置 promise
      * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
      */
-    resetRefPromise(uri: string): void;
+    resetRefPromise(uri: string | URI): void;
     refresh(): void;
     /**
      * `<Grid ref={ref => this.setRef(ref)} />`
@@ -83,9 +83,9 @@ declare class TreeGridModel implements ManageableModel {
         message: (title: string) => void;
     }>;
     getUri(): string;
-    resetGridReadyPromise(uri: string): void;
+    resetGridReadyPromise(uri: string | URI): void;
     setGridApi(gridApi: GridApi): void;
-    setUri(uri: string): void;
+    setUri(uri: string | URI): void;
     loadData(): Promise<void>;
     setGridModel(gridModel: GridModel): void;
     getDataPath(data: unknown): string[];
@@ -157,8 +157,8 @@ declare function createTreeGridUri(uri: string | URI, id: string, field: string)
 declare function uriAsKey(uri: URI | string): string;
 declare function uriWithoutId(uri: string): string;
 declare function extractId(id: string): number;
-declare function convertTreeGridUriToGridUri(uriParam: string): string;
-declare function getTreeUriQuery(uriParam: string): {
+declare function convertTreeGridUriToGridUri(uri: string | URI): string;
+declare function getTreeUriQuery(uri: string | URI): {
     id: string;
     field: string;
     schemaName: string;

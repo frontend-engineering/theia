@@ -19,7 +19,7 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
 
   static override createID(uri: URI, counter?: number): string {
     return ResourceWidgetFactory.ID
-      + `:${uri.toString()}`
+      + `:${uri.toString(true)}`
       + (counter !== undefined ? `:${counter}` : '')
   }
 
@@ -48,7 +48,7 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       const treeGridModel = this.getOrCreateGridModel(uri) as TreeGridModel
       treeGridModel.resetGridReadyPromise(options.uri)
       const widget = new MenuWidget({
-        id: ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter,
+        id: ResourceWidgetFactory.ID + ':' + uriAsKey(options.uri) + ':' + options.counter,
         uri: options.uri,
         title: getUriDisplayName(uri),
         model: treeGridModel,
@@ -58,9 +58,9 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
 
     if (uri.scheme === 'grid') {
       const gridModel = this.getOrCreateGridModel(uri) as GridModel
-      gridModel.resetRefPromise(uri.toString())
+      gridModel.resetRefPromise(uri)
       const widget = new ResourceGridWidget({
-        id: ResourceWidgetFactory.ID + ':' + options.uri + ':' + options.counter,
+        id: ResourceWidgetFactory.ID + ':' + uriAsKey(options.uri) + ':' + options.counter,
         uri: options.uri,
         title: getUriDisplayName(uri),
         model: gridModel,

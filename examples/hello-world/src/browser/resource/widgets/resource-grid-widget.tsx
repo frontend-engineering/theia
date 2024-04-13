@@ -1,14 +1,14 @@
-import { ReactWidget } from '@theia/core/lib/browser'
 import * as React from '@theia/core/shared/react'
-import { Grid, GridModel, uriWithoutId } from '@flowda/design'
-import { ResourceWidgetFactory } from '../resource-widget-factory'
+import { Grid, GridModel } from '@flowda/design'
+import { ManageableWidget } from './manageable-widget'
 
-export class ResourceGridWidget extends ReactWidget {
+export class ResourceGridWidget extends ManageableWidget {
   static readonly ID = 'grid-widget'
 
   constructor(private option: { id: string; uri: string, title: string, model: GridModel }) {
     super()
     this.id = option.id
+    this.uri = option.uri
     this.title.caption = option.title
     this.title.label = option.title
     this.title.iconClass = 'unclosable-window-icon'
@@ -17,9 +17,8 @@ export class ResourceGridWidget extends ReactWidget {
   }
 
   protected render(): React.ReactNode {
-    const uri = uriWithoutId(this.id.replace(`${ResourceWidgetFactory.ID}:`, ''))
     return <Grid
-      ref={ref => this.option.model.setRef(ref, uri)}
-      model={this.option.model} uri={uri}/>
+      ref={ref => this.option.model.setRef(ref, this.uri)}
+      model={this.option.model} uri={this.uri}/>
   }
 }

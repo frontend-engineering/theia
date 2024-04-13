@@ -6,13 +6,13 @@ import * as _ from 'radash';
 export function getUriDisplayName(uri) {
     const query = qs.parse(uri.query);
     if (!('displayName' in query) || typeof query.displayName !== 'string')
-        throw new Error(`query must have displayName and is string, ${uri.toString()}`);
+        throw new Error(`query must have displayName and is string, ${uri.toString(true)}`);
     return query.displayName;
 }
 export function getUriSchemaName(uri) {
     const query = qs.parse(uri.query);
     if (!('schemaName' in query) || typeof query.schemaName !== 'string')
-        throw new Error(`query must have schemaName and is string, ${uri.toString()}`);
+        throw new Error(`query must have schemaName and is string, ${uri.toString(true)}`);
     return query.schemaName;
 }
 export function createTreeGridUri(uri, id, field) {
@@ -36,15 +36,17 @@ export function extractId(id) {
     const count = parseInt(id.slice(id.lastIndexOf(':') + 1));
     return count;
 }
-export function convertTreeGridUriToGridUri(uriParam) {
-    const query = getTreeUriQuery(uriParam);
-    const uri = new URI(uriParam);
+export function convertTreeGridUriToGridUri(uri) {
+    if (typeof uri === 'string')
+        uri = new URI(uri);
+    const query = getTreeUriQuery(uri);
     const displayName = query.displayName.split('#')[0];
     const gridUri = `grid://${uri.authority}?schemaName=${query.schemaName}&displayName=${displayName}`;
     return gridUri;
 }
-export function getTreeUriQuery(uriParam) {
-    const uri = new URI(uriParam);
+export function getTreeUriQuery(uri) {
+    if (typeof uri === 'string')
+        uri = new URI(uri);
     const query = qs.parse(uri.query);
     const queryParsedRet = treeGridUriQuerySchema.parse(query);
     return queryParsedRet;

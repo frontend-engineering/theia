@@ -26,6 +26,8 @@ let TreeGridModel = class TreeGridModel {
         return this.uri;
     }
     resetGridReadyPromise(uri) {
+        if (typeof uri === 'string')
+            uri = new URI(uri);
         this.setUri(uri);
         this.gridReadyPromise = new Promise((resolve) => {
             this.gridReadyResolve = resolve;
@@ -38,6 +40,8 @@ let TreeGridModel = class TreeGridModel {
         this.gridReadyResolve(true);
     }
     setUri(uri) {
+        if (typeof uri !== 'string')
+            uri = uri.toString(true);
         if (uri != null) {
             if (this.uri == null) {
                 this.uri = uri;

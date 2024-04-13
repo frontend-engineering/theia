@@ -49,6 +49,8 @@ let GridModel = class GridModel {
      * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
      */
     resetRefPromise(uri) {
+        if (typeof uri !== 'string')
+            uri = uri.toString(true);
         this.uri = uri;
         this._isFirstGetRows = true;
         this.refPromise = new Promise((resolve) => {
