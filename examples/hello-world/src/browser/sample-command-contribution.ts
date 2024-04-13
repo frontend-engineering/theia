@@ -19,7 +19,7 @@ import { EditorCommands } from '@theia/editor/lib/browser'
 import { PreviewCommands } from '@theia/preview/lib/browser/preview-contribution'
 import { z } from 'zod'
 import { handleContextMenuInputSchema } from '@flowda/types'
-import { createRefUri, createTreeGridUri } from '@flowda/design'
+import { createAssociationUri, createRefUri, createTreeGridUri } from '@flowda/design'
 import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 
 @injectable()
@@ -59,7 +59,7 @@ export class SampleCommandContribution implements CommandContribution {
     commandRegistry.registerCommand(ResourceGridCommands.OPEN_REFERENCE, {
       execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
         const uri = createRefUri(input)
-        
+
         const manageableModel = this.resourceWidgetFactory.getOrCreateGridModel(uri)
         manageableModel.setUri(uri)
         manageableModel.resetIsFirstGetRows()
@@ -71,16 +71,20 @@ export class SampleCommandContribution implements CommandContribution {
       },
       isEnabled: (...args) => {
         const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
-        return input?.column.column_type === 'reference'
+        return input?.column?.column_type === 'reference'
       },
       isVisible: (...args) => {
         const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
-        return input?.column.column_type === 'reference'
+        return input?.column?.column_type === 'reference'
       },
     })
-    commandRegistry.registerCommand(ResourceGridCommands.EDIT_MENU, {
+    commandRegistry.registerCommand(ResourceGridCommands.OPEN_ASSOCIATION, {
       execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
-        const uri = createTreeGridUri(input.uri, input.cellRendererInput.data.id, input.cellRendererInput.colDef.field)
+        const uri = createAssociationUri(input)
+        const manageableModel = this.resourceWidgetFactory.getOrCreateGridModel(uri)
+        manageableModel.setUri(uri)
+        manageableModel.resetIsFirstGetRows()
+
         open(this.openerService, uri, {
           mode: 'reveal',
           preview: true,
@@ -88,11 +92,35 @@ export class SampleCommandContribution implements CommandContribution {
       },
       isEnabled: (...args) => {
         const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
-        return input?.column.column_type === 'Json'
+        const ret = input?.association?.model_name != null
+        // console.log(`open assocation`, ret)
+        return ret
       },
       isVisible: (...args) => {
         const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
-        return input?.column.column_type === 'Json'
+        return input?.association?.model_name != null
+      },
+    })
+    commandRegistry.registerCommand(ResourceGridCommands.EDIT_MENU, {
+      execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
+        const uri = createTreeGridUri(input.uri,
+          // @ts-expect-error
+          input.cellRendererInput.data?.id,
+          input.cellRendererInput.colDef.field)
+        open(this.openerService, uri, {
+          mode: 'reveal',
+          preview: true,
+        })
+      },
+      isEnabled: (...args) => {
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
+        const ret = input?.column?.column_type === 'Json'
+        // console.log(`edit menu`, ret)
+        return ret
+      },
+      isVisible: (...args) => {
+        const input = (args[0] as z.infer<typeof handleContextMenuInputSchema> | null)
+        return input?.column?.column_type === 'Json'
       },
     })
     /*

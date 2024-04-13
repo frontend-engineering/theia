@@ -22,6 +22,12 @@ export namespace ResourceGridCommands {
     category: 'Examples',
     label: 'Edit Menu',
   }
+
+  export const OPEN_ASSOCIATION: Command = {
+    id: 'resource-grid.open-association',
+    category: 'Examples',
+    label: 'Open association',
+  }
 }
 
 // todo: 将 api handlers 赋值放在 bind onActivation 里 不需要做一个子类
@@ -39,6 +45,7 @@ export class ResourceGridModel extends GridModel {
     this.handlers.onContextMenu = this.handleContextMenu
 
     this.apis.getResourceData = this.trpcFactory().hello.getResourceData.query
+    // @ts-expect-error 经常和 trpc 生成的代码有冲突（有一些中间过程代码），先忽略
     this.apis.getResourceSchema = this.trpcFactory().hello.getResourceSchema.query
     this.apis.putResourceData = this.trpcFactory().hello.putResourceData.mutate
   }

@@ -23,9 +23,10 @@ exports.agSortSchema = zod_1.z.array(zod_1.z.object({
 }));
 exports.cellRendererInputSchema = zod_1.z.object({
     value: zod_1.z.any(),
-    data: zod_1.z.object({
-        id: zod_1.z.union([zod_1.z.string(), zod_1.z.number()]).transform(arg => arg.toString())
-    }),
+    // data: z.object({
+    //   id: z.union([z.string(), z.number()]).transform(arg => arg.toString())
+    // }),
+    data: zod_1.z.unknown(),
     valueFormatted: zod_1.z.string().nullable(),
     colDef: zod_1.z.object({
         field: zod_1.z.string(),

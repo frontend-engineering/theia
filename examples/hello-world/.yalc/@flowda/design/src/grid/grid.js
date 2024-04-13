@@ -48,6 +48,7 @@ export class Grid extends React.Component {
             });
         };
         this.setColDefs = () => {
+            var _a;
             const colDefs = this.props.model.columnDefs.map(item => {
                 var _a;
                 // todo: 图片需要搞一个 modal 并且上传修改
@@ -90,6 +91,8 @@ export class Grid extends React.Component {
                             editable: false,
                             field: item.name,
                             headerName: item.display_name,
+                            filter: true,
+                            floatingFilter: true,
                             cellRenderer: (param) => {
                                 if (!param.value) {
                                     return _jsx("span", { children: "." });
@@ -109,7 +112,9 @@ export class Grid extends React.Component {
                                 </a>
                                 */
                                 return (_jsx("div", { onContextMenu: (e) => {
-                                        this.props.model.onContextMenu(param, e);
+                                        this.props.model.onContextMenu(param, e, {
+                                            type: 'reference'
+                                        });
                                     }, children: getReferenceDisplay(item.reference, param.value) }));
                             },
                         };
@@ -134,12 +139,16 @@ export class Grid extends React.Component {
                         refData: refData,
                       }
                     }*/
+                    case 'Int':
                     case 'integer':
                         return {
                             field: item.name,
                             headerName: item.display_name,
                             cellDataType: 'number',
+                            filter: true,
+                            floatingFilter: true,
                         };
+                    case 'Boolean':
                     case 'boolean':
                         return {
                             field: item.name,
@@ -172,6 +181,7 @@ export class Grid extends React.Component {
                             // cellRenderer: ShortDatetime,
                         };
                     case 'string':
+                    case 'String':
                     case 'textarea':
                         return {
                             editable: true,
@@ -188,7 +198,9 @@ export class Grid extends React.Component {
                             headerName: item.display_name,
                             cellRenderer: (param) => {
                                 return (_jsx("div", { onContextMenu: (e) => {
-                                        this.props.model.onContextMenu(param, e);
+                                        this.props.model.onContextMenu(param, e, {
+                                            type: 'Json'
+                                        });
                                     }, children: param.valueFormatted }));
                             },
                         };
@@ -203,7 +215,25 @@ export class Grid extends React.Component {
             if (!this.gridRef) {
                 throw new Error('this.gridRef is null');
             }
-            this.gridRef.api.setGridOption('columnDefs', colDefs);
+            const associations = (_a = this.props.model.schema) === null || _a === void 0 ? void 0 : _a.associations;
+            let assColDefs = [];
+            if (associations != null) {
+                assColDefs = associations.map(ass => {
+                    return {
+                        editable: false,
+                        field: ass.model_name,
+                        headerName: ass.display_name,
+                        cellRenderer: (param) => {
+                            return (_jsx("div", { onContextMenu: (e) => {
+                                    this.props.model.onContextMenu(param, e, {
+                                        type: 'association'
+                                    });
+                                }, children: `#${param.data[ass.primary_key]} ${ass.display_name}` }));
+                        }
+                    };
+                });
+            }
+            this.gridRef.api.setGridOption('columnDefs', colDefs.concat(assColDefs));
         };
     }
     /*

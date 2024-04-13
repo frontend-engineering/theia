@@ -15,6 +15,7 @@ exports.ResourceUISchema = ui_schema_object_1.ResourceKeySchema.omit({
     .extend({
     namespace: zod_1.z.string().describe('网关作为命名空间'),
     columns: zod_1.z.array(exports.ColumnUISchema),
+    associations: zod_1.z.array(ui_schema_object_1.AssociationKeySchema),
 });
 // todo: 去掉这种写法 zod 还不够强大，处理 template literal
 exports.PluginKeySchema = zod_1.z.custom()

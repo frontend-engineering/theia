@@ -70,6 +70,10 @@ export class SampleMenuContribution implements MenuContribution {
       ResourceGridCommands.CONTEXT_MENU,
       { commandId: ResourceGridCommands.EDIT_MENU.id, label: ResourceGridCommands.EDIT_MENU.label },
     )
+    registry.registerMenuAction(
+      ResourceGridCommands.CONTEXT_MENU,
+      { commandId: ResourceGridCommands.OPEN_ASSOCIATION.id, label: ResourceGridCommands.OPEN_ASSOCIATION.label },
+    )
     /* END ag-grid */
   }
 }

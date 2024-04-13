@@ -1,6 +1,5 @@
 import { __decorate } from "tslib";
 import { injectable } from 'inversify';
-import * as _ from 'radash';
 import { cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
 import { isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel } from '../uri/uri-utils';
 import { URI } from '@theia/core';
@@ -19,21 +18,33 @@ let GridModel = class GridModel {
                 this.handlers.onMouseEnter(e);
             }
         };
-        this.onContextMenu = (cellRendererInput, e) => {
+        this.onContextMenu = (cellRendererInput, e, options) => {
             if (typeof this.handlers.onContextMenu === 'function') {
                 const parsedRet = cellRendererInputSchema.parse(cellRendererInput);
                 if (this._uri == null)
                     throw new Error('uri is null');
                 if (this.schema == null)
                     throw new Error('schema is null');
-                const column = this.schema.columns.find(col => col.name === parsedRet.colDef.field);
-                if (!column)
-                    throw new Error(`no column def: ${this.schemaName}, ${parsedRet.colDef.field}`);
-                this.handlers.onContextMenu({
-                    uri: this.getUri(),
-                    cellRendererInput: parsedRet,
-                    column
-                }, e);
+                if ((options === null || options === void 0 ? void 0 : options.type) === 'association') {
+                    const ass = this.schema.associations.find(ass => ass.model_name === parsedRet.colDef.field);
+                    if (!ass)
+                        throw new Error(`no association def: ${this.schemaName}, ${parsedRet.colDef.field}`);
+                    this.handlers.onContextMenu({
+                        uri: this.getUri(),
+                        cellRendererInput: parsedRet,
+                        association: ass
+                    }, e);
+                }
+                else {
+                    const column = this.schema.columns.find(col => col.name === parsedRet.colDef.field);
+                    if (!column)
+                        throw new Error(`no column def: ${this.schemaName}, ${parsedRet.colDef.field}`);
+                    this.handlers.onContextMenu({
+                        uri: this.getUri(),
+                        cellRendererInput: parsedRet,
+                        column
+                    }, e);
+                }
             }
         };
     }
@@ -105,7 +116,7 @@ let GridModel = class GridModel {
             const schemaRes = await this.apis.getResourceSchema({
                 schemaName: this.schemaName,
             });
-            if (schemaRes.columns.length > 0 && !_.isEqual(this.columnDefs, schemaRes.columns)) {
+            if (schemaRes.columns.length > 0) {
                 this.columnDefs = schemaRes.columns;
             }
             this.schema = schemaRes;
@@ -119,8 +130,6 @@ let GridModel = class GridModel {
         }
         // @ts-expect-error
         this.ref['setColDefs']();
-        // todo: 改成直接从 uri -> filterModel
-        // setTimeout(() => this.gridApi?.setFilterModel({}), 0) // 等待 re render
     }
     async getData(params) {
         var _a;

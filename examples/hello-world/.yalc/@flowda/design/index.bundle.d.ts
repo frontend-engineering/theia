@@ -67,7 +67,9 @@ declare class GridModel implements ManageableModel {
     }>;
     putData(id: number, updatedValue: unknown): Promise<void>;
     readonly onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    readonly onContextMenu: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+    readonly onContextMenu: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>, options?: {
+        type: 'reference' | 'association' | 'Json' | undefined;
+    }) => void;
     onRefClick(field: string, value: any): void;
 }
 
@@ -162,10 +164,10 @@ declare function uriWithoutId(uri: string): string;
 declare function extractId(id: string): number;
 declare function convertTreeGridUriToGridUri(uri: string | URI): string;
 declare function getTreeUriQuery(uri: string | URI): {
-    id: string;
     field: string;
     schemaName: string;
     displayName: string;
+    id: string;
 };
 declare function createRefUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 declare function getUriFilterModel(uri: URI | string): z.infer<typeof agFilterSchema>;
@@ -173,5 +175,6 @@ declare function mergeUriFilterModel(uri: URI | string, filterModel: z.infer<typ
 declare function updateUriFilterModel(uri: URI | string, filterModel: z.infer<typeof agFilterSchema>): URI;
 declare function isUriLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function isUriAsKeyLikeEqual(a: URI | string, b: URI | string): boolean;
+declare function createAssociationUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createRefUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };
+export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createRefUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };

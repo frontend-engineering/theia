@@ -52,13 +52,13 @@ export function getTreeUriQuery(uri) {
     return queryParsedRet;
 }
 export function createRefUri(input) {
-    var _a, _b;
+    var _a, _b, _c, _d, _e;
     const uri = new URI(input.uri);
-    if (input.column.column_type !== 'reference')
-        throw new Error(`column_type should be reference, ${input.column.name}, ${input.column.column_type}`);
+    if (((_a = input.column) === null || _a === void 0 ? void 0 : _a.column_type) !== 'reference')
+        throw new Error(`column_type should be reference, ${(_b = input.column) === null || _b === void 0 ? void 0 : _b.name}, ${(_c = input.column) === null || _c === void 0 ? void 0 : _c.column_type}`);
     if (input.column.reference == null)
         throw new Error(`column_type reference should have reference, ${input.column.name}`);
-    const id = (_b = (_a = input.cellRendererInput) === null || _a === void 0 ? void 0 : _a.value) === null || _b === void 0 ? void 0 : _b[input.column.reference.primary_key];
+    const id = (_e = (_d = input.cellRendererInput) === null || _d === void 0 ? void 0 : _d.value) === null || _e === void 0 ? void 0 : _e[input.column.reference.primary_key];
     if (id == null)
         throw new Error(`column:${input.column.name} ${input.column.reference.primary_key} value is null`);
     const schemaName = `${input.column.reference.model_name}ResourceSchema`;
@@ -134,5 +134,25 @@ export function isUriAsKeyLikeEqual(a, b) {
         && a.path.toString() === b.path.toString()
         && _.isEqual(qs.parse(a.query), qs.parse(b.query))
         && a.fragment === b.fragment;
+}
+export function createAssociationUri(input) {
+    var _a, _b, _c;
+    if (((_a = input.association) === null || _a === void 0 ? void 0 : _a.model_name) == null)
+        throw new Error('should be association');
+    const uri = new URI(input.uri);
+    const query = {
+        schemaName: `${(_b = input.association) === null || _b === void 0 ? void 0 : _b.model_name}ResourceSchema`,
+        displayName: input.association.display_name,
+        filterModel: {
+            [input.association.foreign_key]: {
+                filterType: 'number',
+                type: 'equals',
+                // @ts-expect-error
+                filter: (_c = input.cellRendererInput.data) === null || _c === void 0 ? void 0 : _c[input.association.primary_key],
+            },
+        },
+    };
+    const ret = `${uri.scheme}://${uri.authority}?${qs.stringify(query, { encode: false })}`;
+    return new URI(ret);
 }
 //# sourceMappingURL=uri-utils.js.map

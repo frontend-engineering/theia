@@ -117,13 +117,7 @@ declare const agSortSchema: z.ZodArray<z.ZodObject<{
 }>, "many">;
 declare const cellRendererInputSchema: z.ZodObject<{
     value: z.ZodAny;
-    data: z.ZodObject<{
-        id: z.ZodEffects<z.ZodUnion<[z.ZodString, z.ZodNumber]>, string, string | number>;
-    }, "strip", z.ZodTypeAny, {
-        id: string;
-    }, {
-        id: string | number;
-    }>;
+    data: z.ZodUnknown;
     valueFormatted: z.ZodNullable<z.ZodString>;
     colDef: z.ZodObject<{
         field: z.ZodString;
@@ -133,23 +127,19 @@ declare const cellRendererInputSchema: z.ZodObject<{
         field: string;
     }>;
 }, "strip", z.ZodTypeAny, {
-    data: {
-        id: string;
-    };
     valueFormatted: string | null;
     colDef: {
         field: string;
     };
     value?: any;
+    data?: unknown;
 }, {
-    data: {
-        id: string | number;
-    };
     valueFormatted: string | null;
     colDef: {
         field: string;
     };
     value?: any;
+    data?: unknown;
 }>;
 
 interface ZodDto<TOutput = any, TDef extends ZodTypeDef = ZodTypeDef, TInput = TOutput> {
@@ -222,13 +212,7 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
     uri: z.ZodString;
     cellRendererInput: z.ZodObject<{
         value: z.ZodAny;
-        data: z.ZodObject<{
-            id: z.ZodEffects<z.ZodUnion<[z.ZodString, z.ZodNumber]>, string, string | number>;
-        }, "strip", z.ZodTypeAny, {
-            id: string;
-        }, {
-            id: string | number;
-        }>;
+        data: z.ZodUnknown;
         valueFormatted: z.ZodNullable<z.ZodString>;
         colDef: z.ZodObject<{
             field: z.ZodString;
@@ -238,25 +222,21 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
             field: string;
         }>;
     }, "strip", z.ZodTypeAny, {
-        data: {
-            id: string;
-        };
         valueFormatted: string | null;
         colDef: {
             field: string;
         };
         value?: any;
+        data?: unknown;
     }, {
-        data: {
-            id: string | number;
-        };
         valueFormatted: string | null;
         colDef: {
             field: string;
         };
         value?: any;
+        data?: unknown;
     }>;
-    column: z.ZodObject<{
+    column: z.ZodOptional<z.ZodObject<{
         column_type: z.ZodString;
         display_name: z.ZodString;
         description: z.ZodOptional<z.ZodString>;
@@ -310,20 +290,40 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
             primary_key: string;
             reference_type: "belongs_to" | "has_one";
         } | undefined;
-    }>;
+    }>>;
+    association: z.ZodOptional<z.ZodObject<{
+        display_name: z.ZodString;
+        slug: z.ZodString;
+        model_name: z.ZodString;
+        foreign_key: z.ZodString;
+        primary_key: z.ZodString;
+        visible: z.ZodBoolean;
+    }, "strip", z.ZodTypeAny, {
+        display_name: string;
+        slug: string;
+        model_name: string;
+        foreign_key: string;
+        primary_key: string;
+        visible: boolean;
+    }, {
+        display_name: string;
+        slug: string;
+        model_name: string;
+        foreign_key: string;
+        primary_key: string;
+        visible: boolean;
+    }>>;
 }, "strip", z.ZodTypeAny, {
     uri: string;
     cellRendererInput: {
-        data: {
-            id: string;
-        };
         valueFormatted: string | null;
         colDef: {
             field: string;
         };
         value?: any;
+        data?: unknown;
     };
-    column: {
+    column?: {
         column_type: string;
         display_name: string;
         name: string;
@@ -337,20 +337,26 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
             primary_key: string;
             reference_type: "belongs_to" | "has_one";
         } | undefined;
-    };
+    } | undefined;
+    association?: {
+        display_name: string;
+        slug: string;
+        model_name: string;
+        foreign_key: string;
+        primary_key: string;
+        visible: boolean;
+    } | undefined;
 }, {
     uri: string;
     cellRendererInput: {
-        data: {
-            id: string | number;
-        };
         valueFormatted: string | null;
         colDef: {
             field: string;
         };
         value?: any;
+        data?: unknown;
     };
-    column: {
+    column?: {
         column_type: string;
         display_name: string;
         name: string;
@@ -364,7 +370,15 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
             primary_key: string;
             reference_type: "belongs_to" | "has_one";
         } | undefined;
-    };
+    } | undefined;
+    association?: {
+        display_name: string;
+        slug: string;
+        model_name: string;
+        foreign_key: string;
+        primary_key: string;
+        visible: boolean;
+    } | undefined;
 }>;
 declare const treeGridUriQuerySchema: z.ZodObject<{
     schemaName: z.ZodString;
@@ -372,15 +386,15 @@ declare const treeGridUriQuerySchema: z.ZodObject<{
     id: z.ZodString;
     field: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    id: string;
     field: string;
     schemaName: string;
     displayName: string;
+    id: string;
 }, {
-    id: string;
     field: string;
     schemaName: string;
     displayName: string;
+    id: string;
 }>;
 
 declare const selectOptionSchema: z.ZodObject<{
@@ -523,11 +537,11 @@ declare const findUniqueResourceDataInputSchema: z.ZodObject<{
     schemaName: z.ZodString;
     id: z.ZodNumber;
 }, "strip", z.ZodTypeAny, {
-    id: number;
     schemaName: string;
+    id: number;
 }, {
-    id: number;
     schemaName: string;
+    id: number;
 }>;
 declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
     schemaName: z.ZodString;
@@ -634,11 +648,11 @@ declare const getResourceDataInputSchema: z.ZodUnion<[z.ZodObject<{
     schemaName: z.ZodString;
     id: z.ZodNumber;
 }, "strip", z.ZodTypeAny, {
-    id: number;
     schemaName: string;
+    id: number;
 }, {
-    id: number;
     schemaName: string;
+    id: number;
 }>]>;
 declare const getResourceDataOutputInnerSchema: z.ZodObject<{
     pagination: z.ZodObject<{
@@ -685,12 +699,12 @@ declare const putResourceDataInputSchema: z.ZodObject<{
     id: z.ZodNumber;
     updatedValue: z.ZodAny;
 }, "strip", z.ZodTypeAny, {
-    id: number;
     schemaName: string;
+    id: number;
     updatedValue?: any;
 }, {
-    id: number;
     schemaName: string;
+    id: number;
     updatedValue?: any;
 }>;
 
@@ -700,14 +714,14 @@ declare const baseMenuItemSchema: z.ZodObject<{
     id: z.ZodString;
     icon: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    id: string;
     slug: string;
     name: string;
+    id: string;
     icon?: string | undefined;
 }, {
-    id: string;
     slug: string;
     name: string;
+    id: string;
     icon?: string | undefined;
 }>;
 type MenuItem = z.infer<typeof baseMenuItemSchema> & {
@@ -716,21 +730,21 @@ type MenuItem = z.infer<typeof baseMenuItemSchema> & {
 };
 declare const menuItemSchema: z.ZodType<MenuItem>;
 declare const agMenuItemSchema: z.ZodObject<{
-    id: z.ZodString;
     slug: z.ZodString;
     name: z.ZodString;
+    id: z.ZodString;
     icon: z.ZodOptional<z.ZodString>;
     hierarchy: z.ZodArray<z.ZodString, "many">;
 }, "strip", z.ZodTypeAny, {
-    id: string;
     slug: string;
     name: string;
+    id: string;
     hierarchy: string[];
     icon?: string | undefined;
 }, {
-    id: string;
     slug: string;
     name: string;
+    id: string;
     hierarchy: string[];
     icon?: string | undefined;
 }>;
@@ -1082,6 +1096,28 @@ declare const ResourceUISchema: z.ZodObject<{
             reference_type: "belongs_to" | "has_one";
         } | undefined;
     }>, "many">;
+    associations: z.ZodArray<z.ZodObject<{
+        display_name: z.ZodString;
+        slug: z.ZodString;
+        model_name: z.ZodString;
+        foreign_key: z.ZodString;
+        primary_key: z.ZodString;
+        visible: z.ZodBoolean;
+    }, "strip", z.ZodTypeAny, {
+        display_name: string;
+        slug: string;
+        model_name: string;
+        foreign_key: string;
+        primary_key: string;
+        visible: boolean;
+    }, {
+        display_name: string;
+        slug: string;
+        model_name: string;
+        foreign_key: string;
+        primary_key: string;
+        visible: boolean;
+    }>, "many">;
 }, "strip", z.ZodTypeAny, {
     display_name: string;
     slug: string;
@@ -1106,6 +1142,14 @@ declare const ResourceUISchema: z.ZodObject<{
             primary_key: string;
             reference_type: "belongs_to" | "has_one";
         } | undefined;
+    }[];
+    associations: {
+        display_name: string;
+        slug: string;
+        model_name: string;
+        foreign_key: string;
+        primary_key: string;
+        visible: boolean;
     }[];
     display_column?: string | undefined;
     searchable_columns?: string | undefined;
@@ -1133,6 +1177,14 @@ declare const ResourceUISchema: z.ZodObject<{
             primary_key: string;
             reference_type: "belongs_to" | "has_one";
         } | undefined;
+    }[];
+    associations: {
+        display_name: string;
+        slug: string;
+        model_name: string;
+        foreign_key: string;
+        primary_key: string;
+        visible: boolean;
     }[];
     display_column?: string | undefined;
     searchable_columns?: string | undefined;

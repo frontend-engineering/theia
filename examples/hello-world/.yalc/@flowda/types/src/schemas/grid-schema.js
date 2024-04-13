@@ -7,7 +7,8 @@ const types_1 = require("../types");
 exports.handleContextMenuInputSchema = zod_1.z.object({
     uri: zod_1.z.string().describe('所属 Grid 的 uri'),
     cellRendererInput: ag_grid_schema_1.cellRendererInputSchema,
-    column: types_1.ColumnUISchema
+    column: types_1.ColumnUISchema.optional(),
+    association: types_1.AssociationKeySchema.optional()
 });
 exports.treeGridUriQuerySchema = zod_1.z.object({
     schemaName: zod_1.z.string(),
