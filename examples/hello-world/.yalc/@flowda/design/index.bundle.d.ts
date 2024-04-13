@@ -35,10 +35,12 @@ declare class GridModel implements ManageableModel {
         putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
     }>;
     private ref;
-    private uri?;
+    private _uri?;
     private refResolve?;
     private _isFirstGetRows;
     getUri(): string;
+    setUri(uri: string | URI): void;
+    resetIsFirstGetRows(): void;
     /**
      * 在 ResourceWidgetFactory#createWidget 重置 promise
      * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
@@ -86,6 +88,7 @@ declare class TreeGridModel implements ManageableModel {
     resetGridReadyPromise(uri: string | URI): void;
     setGridApi(gridApi: GridApi): void;
     setUri(uri: string | URI): void;
+    resetIsFirstGetRows(): void;
     loadData(): Promise<void>;
     setGridModel(gridModel: GridModel): void;
     getDataPath(data: unknown): string[];

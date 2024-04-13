@@ -109,7 +109,8 @@ export function updateUriFilterModel(uri, filterModel) {
     }
     const query = qs.parse(uri.query);
     const query2 = Object.assign(Object.assign({}, query), { filterModel });
-    const ret = uri.withQuery(qs.stringify(query2));
+    const query3 = qs.stringify(query2, { encode: false });
+    const ret = uri.withQuery(query3);
     return ret;
 }
 export function isUriLikeEqual(a, b) {

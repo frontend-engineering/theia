@@ -20,6 +20,7 @@ import { PreviewCommands } from '@theia/preview/lib/browser/preview-contribution
 import { z } from 'zod'
 import { handleContextMenuInputSchema } from '@flowda/types'
 import { createRefUri, createTreeGridUri } from '@flowda/design'
+import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 
 @injectable()
 export class SampleCommandContribution implements CommandContribution {
@@ -27,6 +28,7 @@ export class SampleCommandContribution implements CommandContribution {
   @inject(LoginDialog) protected readonly loginDialog: LoginDialog
   @inject(ThemeService) protected readonly themeService: ThemeService
   @inject(OpenerService) protected readonly openerService: OpenerService
+  @inject(ResourceWidgetFactory) protected resourceWidgetFactory: ResourceWidgetFactory
 
   registerCommands(commandRegistry: CommandRegistry): void {
     commandRegistry.registerCommand(
@@ -57,6 +59,11 @@ export class SampleCommandContribution implements CommandContribution {
     commandRegistry.registerCommand(ResourceGridCommands.OPEN_REFERENCE, {
       execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
         const uri = createRefUri(input)
+        
+        const manageableModel = this.resourceWidgetFactory.getOrCreateGridModel(uri)
+        manageableModel.setUri(uri)
+        manageableModel.resetIsFirstGetRows()
+
         open(this.openerService, uri, {
           mode: 'reveal',
           preview: true,

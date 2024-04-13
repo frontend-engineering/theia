@@ -53,6 +53,9 @@ let TreeGridModel = class TreeGridModel {
             }
         }
     }
+    resetIsFirstGetRows() {
+        // noop
+    }
     async loadData() {
         if (!this.gridModel)
             throw new Error(`this.gridModel is null, call setGridModel() first`);

@@ -2,7 +2,7 @@ import { EditorManager, EditorOpenerOptions, EditorWidget, WidgetId } from '@the
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
-import { NavigatableWidgetOptions, WidgetConstructionOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
+import { NavigatableWidgetOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
 import { convertTreeGridUriToGridUri, getUriSchemaName, GridModel, TreeGridModel, uriAsKey } from '@flowda/design'
 import { ManageableWidget } from './widgets/manageable-widget'
@@ -26,7 +26,10 @@ export class ResourceManager extends EditorManager {
       }
 
       if (widget instanceof ManageableWidget) {
-        const uri = new URI(widget.uri)
+        const manageableModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri)
+        const uri_ = manageableModel.getUri()
+        // const uri = new URI(widget.uri)
+        const uri = new URI(uri_)
         this.logger.info(`[ResourceManager] onCurrentEditorChanged ${uri.toString(true)}`)
 
         if (uri.scheme === 'grid') {

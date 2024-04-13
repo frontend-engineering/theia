@@ -3,6 +3,7 @@ import { injectable } from 'inversify';
 import * as _ from 'radash';
 import { cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
 import { isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel } from '../uri/uri-utils';
+import { URI } from '@theia/core';
 let GridModel = class GridModel {
     constructor() {
         this.columnDefs = [];
@@ -21,7 +22,7 @@ let GridModel = class GridModel {
         this.onContextMenu = (cellRendererInput, e) => {
             if (typeof this.handlers.onContextMenu === 'function') {
                 const parsedRet = cellRendererInputSchema.parse(cellRendererInput);
-                if (this.uri == null)
+                if (this._uri == null)
                     throw new Error('uri is null');
                 if (this.schema == null)
                     throw new Error('schema is null');
@@ -29,7 +30,7 @@ let GridModel = class GridModel {
                 if (!column)
                     throw new Error(`no column def: ${this.schemaName}, ${parsedRet.colDef.field}`);
                 this.handlers.onContextMenu({
-                    uri: this.uri,
+                    uri: this.getUri(),
                     cellRendererInput: parsedRet,
                     column
                 }, e);
@@ -40,19 +41,25 @@ let GridModel = class GridModel {
         return this._isFirstGetRows;
     }
     getUri() {
-        if (!this.uri)
+        if (!this._uri)
             throw new Error('uri is null');
-        return this.uri;
+        return this._uri.toString(true);
+    }
+    setUri(uri) {
+        if (typeof uri === 'string')
+            uri = new URI(uri);
+        this._uri = uri;
+    }
+    resetIsFirstGetRows() {
+        this._isFirstGetRows = true;
     }
     /**
      * 在 ResourceWidgetFactory#createWidget 重置 promise
      * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
      */
     resetRefPromise(uri) {
-        if (typeof uri !== 'string')
-            uri = uri.toString(true);
-        this.uri = uri;
-        this._isFirstGetRows = true;
+        this.setUri(uri);
+        this.resetIsFirstGetRows();
         this.refPromise = new Promise((resolve) => {
             this.refResolve = resolve;
         });
@@ -68,13 +75,13 @@ let GridModel = class GridModel {
     setRef(ref, uri) {
         this.ref = ref;
         if (uri != null) {
-            if (this.uri == null) {
-                this.uri = uri;
+            if (this._uri == null) {
+                this.setUri(uri);
             }
             else {
                 // double check 下 防止 gridModel grid 未对应
-                if (!isUriAsKeyLikeEqual(uri, this.uri))
-                    throw new Error(`setRef uri is not matched, current: ${this.uri}, input: ${uri}`);
+                if (!isUriAsKeyLikeEqual(uri, this._uri))
+                    throw new Error(`setRef uri is not matched, current: ${this._uri}, input: ${uri}`);
             }
         }
         this.refResolve(true);
@@ -124,7 +131,7 @@ let GridModel = class GridModel {
         params.filterModel = mergeUriFilterModel(this.getUri(), params.filterModel);
         (_a = this.gridApi) === null || _a === void 0 ? void 0 : _a.setFilterModel(params.filterModel);
         const uri = updateUriFilterModel(this.getUri(), params.filterModel);
-        this.uri = uri.toString();
+        this.setUri(uri);
         const dataRet = await this.apis.getResourceData(params);
         const parseRet = getResourceDataOutputInnerSchema.safeParse(dataRet);
         if (parseRet.success) {

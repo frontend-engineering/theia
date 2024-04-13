@@ -1,4 +1,5 @@
 import { z, ZodTypeDef, ZodSchema } from 'zod';
+import { URI } from '@theia/core';
 
 type JSONValue = string | number | boolean | {
     [x: string]: JSONValue;
@@ -271,15 +272,15 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         }, "strip", z.ZodTypeAny, {
             display_name: string;
             model_name: string;
-            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
+            reference_type: "belongs_to" | "has_one";
         }, {
             display_name: string;
             model_name: string;
-            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
+            reference_type: "belongs_to" | "has_one";
         }>>;
     }, "strip", z.ZodTypeAny, {
         column_type: string;
@@ -291,9 +292,9 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         reference?: {
             display_name: string;
             model_name: string;
-            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
+            reference_type: "belongs_to" | "has_one";
         } | undefined;
     }, {
         column_type: string;
@@ -305,9 +306,9 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         reference?: {
             display_name: string;
             model_name: string;
-            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
+            reference_type: "belongs_to" | "has_one";
         } | undefined;
     }>;
 }, "strip", z.ZodTypeAny, {
@@ -332,9 +333,9 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         reference?: {
             display_name: string;
             model_name: string;
-            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
+            reference_type: "belongs_to" | "has_one";
         } | undefined;
     };
 }, {
@@ -359,9 +360,9 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         reference?: {
             display_name: string;
             model_name: string;
-            reference_type: "belongs_to" | "has_one";
             foreign_key: string;
             primary_key: string;
+            reference_type: "belongs_to" | "has_one";
         } | undefined;
     };
 }>;
@@ -1142,6 +1143,8 @@ type ColumUI = z.infer<typeof ColumnUISchema> & PluginKey;
 
 interface ManageableModel {
     getUri(): string;
+    setUri(uri: string | URI): void;
+    resetIsFirstGetRows(): void;
 }
 
 export { type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type ManageableModel, type MenuItem, type PluginKey, PluginKeySchema, PreviewModelSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, ResourceUISchema, ThemeModelSymbol, TreeGridModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agMenuItemSchema, agSortSchema, baseMenuItemSchema, cellRendererInputSchema, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, menuItemSchema, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, treeGridUriQuerySchema };

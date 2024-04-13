@@ -23,7 +23,9 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       + (counter !== undefined ? `:${counter}` : '')
   }
 
-  public getOrCreateGridModel(uri: URI): ManageableModel {
+  public getOrCreateGridModel(uri: URI | string): ManageableModel {
+    if (typeof uri === 'string') uri = new URI(uri)
+
     const key = uriAsKey(uri)
     let factory: () => ManageableModel
 
