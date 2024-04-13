@@ -1,8 +1,8 @@
-import { EditorManager, EditorWidget, WidgetId } from '@theia/editor/lib/browser'
+import { EditorManager, EditorOpenerOptions, EditorWidget, WidgetId } from '@theia/editor/lib/browser'
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
-import { WidgetOpenerOptions } from '@theia/core/lib/browser'
+import { NavigatableWidgetOptions, WidgetConstructionOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
 import { convertTreeGridUriToGridUri, getUriSchemaName, GridModel, TreeGridModel, uriAsKey } from '@flowda/design'
 import { ManageableWidget } from './widgets/manageable-widget'
@@ -69,5 +69,18 @@ export class ResourceManager extends EditorManager {
       return id.startsWith(idWithoutCounter)
     })?.slice(idWithoutCounter.length + 1)
     return counterOfMostRecentlyVisibleEditor === undefined ? undefined : parseInt(counterOfMostRecentlyVisibleEditor)
+  }
+
+  protected override createWidgetOptions(uri: URI, options?: EditorOpenerOptions): NavigatableWidgetOptions {
+    if (uri.scheme === 'grid' || uri.scheme === 'tree-grid') {
+      const navigatableOptions: NavigatableWidgetOptions = {
+        kind: 'navigatable',
+        uri: uri.withoutFragment().toString(true),
+      }
+      navigatableOptions.counter = options?.counter ?? this.getOrCreateCounterForUri(uri)
+      return navigatableOptions
+    } else {
+      return super.createWidgetOptions(uri, options)
+    }
   }
 }

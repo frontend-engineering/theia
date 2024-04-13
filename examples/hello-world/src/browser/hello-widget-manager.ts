@@ -3,6 +3,7 @@ import { inject, injectable } from '@theia/core/shared/inversify'
 import { Widget } from '@phosphor/widgets'
 import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 import { URI } from '@theia/core'
+import { uriAsKey } from '@flowda/design'
 
 @injectable()
 export class HelloWidgetManager extends WidgetManager {
@@ -25,5 +26,20 @@ export class HelloWidgetManager extends WidgetManager {
       }
     }
     return undefined
+  }
+
+  protected override toKey(options: WidgetConstructionOptions): string {
+    if (options.factoryId === ResourceWidgetFactory.ID) {
+      const uriKey = uriAsKey(options.options.uri)
+      return super.toKey({
+        ...options,
+        options: {
+          ...options.options,
+          uri: uriKey,
+        },
+      })
+    } else {
+      return super.toKey(options)
+    }
   }
 }
