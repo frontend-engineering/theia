@@ -45,7 +45,6 @@ export class ResourceGridModel extends GridModel {
     this.handlers.onContextMenu = this.handleContextMenu
 
     this.apis.getResourceData = this.trpcFactory().hello.getResourceData.query
-    // @ts-expect-error 经常和 trpc 生成的代码有冲突（有一些中间过程代码），先忽略
     this.apis.getResourceSchema = this.trpcFactory().hello.getResourceSchema.query
     this.apis.putResourceData = this.trpcFactory().hello.putResourceData.mutate
   }
@@ -75,36 +74,4 @@ export class ResourceGridModel extends GridModel {
       ],
     })
   }
-
-  // todo: 改成 uri
-  /*private readonly handleOnRefClick = (v: {
-    schemaName: string;
-    name: string;
-    id: number;
-  }) => {
-    const k = GridModel.KEY
-    const resourceQuery = localStorage.getItem(k)
-    let prev: Record<string, unknown> = {}
-    // eslint-disable-next-line no-null/no-null
-    if (resourceQuery != null) {
-      try {
-        prev = JSON.parse(resourceQuery)
-      } catch (e) {
-        prev = {}
-      }
-    }
-    prev[v.schemaName] = {
-      _ref: '1',
-      id: { filterType: 'number', type: 'equals', filter: v.id },
-    }
-    localStorage.setItem(k, JSON.stringify(prev))
-
-    open(this.openerService, {
-      scheme: v.schemaName,
-      name: v.name,
-    } as unknown as URI, {
-      mode: 'reveal',
-      preview: true,
-    })
-  }*/
 }
