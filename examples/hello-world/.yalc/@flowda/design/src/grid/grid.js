@@ -28,7 +28,8 @@ export class Grid extends React.Component {
                         current: params.endRow / (params.endRow - params.startRow),
                         pageSize: params.endRow - params.startRow,
                         sort: params.sortModel,
-                        filterModel: this.props.model.isFirstGetRows ? Object.assign(Object.assign({}, params.filterModel), getUriFilterModel(this.props.model.getUri())) : params.filterModel,
+                        filterModel: this.props.model.isFirstGetRows
+                            ? Object.assign(Object.assign({}, params.filterModel), getUriFilterModel(this.props.model.getUri())) : params.filterModel,
                     });
                     evt.api.hideOverlay(); // 不清楚为什么，突然需要手动 hideOverlay
                     params.successCallback(ret.data, ret.pagination.total);
@@ -49,7 +50,9 @@ export class Grid extends React.Component {
         };
         this.setColDefs = () => {
             var _a;
-            const colDefs = this.props.model.columnDefs.map(item => {
+            const colDefs = this.props.model.columnDefs
+                .filter(item => item.visible)
+                .map(item => {
                 var _a;
                 // todo: 图片需要搞一个 modal 并且上传修改
                 // if (item.name === 'image') { // todo: 这里用 plugin model 实现
@@ -111,9 +114,9 @@ export class Grid extends React.Component {
                                   {getReferenceDisplay(item.reference!, param.value)}
                                 </a>
                                 */
-                                return (_jsx("div", { onContextMenu: (e) => {
+                                return (_jsx("div", { onContextMenu: e => {
                                         this.props.model.onContextMenu(param, e, {
-                                            type: 'reference'
+                                            type: 'reference',
                                         });
                                     }, children: getReferenceDisplay(item.reference, param.value) }));
                             },
@@ -155,6 +158,7 @@ export class Grid extends React.Component {
                             headerName: item.display_name,
                             cellDataType: 'boolean',
                         };
+                    case 'DateTime':
                     case 'datetime':
                         return {
                             field: item.name,
@@ -197,9 +201,9 @@ export class Grid extends React.Component {
                             field: item.name,
                             headerName: item.display_name,
                             cellRenderer: (param) => {
-                                return (_jsx("div", { onContextMenu: (e) => {
+                                return (_jsx("div", { onContextMenu: e => {
                                         this.props.model.onContextMenu(param, e, {
-                                            type: 'Json'
+                                            type: 'Json',
                                         });
                                     }, children: param.valueFormatted }));
                             },
@@ -218,18 +222,21 @@ export class Grid extends React.Component {
             const associations = (_a = this.props.model.schema) === null || _a === void 0 ? void 0 : _a.associations;
             let assColDefs = [];
             if (associations != null) {
-                assColDefs = associations.map(ass => {
+                assColDefs = associations
+                    .filter(item => item.visible)
+                    .map(ass => {
                     return {
                         editable: false,
                         field: ass.model_name,
                         headerName: ass.display_name,
                         cellRenderer: (param) => {
-                            return (_jsx("div", { onContextMenu: (e) => {
+                            var _a;
+                            return (_jsx("div", { onContextMenu: e => {
                                     this.props.model.onContextMenu(param, e, {
-                                        type: 'association'
+                                        type: 'association',
                                     });
-                                }, children: `#${param.data[ass.primary_key]} ${ass.display_name}` }));
-                        }
+                                }, children: `#${(_a = param.data) === null || _a === void 0 ? void 0 : _a[ass.primary_key]} ${ass.display_name}` }));
+                        },
                     };
                 });
             }
