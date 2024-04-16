@@ -30,7 +30,15 @@ export class HelloFilterContribution implements FilterContribution {
             'OutlineViewService',
             'OutlineViewContribution',
             // 下一批可以安全过滤
-            // 'RemoteFileServiceContribution', // 暂时先不过滤，报错多
+            'PreferenceServiceImpl',
+            'JsonSchemaStore',
+
+            'ProblemContribution',
+            'ProblemDecorationContribution',
+            'ProblemTabBarDecorator',
+            'ProblemWidgetTabBarDecorator',
+
+            'OutlineBreadcrumbsContribution',
           ].some(c => contrib.constructor.name.indexOf(c) > -1)
         ) {
           // console.log('ignore contrib.constructor', contrib.constructor.name)
