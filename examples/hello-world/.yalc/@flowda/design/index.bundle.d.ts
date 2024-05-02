@@ -182,38 +182,11 @@ declare function isUriAsKeyLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function createAssociationUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 declare function createTaskUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 
-declare class WorkflowConfigModel {
-    _wfCfgs: z.infer<typeof wfCfgSchema> | undefined;
-    setWfCfgs(wfCfgs: z.infer<typeof wfCfgSchema>): void;
-    get wfCfgs(): {
-        taskDefinitionKey: string;
-        resource: {
-            schemaName: string;
-            inputMap: Record<string, string>;
-            columns: {
-                name: string;
-                access_type: "read_only" | "read_write";
-            }[];
-        };
-    }[];
-    getWfCfg(taskDefinitionKey: string): {
-        taskDefinitionKey: string;
-        resource: {
-            schemaName: string;
-            inputMap: Record<string, string>;
-            columns: {
-                name: string;
-                access_type: "read_only" | "read_write";
-            }[];
-        };
-    };
-}
-
 type DefaultFormValueType = Record<string, string | number | undefined>;
 declare class TaskFormModel implements ManageableModel {
     theme: ThemeModel;
     apiService: ApiService;
-    wfCfgModel: WorkflowConfigModel;
+    wfCfgs: z.infer<typeof wfCfgSchema>[];
     formikProps: FormikProps<DefaultFormValueType> | undefined;
     private _taskDefinitionKey;
     private _taskId;
@@ -221,15 +194,15 @@ declare class TaskFormModel implements ManageableModel {
     get taskId(): string;
     get taskDefinitionKey(): string;
     get wfCfg(): {
-        taskDefinitionKey: string;
         resource: {
+            columns: {
+                access_type: "read_only" | "read_write";
+                name: string;
+            }[];
             schemaName: string;
             inputMap: Record<string, string>;
-            columns: {
-                name: string;
-                access_type: "read_only" | "read_write";
-            }[];
         };
+        taskDefinitionKey: string;
     };
     getSchema(): Promise<{
         display_name: string;
@@ -279,8 +252,8 @@ declare class TaskFormModel implements ManageableModel {
         searchable_columns?: string | undefined;
     }>;
     get columns(): {
-        name: string;
         access_type: "read_only" | "read_write";
+        name: string;
         column_type: string;
         display_name: string;
         visible: boolean;
@@ -306,7 +279,7 @@ declare class TaskFormModel implements ManageableModel {
     get defaultInitalValues(): Record<string, string>;
     initialBackendValues: {};
     private uri?;
-    constructor(theme: ThemeModel, apiService: ApiService, wfCfgModel: WorkflowConfigModel);
+    constructor(theme: ThemeModel, apiService: ApiService, wfCfgs: z.infer<typeof wfCfgSchema>[]);
     getUri(): string;
     setUri(uri: string | URI): void;
     loadTask(uri: string | URI): Promise<void>;

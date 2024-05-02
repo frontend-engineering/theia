@@ -1,11 +1,10 @@
 import { __decorate, __metadata, __param } from "tslib";
-import { ApiServiceSymbol, ThemeModelSymbol, WorkflowConfigModelSymbol, taskUriOutputSchema } from '@flowda/types';
-import { inject, injectable } from 'inversify';
+import { ApiServiceSymbol, taskUriOutputSchema, ThemeModelSymbol, WorkflowConfigSymbol, } from '@flowda/types';
+import { inject, injectable, multiInject } from 'inversify';
 import { ThemeModel } from '../theme/theme.model';
 import axios from 'axios';
 import * as _ from 'radash';
 import { getChangedValues } from './task-form-utils';
-import { WorkflowConfigModel } from './workflow-config.model';
 import { computed, observable, runInAction } from 'mobx';
 import { URI } from '@theia/core';
 import * as qs from 'qs';
@@ -21,13 +20,17 @@ let TaskFormModel = class TaskFormModel {
         return this._taskDefinitionKey;
     }
     get wfCfg() {
-        return this.wfCfgModel.getWfCfg(this.taskDefinitionKey);
+        const wfCfgs = this.wfCfgs.reduce((acc, cur) => acc.concat(cur));
+        const ret = wfCfgs.find(cfg => cfg.taskDefinitionKey === this.taskDefinitionKey);
+        if (!ret)
+            throw new Error(`not found workflow config, taskDefinitionKey:${this.taskDefinitionKey}`);
+        return ret;
     }
     async getSchema() {
         if (this.wfCfg.resource.schemaName == null)
             throw new Error(`wfCfg.resource.schemaName is null`);
         const res = await this.apiService.getResourceSchema({
-            schemaName: this.wfCfg.resource.schemaName
+            schemaName: this.wfCfg.resource.schemaName,
         });
         return res;
     }
@@ -46,10 +49,10 @@ let TaskFormModel = class TaskFormModel {
     get defaultInitalValues() {
         return _.objectify(this.wfCfg.resource.columns, i => i.name, i => '');
     }
-    constructor(theme, apiService, wfCfgModel) {
+    constructor(theme, apiService, wfCfgs) {
         this.theme = theme;
         this.apiService = apiService;
-        this.wfCfgModel = wfCfgModel;
+        this.wfCfgs = wfCfgs;
         // save intial backend responsed data, to computed changed value
         this.initialBackendValues = {};
     }
@@ -163,8 +166,8 @@ TaskFormModel = __decorate([
     injectable(),
     __param(0, inject(ThemeModelSymbol)),
     __param(1, inject(ApiServiceSymbol)),
-    __param(2, inject(WorkflowConfigModelSymbol)),
-    __metadata("design:paramtypes", [ThemeModel, Object, WorkflowConfigModel])
+    __param(2, multiInject(WorkflowConfigSymbol)),
+    __metadata("design:paramtypes", [ThemeModel, Object, Array])
 ], TaskFormModel);
 export { TaskFormModel };
 //# sourceMappingURL=task-form.model.js.map

@@ -25,10 +25,18 @@
     "@theia/core": "1.45.0",
     "@theia/messages": "1.45.0",
     "@theia/monaco": "1.45.0",
-    "@theia/preferences": "1.45.0",
     "@theia/navigator": "1.45.0",
+    "@theia/preferences": "1.45.0",
     "@theia/preview": "1.45.0",
-    "@theia/hello-world": "1.45.0"
+    "@theia/hello-world": "1.45.0",
+    "@flowda/types": "file:.yalc/@flowda/types",
+    "@flowda-boot-yongcheng/plugin": "file:.yalc/@flowda-boot-yongcheng/plugin"
+  },
+  "workspaces": {
+    "nohoist": [
+      "@flowda/types",
+      "@flowda-boot-yongcheng/plugin"
+    ]
   },
   "scripts": {
     "clean": "theia clean",

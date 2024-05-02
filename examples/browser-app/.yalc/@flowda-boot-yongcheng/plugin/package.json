@@ -1,0 +1,20 @@
+{
+  "name": "@flowda-boot-yongcheng/plugin",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "theiaExtensions": [
+    {
+      "frontend": "src/browser/frontend-module"
+    }
+  ],
+  "peerDependencies": {
+    "@anatine/zod-openapi": "*",
+    "@flowda/types": "*",
+    "inversify": "*",
+    "tslib": "*",
+    "zod": "*"
+  },
+  "main": "./src/index.js",
+  "types": "./index.bundle.d.ts",
+  "yalcSig": "6c6a9d10d21e245edad8ff4b531d2516"
+}

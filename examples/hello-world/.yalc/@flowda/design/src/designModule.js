@@ -1,13 +1,12 @@
 import { __decorate } from "tslib";
 import { ContainerModule, injectable } from 'inversify';
 import { LoginModel } from './login/login.model';
-import { GridModelSymbol, LoginModelSymbol, PreviewModelSymbol, ThemeModelSymbol, TreeGridModelSymbol, TaskFormModelSymbol, WorkflowConfigModelSymbol, ApiServiceSymbol, } from '@flowda/types';
+import { GridModelSymbol, LoginModelSymbol, PreviewModelSymbol, ThemeModelSymbol, TreeGridModelSymbol, TaskFormModelSymbol, ApiServiceSymbol, } from '@flowda/types';
 import { PreviewModel } from './preview/preview.model';
 import { GridModel } from './grid/grid.model';
 import { ThemeModel } from './theme/theme.model';
 import { TreeGridModel } from './tree-grid/tree-grid.model';
 import { TaskFormModel } from './task-form/task-form.model';
-import { WorkflowConfigModel } from './task-form/workflow-config.model';
 export const designModule = new ContainerModule(bind => {
     bindDesignModule(bind);
 });
@@ -31,7 +30,6 @@ export const bindDesignModule = (bind) => {
     bind(ThemeModelSymbol).to(ThemeModel).inSingletonScope();
     bind(LoginModelSymbol).to(LoginModel).inSingletonScope();
     bind(PreviewModelSymbol).to(PreviewModel).inSingletonScope();
-    bind(WorkflowConfigModelSymbol).to(WorkflowConfigModel).inSingletonScope();
     bind(GridModelSymbol).to(GridModel).inRequestScope();
     bind(TreeGridModelSymbol).to(TreeGridModel).inRequestScope();
     bind(TaskFormModelSymbol).to(TaskFormModel).inRequestScope();
