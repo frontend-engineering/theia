@@ -17,6 +17,7 @@
     "@emotion/react": "^11.11.4",
     "ag-grid-community": "31.1.1",
     "ag-grid-react": "31.1.1",
+    "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "formik": "^1.5.8",
     "inversify": "^6.0.2",
@@ -34,5 +35,5 @@
   },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "9203558c1c104fc41e5870f1a33be64e"
+  "yalcSig": "5cb13e86dadf840122d1e263e2492fbc"
 }

@@ -40,10 +40,10 @@ import { HelloThemeService } from './hello-theming'
 import { MonacoThemeRegistry } from '@theia/monaco/lib/browser/textmate/monaco-theme-registry'
 import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry'
 import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-widget'
-import { bindDesignModule, GridModel, TreeGridModel } from '@flowda/design'
+import { bindDesignModule, GridModel, TaskFormModel, TreeGridModel } from '@flowda/design'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import type { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
-import { GridModelSymbol, TreeGridModelSymbol } from '@flowda/types'
+import { type ApiService, ApiServiceSymbol, GridModelSymbol, TreeGridModelSymbol, TaskFormModelSymbol } from '@flowda/types'
 import { environment } from './environments/environment'
 import { HelloFrontendContribution } from './hello-frontend-contribution'
 import { ResourceGridModel } from './resource/resource-grid-model'
@@ -55,6 +55,7 @@ import { SampleTabBarToolbarContribution } from './sample-tab-bar-toolbar-contri
 import { SampleCommandRegistry } from './sample-command-registry'
 import { bindGettingStartedFrontendModule } from './getting-started/getting-started-frontend-module'
 import { HelloWidgetManager } from './hello-widget-manager'
+import { HelloApiService } from './services/hello-api-service'
 
 console.log('FLOWDA_URL', environment.FLOWDA_URL)
 
@@ -121,6 +122,12 @@ export default new ContainerModule(
       }
     })
 
+    bind<interfaces.Factory<TaskFormModel>>('Factory<TaskFormModel>').toFactory<TaskFormModel>(context => {
+      return () => {
+        return context.container.get<TaskFormModel>(TaskFormModelSymbol)
+      }
+    })
+
     bind(ResourceManager).toSelf().inSingletonScope()
     bind(OpenHandler).toService(ResourceManager)
 
@@ -162,8 +169,9 @@ export default new ContainerModule(
 
     bindGettingStartedFrontendModule(bind)
     rebind(WidgetManager).to(HelloWidgetManager).inSingletonScope()
+    rebind<ApiService>(ApiServiceSymbol).to(HelloApiService).inSingletonScope()
 
-    /*bind(HelloWsConnectionSource).toSelf().inSingletonScope()
+    /* bind(HelloWsConnectionSource).toSelf().inSingletonScope()
     if (isBound(WebSocketConnectionSource)) {
       rebind(WebSocketConnectionSource).to(HelloWsConnectionSource).inSingletonScope()
     } else {

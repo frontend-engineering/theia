@@ -7,4 +7,6 @@ export * from './login/login';
 export * from './login/login.model';
 export * from './theme/theme.model';
 export * from './uri/uri-utils';
+export * from './task-form/task-form';
+export * from './task-form/task-form.model';
 //# sourceMappingURL=index.js.map

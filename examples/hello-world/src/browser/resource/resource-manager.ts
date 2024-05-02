@@ -42,8 +42,7 @@ export class ResourceManager extends EditorManager {
           const gridUri = new URI(convertTreeGridUriToGridUri(uri))
           const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(gridUri) as GridModel
 
-          treeGridModel.setUri(uri)
-          treeGridModel.setGridModel(gridModel)
+          treeGridModel.resetGridReadyPromise(uri)
           treeGridModel.loadData()
         }
       }

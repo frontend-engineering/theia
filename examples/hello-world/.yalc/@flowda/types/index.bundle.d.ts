@@ -8,12 +8,22 @@ interface JSONObject {
     [x: string]: JSONValue;
 }
 
+/**
+ * getServices 方法会将 inversify module 转换成 nestjs module，这样 nestjs controller 就可以使用了
+ * 所以，注意：如果不需要给 controller 使用，则不需要 bind
+ */
 declare const ServiceSymbol: unique symbol;
+declare const ApiServiceSymbol: unique symbol;
 declare const TreeGridModelSymbol: unique symbol;
 declare const GridModelSymbol: unique symbol;
 declare const PreviewModelSymbol: unique symbol;
+declare const WorkflowConfigModelSymbol: unique symbol;
 declare const LoginModelSymbol: unique symbol;
 declare const ThemeModelSymbol: unique symbol;
+declare const TaskFormModelSymbol: unique symbol;
+
+declare const PrismaClientSymbol: unique symbol;
+declare const CustomZodSchemaSymbol: unique symbol;
 
 declare const agFilterInnerSchema: z.ZodObject<{
     filterType: z.ZodEnum<["text", "number"]>;
@@ -244,6 +254,7 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         example: z.ZodOptional<z.ZodString>;
         visible: z.ZodBoolean;
         access_type: z.ZodDefault<z.ZodUnion<[z.ZodLiteral<"read_only">, z.ZodLiteral<"read_write">]>>;
+        plugins: z.ZodOptional<z.ZodAny>;
         name: z.ZodString;
         validators: z.ZodArray<z.ZodUnknown, "many">;
         reference: z.ZodOptional<z.ZodUnion<[z.ZodObject<{
@@ -295,6 +306,7 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         validators: unknown[];
         description?: string | undefined;
         example?: string | undefined;
+        plugins?: any;
         reference?: {
             display_name: string;
             model_name: string;
@@ -318,6 +330,7 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         description?: string | undefined;
         example?: string | undefined;
         access_type?: "read_only" | "read_write" | undefined;
+        plugins?: any;
         reference?: {
             display_name: string;
             model_name: string;
@@ -374,6 +387,7 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         validators: unknown[];
         description?: string | undefined;
         example?: string | undefined;
+        plugins?: any;
         reference?: {
             display_name: string;
             model_name: string;
@@ -416,6 +430,7 @@ declare const handleContextMenuInputSchema: z.ZodObject<{
         description?: string | undefined;
         example?: string | undefined;
         access_type?: "read_only" | "read_write" | undefined;
+        plugins?: any;
         reference?: {
             display_name: string;
             model_name: string;
@@ -482,6 +497,32 @@ declare const resourceKeySchema: z.ZodObject<{
     resource: string;
     resourceSchema: string;
     id?: string | number | undefined;
+}>;
+declare const getDataSchema: z.ZodObject<{
+    user: z.ZodAny;
+    path: z.ZodString;
+    query: z.ZodAny;
+}, "strip", z.ZodTypeAny, {
+    path: string;
+    user?: any;
+    query?: any;
+}, {
+    path: string;
+    user?: any;
+    query?: any;
+}>;
+declare const putDataSchema: z.ZodObject<{
+    user: z.ZodAny;
+    path: z.ZodString;
+    values: z.ZodAny;
+}, "strip", z.ZodTypeAny, {
+    path: string;
+    user?: any;
+    values?: any;
+}, {
+    path: string;
+    user?: any;
+    values?: any;
 }>;
 
 declare const getResourceInputSchema: z.ZodObject<{
@@ -809,6 +850,174 @@ declare const agMenuItemSchema: z.ZodObject<{
     icon?: string | undefined;
 }>;
 
+declare const ctxTenantSchema: z.ZodObject<{
+    id: z.ZodNumber;
+    name: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    name: string;
+    id: number;
+}, {
+    name: string;
+    id: number;
+}>;
+declare const ctxTenantSchemaDto_base: ZodDto<{
+    name: string;
+    id: number;
+}, z.ZodObjectDef<{
+    id: z.ZodNumber;
+    name: z.ZodString;
+}, "strip", z.ZodTypeAny>, {
+    name: string;
+    id: number;
+}>;
+declare class ctxTenantSchemaDto extends ctxTenantSchemaDto_base {
+}
+declare const ctxUserSchema: z.ZodObject<{
+    id: z.ZodNumber;
+    tenantId: z.ZodNumber;
+    username: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    username: string;
+    id: number;
+    tenantId: number;
+}, {
+    username: string;
+    id: number;
+    tenantId: number;
+}>;
+declare const ctxUserSchemaDto_base: ZodDto<{
+    username: string;
+    id: number;
+    tenantId: number;
+}, z.ZodObjectDef<{
+    id: z.ZodNumber;
+    tenantId: z.ZodNumber;
+    username: z.ZodString;
+}, "strip", z.ZodTypeAny>, {
+    username: string;
+    id: number;
+    tenantId: number;
+}>;
+declare class ctxUserSchemaDto extends ctxUserSchemaDto_base {
+}
+type TCtx = {
+    _diagnosis: any[];
+};
+
+declare const taskSchema: z.ZodObject<{
+    id: z.ZodString;
+    name: z.ZodString;
+    assignee: z.ZodString;
+    executionId: z.ZodString;
+    processDefinitionId: z.ZodString;
+    processInstanceId: z.ZodString;
+    taskDefinitionKey: z.ZodString;
+    tenantId: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    id: string;
+    name: string;
+    assignee: string;
+    executionId: string;
+    processDefinitionId: string;
+    processInstanceId: string;
+    taskDefinitionKey: string;
+    tenantId: string;
+}, {
+    id: string;
+    name: string;
+    assignee: string;
+    executionId: string;
+    processDefinitionId: string;
+    processInstanceId: string;
+    taskDefinitionKey: string;
+    tenantId: string;
+}>;
+declare const taskUriInputSchema: z.ZodObject<Pick<{
+    id: z.ZodString;
+    name: z.ZodString;
+    assignee: z.ZodString;
+    executionId: z.ZodString;
+    processDefinitionId: z.ZodString;
+    processInstanceId: z.ZodString;
+    taskDefinitionKey: z.ZodString;
+    tenantId: z.ZodString;
+}, "id" | "name" | "taskDefinitionKey">, "strip", z.ZodTypeAny, {
+    id: string;
+    name: string;
+    taskDefinitionKey: string;
+}, {
+    id: string;
+    name: string;
+    taskDefinitionKey: string;
+}>;
+declare const taskUriOutputSchema: z.ZodObject<{
+    taskId: z.ZodString;
+    displayName: z.ZodString;
+    taskDefinitionKey: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    taskDefinitionKey: string;
+    taskId: string;
+    displayName: string;
+}, {
+    taskDefinitionKey: string;
+    taskId: string;
+    displayName: string;
+}>;
+declare const wfCfgSchema: z.ZodArray<z.ZodObject<{
+    taskDefinitionKey: z.ZodString;
+    resource: z.ZodObject<{
+        schemaName: z.ZodString;
+        inputMap: z.ZodRecord<z.ZodString, z.ZodString>;
+        columns: z.ZodArray<z.ZodObject<{
+            name: z.ZodString;
+            access_type: z.ZodUnion<[z.ZodLiteral<"read_only">, z.ZodLiteral<"read_write">]>;
+        }, "strip", z.ZodTypeAny, {
+            name: string;
+            access_type: "read_only" | "read_write";
+        }, {
+            name: string;
+            access_type: "read_only" | "read_write";
+        }>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        schemaName: string;
+        inputMap: Record<string, string>;
+        columns: {
+            name: string;
+            access_type: "read_only" | "read_write";
+        }[];
+    }, {
+        schemaName: string;
+        inputMap: Record<string, string>;
+        columns: {
+            name: string;
+            access_type: "read_only" | "read_write";
+        }[];
+    }>;
+}, "strip", z.ZodTypeAny, {
+    taskDefinitionKey: string;
+    resource: {
+        schemaName: string;
+        inputMap: Record<string, string>;
+        columns: {
+            name: string;
+            access_type: "read_only" | "read_write";
+        }[];
+    };
+}, {
+    taskDefinitionKey: string;
+    resource: {
+        schemaName: string;
+        inputMap: Record<string, string>;
+        columns: {
+            name: string;
+            access_type: "read_only" | "read_write";
+        }[];
+    };
+}>, "many">;
+
+interface PluginType {
+    [x: string]: unknown;
+}
 type ColumnKey = {
     column_type: string;
     display_name: string;
@@ -816,7 +1025,7 @@ type ColumnKey = {
     example?: string;
     visible: boolean;
     access_type?: 'read_only' | 'read_write';
-    [p: `x-${string}`]: unknown;
+    plugins?: Partial<PluginType>;
 };
 declare const ColumnKeySchema: z.ZodObject<{
     column_type: z.ZodString;
@@ -825,6 +1034,7 @@ declare const ColumnKeySchema: z.ZodObject<{
     example: z.ZodOptional<z.ZodString>;
     visible: z.ZodBoolean;
     access_type: z.ZodDefault<z.ZodUnion<[z.ZodLiteral<"read_only">, z.ZodLiteral<"read_write">]>>;
+    plugins: z.ZodOptional<z.ZodAny>;
 }, "strip", z.ZodTypeAny, {
     column_type: string;
     display_name: string;
@@ -832,6 +1042,7 @@ declare const ColumnKeySchema: z.ZodObject<{
     access_type: "read_only" | "read_write";
     description?: string | undefined;
     example?: string | undefined;
+    plugins?: any;
 }, {
     column_type: string;
     display_name: string;
@@ -839,6 +1050,7 @@ declare const ColumnKeySchema: z.ZodObject<{
     description?: string | undefined;
     example?: string | undefined;
     access_type?: "read_only" | "read_write" | undefined;
+    plugins?: any;
 }>;
 type AssociationKey = {
     display_name: string;
@@ -935,7 +1147,7 @@ type ResourceKey = {
     slug: string;
     table_name: string;
     visible: boolean;
-    [p: `x-${string}`]: unknown;
+    plugins?: Partial<PluginType>;
     properties?: Record<string, ColumnKey | AssociationKey | ReferenceKey>;
     required?: string[];
 };
@@ -950,6 +1162,7 @@ declare const ResourceKeySchema: z.ZodObject<{
     display_primary_key: z.ZodString;
     display_column: z.ZodOptional<z.ZodString>;
     searchable_columns: z.ZodOptional<z.ZodString>;
+    plugins: z.ZodOptional<z.ZodAny>;
     properties: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodObject<{
         column_type: z.ZodString;
         display_name: z.ZodString;
@@ -957,6 +1170,7 @@ declare const ResourceKeySchema: z.ZodObject<{
         example: z.ZodOptional<z.ZodString>;
         visible: z.ZodBoolean;
         access_type: z.ZodDefault<z.ZodUnion<[z.ZodLiteral<"read_only">, z.ZodLiteral<"read_write">]>>;
+        plugins: z.ZodOptional<z.ZodAny>;
     }, "strip", z.ZodTypeAny, {
         column_type: string;
         display_name: string;
@@ -964,6 +1178,7 @@ declare const ResourceKeySchema: z.ZodObject<{
         access_type: "read_only" | "read_write";
         description?: string | undefined;
         example?: string | undefined;
+        plugins?: any;
     }, {
         column_type: string;
         display_name: string;
@@ -971,6 +1186,7 @@ declare const ResourceKeySchema: z.ZodObject<{
         description?: string | undefined;
         example?: string | undefined;
         access_type?: "read_only" | "read_write" | undefined;
+        plugins?: any;
     }>, z.ZodObject<{
         display_name: z.ZodString;
         slug: z.ZodString;
@@ -1039,11 +1255,12 @@ declare const ResourceKeySchema: z.ZodObject<{
     slug: string;
     primary_key: string | null;
     class_name: string;
-    display_primary_key: string;
     name: string;
     table_name: string;
+    display_primary_key: string;
     display_column?: string | undefined;
     searchable_columns?: string | undefined;
+    plugins?: any;
     properties?: Record<string, {
         column_type: string;
         display_name: string;
@@ -1051,6 +1268,7 @@ declare const ResourceKeySchema: z.ZodObject<{
         access_type: "read_only" | "read_write";
         description?: string | undefined;
         example?: string | undefined;
+        plugins?: any;
     } | {
         display_name: string;
         visible: boolean;
@@ -1079,11 +1297,12 @@ declare const ResourceKeySchema: z.ZodObject<{
     slug: string;
     primary_key: string | null;
     class_name: string;
-    display_primary_key: string;
     name: string;
     table_name: string;
+    display_primary_key: string;
     display_column?: string | undefined;
     searchable_columns?: string | undefined;
+    plugins?: any;
     properties?: Record<string, {
         column_type: string;
         display_name: string;
@@ -1091,6 +1310,7 @@ declare const ResourceKeySchema: z.ZodObject<{
         description?: string | undefined;
         example?: string | undefined;
         access_type?: "read_only" | "read_write" | undefined;
+        plugins?: any;
     } | {
         display_name: string;
         visible: boolean;
@@ -1122,6 +1342,7 @@ declare const ColumnUISchema: z.ZodObject<{
     example: z.ZodOptional<z.ZodString>;
     visible: z.ZodBoolean;
     access_type: z.ZodDefault<z.ZodUnion<[z.ZodLiteral<"read_only">, z.ZodLiteral<"read_write">]>>;
+    plugins: z.ZodOptional<z.ZodAny>;
     name: z.ZodString;
     validators: z.ZodArray<z.ZodUnknown, "many">;
     reference: z.ZodOptional<z.ZodUnion<[z.ZodObject<{
@@ -1173,6 +1394,7 @@ declare const ColumnUISchema: z.ZodObject<{
     validators: unknown[];
     description?: string | undefined;
     example?: string | undefined;
+    plugins?: any;
     reference?: {
         display_name: string;
         model_name: string;
@@ -1196,6 +1418,7 @@ declare const ColumnUISchema: z.ZodObject<{
     description?: string | undefined;
     example?: string | undefined;
     access_type?: "read_only" | "read_write" | undefined;
+    plugins?: any;
     reference?: {
         display_name: string;
         model_name: string;
@@ -1214,14 +1437,15 @@ declare const ColumnUISchema: z.ZodObject<{
 declare const ResourceUISchema: z.ZodObject<{
     display_name: z.ZodString;
     visible: z.ZodBoolean;
+    plugins: z.ZodOptional<z.ZodAny>;
     slug: z.ZodString;
     primary_key: z.ZodNullable<z.ZodString>;
     class_name: z.ZodString;
-    display_column: z.ZodOptional<z.ZodString>;
-    display_primary_key: z.ZodString;
     name: z.ZodString;
-    searchable_columns: z.ZodOptional<z.ZodString>;
     table_name: z.ZodString;
+    display_primary_key: z.ZodString;
+    display_column: z.ZodOptional<z.ZodString>;
+    searchable_columns: z.ZodOptional<z.ZodString>;
     namespace: z.ZodString;
     columns: z.ZodArray<z.ZodObject<{
         column_type: z.ZodString;
@@ -1230,6 +1454,7 @@ declare const ResourceUISchema: z.ZodObject<{
         example: z.ZodOptional<z.ZodString>;
         visible: z.ZodBoolean;
         access_type: z.ZodDefault<z.ZodUnion<[z.ZodLiteral<"read_only">, z.ZodLiteral<"read_write">]>>;
+        plugins: z.ZodOptional<z.ZodAny>;
         name: z.ZodString;
         validators: z.ZodArray<z.ZodUnknown, "many">;
         reference: z.ZodOptional<z.ZodUnion<[z.ZodObject<{
@@ -1281,6 +1506,7 @@ declare const ResourceUISchema: z.ZodObject<{
         validators: unknown[];
         description?: string | undefined;
         example?: string | undefined;
+        plugins?: any;
         reference?: {
             display_name: string;
             model_name: string;
@@ -1304,6 +1530,7 @@ declare const ResourceUISchema: z.ZodObject<{
         description?: string | undefined;
         example?: string | undefined;
         access_type?: "read_only" | "read_write" | undefined;
+        plugins?: any;
         reference?: {
             display_name: string;
             model_name: string;
@@ -1347,9 +1574,9 @@ declare const ResourceUISchema: z.ZodObject<{
     slug: string;
     primary_key: string | null;
     class_name: string;
-    display_primary_key: string;
     name: string;
     table_name: string;
+    display_primary_key: string;
     namespace: string;
     columns: {
         column_type: string;
@@ -1360,6 +1587,7 @@ declare const ResourceUISchema: z.ZodObject<{
         validators: unknown[];
         description?: string | undefined;
         example?: string | undefined;
+        plugins?: any;
         reference?: {
             display_name: string;
             model_name: string;
@@ -1383,6 +1611,7 @@ declare const ResourceUISchema: z.ZodObject<{
         foreign_key: string;
         primary_key: string;
     }[];
+    plugins?: any;
     display_column?: string | undefined;
     searchable_columns?: string | undefined;
 }, {
@@ -1391,9 +1620,9 @@ declare const ResourceUISchema: z.ZodObject<{
     slug: string;
     primary_key: string | null;
     class_name: string;
-    display_primary_key: string;
     name: string;
     table_name: string;
+    display_primary_key: string;
     namespace: string;
     columns: {
         column_type: string;
@@ -1404,6 +1633,7 @@ declare const ResourceUISchema: z.ZodObject<{
         description?: string | undefined;
         example?: string | undefined;
         access_type?: "read_only" | "read_write" | undefined;
+        plugins?: any;
         reference?: {
             display_name: string;
             model_name: string;
@@ -1427,17 +1657,58 @@ declare const ResourceUISchema: z.ZodObject<{
         foreign_key: string;
         primary_key: string;
     }[];
+    plugins?: any;
     display_column?: string | undefined;
     searchable_columns?: string | undefined;
 }>;
-declare const PluginKeySchema: z.ZodEffects<z.ZodType<Record<`x-${string}`, unknown>, z.ZodTypeDef, Record<`x-${string}`, unknown>>, Record<`x-${string}`, unknown>, Record<`x-${string}`, unknown>>;
-type PluginKey = z.infer<typeof PluginKeySchema>;
-type ColumUI = z.infer<typeof ColumnUISchema> & PluginKey;
+type ResourceUI = z.infer<typeof ResourceUISchema>;
+type ColumUI = z.infer<typeof ColumnUISchema>;
 
 interface ManageableModel {
     getUri(): string;
     setUri(uri: string | URI): void;
-    resetIsFirstGetRows(): void;
 }
 
-export { type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type ManageableModel, type MenuItem, type PluginKey, PluginKeySchema, PreviewModelSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, ResourceUISchema, ServiceSymbol, ThemeModelSymbol, TreeGridModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agMenuItemSchema, agSortSchema, baseMenuItemSchema, cellRendererInputSchema, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, menuItemSchema, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, treeGridUriQuerySchema };
+interface ApiService {
+    getResourceSchema: (input: z.infer<typeof getResourceInputSchema>) => Promise<z.infer<typeof ResourceUISchema>>;
+    getResourceData: (input: z.infer<typeof getResourceDataInputSchema>) => Promise<z.infer<typeof getResourceDataOutputSchema>>;
+    putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
+}
+
+declare const builtinPluginSchema: z.ZodObject<{
+    axios: z.ZodOptional<z.ZodObject<{
+        method: z.ZodString;
+        url: z.ZodString;
+        data: z.ZodAny;
+    }, "strip", z.ZodTypeAny, {
+        url: string;
+        method: string;
+        data?: any;
+    }, {
+        url: string;
+        method: string;
+        data?: any;
+    }>>;
+    open_task: z.ZodOptional<z.ZodBoolean>;
+}, "strip", z.ZodTypeAny, {
+    axios?: {
+        url: string;
+        method: string;
+        data?: any;
+    } | undefined;
+    open_task?: boolean | undefined;
+}, {
+    axios?: {
+        url: string;
+        method: string;
+        data?: any;
+    } | undefined;
+    open_task?: boolean | undefined;
+}>;
+declare module '@flowda/types' {
+    interface PluginType {
+        builtin: z.infer<typeof builtinPluginSchema>;
+    }
+}
+
+export { type ApiService, ApiServiceSymbol, type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, CustomZodSchemaSymbol, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type ManageableModel, type MenuItem, type PluginType, PreviewModelSymbol, PrismaClientSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, type ResourceUI, ResourceUISchema, ServiceSymbol, type TCtx, TaskFormModelSymbol, ThemeModelSymbol, TreeGridModelSymbol, WorkflowConfigModelSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agMenuItemSchema, agSortSchema, baseMenuItemSchema, builtinPluginSchema, cellRendererInputSchema, ctxTenantSchema, ctxTenantSchemaDto, ctxUserSchema, ctxUserSchemaDto, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getDataSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, menuItemSchema, putDataSchema, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, taskSchema, taskUriInputSchema, taskUriOutputSchema, treeGridUriQuerySchema, wfCfgSchema };

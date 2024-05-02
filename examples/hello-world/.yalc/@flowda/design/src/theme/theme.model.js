@@ -3,7 +3,7 @@ import { injectable } from 'inversify';
 import { makeObservable, observable } from 'mobx';
 let ThemeModel = class ThemeModel {
     constructor() {
-        this.colorMode = 'light';
+        this.colorMode = 'dark';
         makeObservable(this);
     }
     setColorMode(colorMode) {

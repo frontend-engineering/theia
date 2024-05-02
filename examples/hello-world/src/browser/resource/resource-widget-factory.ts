@@ -3,15 +3,17 @@ import { inject, injectable } from '@theia/core/shared/inversify'
 import { EditorWidget } from '@theia/editor/lib/browser'
 import { NavigatableWidgetOptions } from '@theia/core/lib/browser'
 import { URI } from '@theia/core'
-import { getUriDisplayName, GridModel, TreeGridModel, uriAsKey } from '@flowda/design'
+import { getUriDisplayName, GridModel, TaskFormModel, TreeGridModel, uriAsKey } from '@flowda/design'
 import { MenuWidget } from './widgets/menu-widget'
 import { ResourceGridWidget } from './widgets/resource-grid-widget'
 import type { ManageableModel } from '@flowda/types'
+import { TaskFormWidget } from './widgets/task-form-widget'
 
 @injectable()
 export class ResourceWidgetFactory extends EditorWidgetFactory {
   @inject('Factory<GridModel>') private readonly gridModelFactory: () => GridModel
   @inject('Factory<TreeGridModel>') private readonly treeGridModelFactory: () => TreeGridModel
+  @inject('Factory<TaskFormModel>') private readonly taskFormModelFactory: () => TaskFormModel
   private resourceGridMap = new Map<string, ManageableModel>()
 
   static override ID = 'resource-editor-opener'
@@ -24,7 +26,9 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
   }
 
   public getOrCreateGridModel(uri: URI | string): ManageableModel {
-    if (typeof uri === 'string') uri = new URI(uri)
+    if (typeof uri === 'string') {
+      uri = new URI(uri)
+    }
 
     const key = uriAsKey(uri)
     let factory: () => ManageableModel
@@ -33,6 +37,8 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
       factory = this.gridModelFactory
     } else if (uri.scheme === 'tree-grid') {
       factory = this.treeGridModelFactory
+    } else if (uri.scheme === 'task') {
+      factory = this.taskFormModelFactory
     } else {
       throw new Error(`unknown uri, ${uri}`)
     }
@@ -66,6 +72,17 @@ export class ResourceWidgetFactory extends EditorWidgetFactory {
         uri: options.uri,
         title: getUriDisplayName(uri),
         model: gridModel,
+      })
+      return Promise.resolve(widget as unknown as EditorWidget)
+    }
+
+    if (uri.scheme === 'task') {
+      const taskFormModel = this.getOrCreateGridModel(uri) as TaskFormModel
+      const widget = new TaskFormWidget({
+        id: ResourceWidgetFactory.ID + ':' + uriAsKey(options.uri) + ':' + options.counter,
+        uri: options.uri,
+        title: getUriDisplayName(uri),
+        model: taskFormModel,
       })
       return Promise.resolve(widget as unknown as EditorWidget)
     }

@@ -1,7 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import * as React from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { shortenDatetime } from '../utils/time-utils';
+import { shortenDatetime } from './grid-utils';
 import dayjs from 'dayjs';
 import { InfiniteRowModelModule } from '@ag-grid-community/infinite-row-model';
 import { getReferenceDisplay } from './grid-utils';
@@ -115,9 +115,7 @@ export class Grid extends React.Component {
                                 </a>
                                 */
                                 return (_jsx("div", { onContextMenu: e => {
-                                        this.props.model.onContextMenu(param, e, {
-                                            type: 'reference',
-                                        });
+                                        this.props.model.onContextMenu(param, e);
                                     }, children: getReferenceDisplay(item.reference, param.value) }));
                             },
                         };
@@ -186,15 +184,22 @@ export class Grid extends React.Component {
                         };
                     case 'string':
                     case 'String':
-                    case 'textarea':
-                        return {
+                    case 'textarea': {
+                        let cellRenderer = undefined;
+                        if (this.props.model.isOpenTask(item.name)) {
+                            cellRenderer = (param) => (_jsx("div", { onContextMenu: e => {
+                                    this.props.model.onContextMenu(param, e);
+                                }, children: param.value }));
+                        }
+                        return Object.assign({
                             editable: true,
                             field: item.name,
                             headerName: item.display_name,
                             cellDataType: 'text',
                             filter: true,
                             floatingFilter: true,
-                        };
+                        }, { cellRenderer });
+                    }
                     case 'Json':
                         return {
                             editable: false,
@@ -202,9 +207,7 @@ export class Grid extends React.Component {
                             headerName: item.display_name,
                             cellRenderer: (param) => {
                                 return (_jsx("div", { onContextMenu: e => {
-                                        this.props.model.onContextMenu(param, e, {
-                                            type: 'Json',
-                                        });
+                                        this.props.model.onContextMenu(param, e);
                                     }, children: param.valueFormatted }));
                             },
                         };

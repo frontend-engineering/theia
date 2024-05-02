@@ -9,6 +9,7 @@ exports.ColumnKeySchema = zod_1.z.object({
     example: zod_1.z.string().optional(),
     visible: zod_1.z.boolean(),
     access_type: zod_1.z.union([zod_1.z.literal('read_only'), zod_1.z.literal('read_write')]).default('read_write'),
+    plugins: zod_1.z.any().optional(),
 });
 exports.AssociationKeySchema = zod_1.z.object({
     display_name: zod_1.z.string(),
@@ -46,6 +47,7 @@ exports.ResourceKeySchema = zod_1.z.object({
     display_primary_key: zod_1.z.string(),
     display_column: zod_1.z.string().optional(),
     searchable_columns: zod_1.z.string().optional(),
+    plugins: zod_1.z.any().optional(),
     // openapi3-ts
     properties: zod_1.z.record(zod_1.z.string(), zod_1.z.union([exports.ColumnKeySchema, exports.AssociationKeySchema, exports.ReferenceKeySchema]))
         .optional(),

@@ -1,17 +1,65 @@
 /// <reference types="react" />
 import * as React$1 from 'react';
 import { Component } from 'react';
-import { GridApi, SortModelItem, ColDef, IRowNode, CellValueChangedEvent } from 'ag-grid-community';
-import { ManageableModel, ColumnUISchema, ResourceUISchema, handleContextMenuInputSchema, getResourceInputSchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, agFilterSchema, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto } from '@flowda/types';
-import { z } from 'zod';
+import { GridApi, ColDef, IRowNode, CellValueChangedEvent, SortModelItem } from 'ag-grid-community';
 import { URI } from '@theia/core';
+import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, agFilterSchema, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema } from '@flowda/types';
 import { ContainerModule, interfaces } from 'inversify';
+import { z } from 'zod';
 import { FormikProps } from 'formik';
 
+declare class TreeGridModel implements ManageableModel {
+    apiService: ApiService;
+    gridApi: GridApi | null;
+    columnDefs: ColDef<any, any>[];
+    private uri?;
+    /**
+     * 等待 onGridReady 对 gridApi 赋值
+     */
+    private gridReadyPromise?;
+    private gridReadyResolve?;
+    constructor(apiService: ApiService);
+    handlers: Partial<{
+        message: (title: string) => void;
+    }>;
+    getUri(): string;
+    resetGridReadyPromise(uri: string | URI): void;
+    setGridApi(gridApi: GridApi): void;
+    setUri(uri: string | URI): void;
+    resetIsFirstGetRows(): void;
+    loadData(): Promise<void>;
+    getDataPath(data: Record<string, unknown>): string[];
+    private convertAndSaveMenuData;
+    addChild(id: number): void;
+    addPeer(id: number): void;
+    remove(node: IRowNode | null): void;
+    handleCellValueChanged: (evt: CellValueChangedEvent) => void;
+}
+
+type TreeGridProps = {
+    model: TreeGridModel;
+};
+declare class TreeGrid extends Component<TreeGridProps> {
+    private gridRef;
+    private readonly onCellValueChanged;
+    private readonly onGridReady;
+    private readonly getContextMenuItems;
+    render(): JSX.Element;
+}
+
+declare const designModule: ContainerModule;
+declare class NotImplementedApiService implements ApiService {
+    getResourceSchema(input: z.infer<typeof getResourceInputSchema>): Promise<z.infer<typeof ResourceUISchema>>;
+    getResourceData(input: z.infer<typeof getResourceDataInputSchema>): Promise<z.infer<typeof getResourceDataOutputSchema>>;
+    putResourceData(input: z.infer<typeof putResourceDataInputSchema>): Promise<unknown>;
+}
+declare const bindDesignModule: (bind: interfaces.Bind) => void;
+
 declare class GridModel implements ManageableModel {
+    apiService: ApiService;
     columnDefs: z.infer<typeof ColumnUISchema>[];
     schemaName: string | null;
-    schema: z.infer<typeof ResourceUISchema> | null;
+    schema: ResourceUI | null;
     isNotEmpty: boolean;
     gridApi: GridApi | null;
     get isFirstGetRows(): boolean;
@@ -29,15 +77,11 @@ declare class GridModel implements ManageableModel {
         onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
         onContextMenu: (input: z.infer<typeof handleContextMenuInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     }>;
-    apis: Partial<{
-        getResourceSchema: (input: z.infer<typeof getResourceInputSchema>) => Promise<z.infer<typeof ResourceUISchema>>;
-        getResourceData: (input: z.infer<typeof getResourceDataInputSchema>) => Promise<z.infer<typeof getResourceDataOutputSchema>>;
-        putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
-    }>;
     private ref;
     private _uri?;
     private refResolve?;
     private _isFirstGetRows;
+    constructor(apiService: ApiService);
     getUri(): string;
     setUri(uri: string | URI): void;
     resetIsFirstGetRows(): void;
@@ -53,6 +97,7 @@ declare class GridModel implements ManageableModel {
     setRef(ref: unknown, uri?: string): void;
     setSchemaName(schemaName: string): void;
     getCol(schemaName: string): Promise<void>;
+    isOpenTask(colName: string): boolean | undefined;
     getData(params: {
         schemaName: string;
         current: number;
@@ -60,59 +105,18 @@ declare class GridModel implements ManageableModel {
         sort: SortModelItem[];
         filterModel: z.infer<typeof agFilterSchema>;
     }): Promise<{
-        data: any[];
+        data: any;
         pagination: {
-            total: number;
+            total: any;
         };
     }>;
     putData(id: number, updatedValue: unknown): Promise<void>;
     readonly onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
     readonly onContextMenu: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>, options?: {
-        type: 'reference' | 'association' | 'Json' | undefined;
+        type: 'association' | undefined;
     }) => void;
     onRefClick(field: string, value: any): void;
 }
-
-declare class TreeGridModel implements ManageableModel {
-    gridApi: GridApi | null;
-    columnDefs: ColDef<any, any>[];
-    private uri?;
-    private gridModel?;
-    /**
-     * 等待 onGridReady 对 gridApi 赋值
-     */
-    private gridReadyPromise?;
-    private gridReadyResolve?;
-    handlers: Partial<{
-        message: (title: string) => void;
-    }>;
-    getUri(): string;
-    resetGridReadyPromise(uri: string | URI): void;
-    setGridApi(gridApi: GridApi): void;
-    setUri(uri: string | URI): void;
-    resetIsFirstGetRows(): void;
-    loadData(): Promise<void>;
-    setGridModel(gridModel: GridModel): void;
-    getDataPath(data: unknown): string[];
-    private convertAndSaveMenuData;
-    addChild(id: number): void;
-    remove(node: IRowNode | null): void;
-    handleCellValueChanged: (evt: CellValueChangedEvent) => void;
-}
-
-type TreeGridProps = {
-    model: TreeGridModel;
-};
-declare class TreeGrid extends Component<TreeGridProps> {
-    private gridRef;
-    private readonly onCellValueChanged;
-    private readonly onGridReady;
-    private readonly getContextMenuItems;
-    render(): JSX.Element;
-}
-
-declare const designModule: ContainerModule;
-declare const bindDesignModule: (bind: interfaces.Bind) => void;
 
 type GridProps = {
     uri?: string;
@@ -176,5 +180,143 @@ declare function updateUriFilterModel(uri: URI | string, filterModel: z.infer<ty
 declare function isUriLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function isUriAsKeyLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function createAssociationUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
+declare function createTaskUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 
-export { Grid, GridModel, type GridProps, Login, LoginModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createRefUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };
+declare class WorkflowConfigModel {
+    _wfCfgs: z.infer<typeof wfCfgSchema> | undefined;
+    setWfCfgs(wfCfgs: z.infer<typeof wfCfgSchema>): void;
+    get wfCfgs(): {
+        taskDefinitionKey: string;
+        resource: {
+            schemaName: string;
+            inputMap: Record<string, string>;
+            columns: {
+                name: string;
+                access_type: "read_only" | "read_write";
+            }[];
+        };
+    }[];
+    getWfCfg(taskDefinitionKey: string): {
+        taskDefinitionKey: string;
+        resource: {
+            schemaName: string;
+            inputMap: Record<string, string>;
+            columns: {
+                name: string;
+                access_type: "read_only" | "read_write";
+            }[];
+        };
+    };
+}
+
+type DefaultFormValueType = Record<string, string | number | undefined>;
+declare class TaskFormModel implements ManageableModel {
+    theme: ThemeModel;
+    apiService: ApiService;
+    wfCfgModel: WorkflowConfigModel;
+    formikProps: FormikProps<DefaultFormValueType> | undefined;
+    private _taskDefinitionKey;
+    private _taskId;
+    schema: ResourceUI | undefined;
+    get taskId(): string;
+    get taskDefinitionKey(): string;
+    get wfCfg(): {
+        taskDefinitionKey: string;
+        resource: {
+            schemaName: string;
+            inputMap: Record<string, string>;
+            columns: {
+                name: string;
+                access_type: "read_only" | "read_write";
+            }[];
+        };
+    };
+    getSchema(): Promise<{
+        display_name: string;
+        visible: boolean;
+        slug: string;
+        primary_key: string | null;
+        class_name: string;
+        name: string;
+        table_name: string;
+        display_primary_key: string;
+        namespace: string;
+        columns: {
+            column_type: string;
+            display_name: string;
+            visible: boolean;
+            access_type: "read_only" | "read_write";
+            name: string;
+            validators: unknown[];
+            description?: string | undefined;
+            example?: string | undefined;
+            plugins?: any;
+            reference?: {
+                display_name: string;
+                model_name: string;
+                foreign_key: string;
+                primary_key: string;
+                reference_type: "belongs_to";
+            } | {
+                display_name: string;
+                visible: boolean;
+                model_name: string;
+                foreign_key: string;
+                primary_key: string;
+                reference_type: "has_one";
+            } | undefined;
+        }[];
+        associations: {
+            display_name: string;
+            visible: boolean;
+            slug: string;
+            model_name: string;
+            foreign_key: string;
+            primary_key: string;
+        }[];
+        plugins?: any;
+        display_column?: string | undefined;
+        searchable_columns?: string | undefined;
+    }>;
+    get columns(): {
+        name: string;
+        access_type: "read_only" | "read_write";
+        column_type: string;
+        display_name: string;
+        visible: boolean;
+        validators: unknown[];
+        description?: string | undefined;
+        example?: string | undefined;
+        plugins?: any;
+        reference?: {
+            display_name: string;
+            model_name: string;
+            foreign_key: string;
+            primary_key: string;
+            reference_type: "belongs_to";
+        } | {
+            display_name: string;
+            visible: boolean;
+            model_name: string;
+            foreign_key: string;
+            primary_key: string;
+            reference_type: "has_one";
+        } | undefined;
+    }[];
+    get defaultInitalValues(): Record<string, string>;
+    initialBackendValues: {};
+    private uri?;
+    constructor(theme: ThemeModel, apiService: ApiService, wfCfgModel: WorkflowConfigModel);
+    getUri(): string;
+    setUri(uri: string | URI): void;
+    loadTask(uri: string | URI): Promise<void>;
+    submit(values: DefaultFormValueType): Promise<void>;
+}
+
+declare class TaskForm extends Component<{
+    model: TaskFormModel;
+}> {
+    render(): JSX.Element;
+}
+
+export { type DefaultFormValueType, Grid, GridModel, type GridProps, Login, LoginModel, NotImplementedApiService, TaskForm, TaskFormModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };

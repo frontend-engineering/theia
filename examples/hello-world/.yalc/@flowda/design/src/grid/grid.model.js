@@ -1,17 +1,22 @@
-import { __decorate } from "tslib";
-import { injectable } from 'inversify';
-import { cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
+import { __decorate, __metadata, __param } from "tslib";
+import { inject, injectable } from 'inversify';
+import { ApiServiceSymbol, builtinPluginSchema, cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
 import { isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel } from '../uri/uri-utils';
 import { URI } from '@theia/core';
+import axios from 'axios';
 let GridModel = class GridModel {
-    constructor() {
+    get isFirstGetRows() {
+        return this._isFirstGetRows;
+    }
+    constructor(apiService) {
+        this.apiService = apiService;
         this.columnDefs = [];
         this.schemaName = null;
         this.schema = null;
         this.isNotEmpty = false;
         this.gridApi = null;
+        // todo: extract to a interface
         this.handlers = {};
-        this.apis = {};
         this._isFirstGetRows = true;
         this.onMouseEnter = (e) => {
             if (typeof this.handlers.onMouseEnter === 'function') {
@@ -32,7 +37,7 @@ let GridModel = class GridModel {
                     this.handlers.onContextMenu({
                         uri: this.getUri(),
                         cellRendererInput: parsedRet,
-                        association: ass
+                        association: ass,
                     }, e);
                 }
                 else {
@@ -42,14 +47,11 @@ let GridModel = class GridModel {
                     this.handlers.onContextMenu({
                         uri: this.getUri(),
                         cellRendererInput: parsedRet,
-                        column
+                        column,
                     }, e);
                 }
             }
         };
-    }
-    get isFirstGetRows() {
-        return this._isFirstGetRows;
     }
     getUri() {
         if (!this._uri)
@@ -71,7 +73,7 @@ let GridModel = class GridModel {
     resetRefPromise(uri) {
         this.setUri(uri);
         this.resetIsFirstGetRows();
-        this.refPromise = new Promise((resolve) => {
+        this.refPromise = new Promise(resolve => {
             this.refResolve = resolve;
         });
     }
@@ -102,9 +104,6 @@ let GridModel = class GridModel {
     }
     async getCol(schemaName) {
         this.setSchemaName(schemaName);
-        if (typeof this.apis.getResourceSchema !== 'function') {
-            throw new Error('handlers.getResourceSchema is not implemented');
-        }
         if (this.schemaName == null) {
             throw new Error('schemaName is null');
         }
@@ -113,7 +112,7 @@ let GridModel = class GridModel {
             this.refresh();
         }
         else {
-            const schemaRes = await this.apis.getResourceSchema({
+            const schemaRes = await this.apiService.getResourceSchema({
                 schemaName: this.schemaName,
             });
             if (schemaRes.columns.length > 0) {
@@ -124,38 +123,63 @@ let GridModel = class GridModel {
         if (this.refPromise == null)
             throw new Error('refPromise is null, call resetRefPromise in getOrCreateGridModel()');
         await this.refPromise;
-        // @ts-expect-error
+        // @ts-expect-error invoke react ref
         if (this.ref == null || typeof this.ref['setColDefs'] !== 'function') {
             throw new Error('ref is null');
         }
-        // @ts-expect-error
+        // @ts-expect-error invoke react ref
         this.ref['setColDefs']();
     }
-    async getData(params) {
+    isOpenTask(colName) {
         var _a;
-        if (typeof this.apis.getResourceData !== 'function') {
-            throw new Error('apis.getResourceData is not implemented');
+        if (this.schema == null)
+            throw new Error('schema is null');
+        const col = this.schema.columns.find(col => col.name === colName);
+        if (col == null)
+            throw new Error(`not found column, ${colName}`);
+        const builtInParseRet = builtinPluginSchema.safeParse((_a = col.plugins) === null || _a === void 0 ? void 0 : _a['builtin']);
+        if (builtInParseRet.success) {
+            return builtInParseRet.data.open_task;
         }
+        else {
+            return false;
+        }
+    }
+    async getData(params) {
+        var _a, _b;
         this._isFirstGetRows = false;
-        params.filterModel = mergeUriFilterModel(this.getUri(), params.filterModel);
-        (_a = this.gridApi) === null || _a === void 0 ? void 0 : _a.setFilterModel(params.filterModel);
-        const uri = updateUriFilterModel(this.getUri(), params.filterModel);
-        this.setUri(uri);
-        const dataRet = await this.apis.getResourceData(params);
-        const parseRet = getResourceDataOutputInnerSchema.safeParse(dataRet);
-        if (parseRet.success) {
-            return parseRet.data;
+        if (this.schema == null)
+            throw new Error('schema is null');
+        const builtInParseRet = builtinPluginSchema.safeParse((_a = this.schema.plugins) === null || _a === void 0 ? void 0 : _a['builtin']);
+        if (builtInParseRet.success && builtInParseRet.data.axios) {
+            // todo: 将处理 builtin logic 抽到 plugin 里
+            const res = await axios.request(Object.assign(Object.assign({}, builtInParseRet.data.axios), { headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                } }));
+            return {
+                data: res.data,
+                pagination: { total: res.data.length },
+            };
         }
-        return {
-            data: [dataRet],
-            pagination: { total: 1 },
-        };
+        else {
+            params.filterModel = mergeUriFilterModel(this.getUri(), params.filterModel);
+            (_b = this.gridApi) === null || _b === void 0 ? void 0 : _b.setFilterModel(params.filterModel);
+            const uri = updateUriFilterModel(this.getUri(), params.filterModel);
+            this.setUri(uri);
+            const dataRet = await this.apiService.getResourceData(params);
+            const parseRet = getResourceDataOutputInnerSchema.safeParse(dataRet);
+            if (parseRet.success) {
+                return parseRet.data;
+            }
+            return {
+                data: [dataRet],
+                pagination: { total: 1 },
+            };
+        }
     }
     async putData(id, updatedValue) {
-        if (typeof this.apis.putResourceData != 'function') {
-            throw new Error('handlers.putResourceData is not implemented');
-        }
-        await this.apis.putResourceData({
+        await this.apiService.putResourceData({
             schemaName: this.schemaName,
             id: id,
             updatedValue: updatedValue,
@@ -177,7 +201,9 @@ let GridModel = class GridModel {
     }
 };
 GridModel = __decorate([
-    injectable()
+    injectable(),
+    __param(0, inject(ApiServiceSymbol)),
+    __metadata("design:paramtypes", [Object])
 ], GridModel);
 export { GridModel };
 //# sourceMappingURL=grid.model.js.map

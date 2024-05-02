@@ -58,7 +58,6 @@ export class SampleMenuContribution implements MenuContribution {
     registry.registerMenuAction(MANAGE_HELP_SUBMENU, {
       commandId: GettingStartedCommand.id,
     })
-
     /* END unregister manage menu & add */
 
     /* ag-grid */
@@ -73,6 +72,10 @@ export class SampleMenuContribution implements MenuContribution {
     registry.registerMenuAction(
       ResourceGridCommands.CONTEXT_MENU,
       { commandId: ResourceGridCommands.OPEN_ASSOCIATION.id, label: ResourceGridCommands.OPEN_ASSOCIATION.label },
+    )
+    registry.registerMenuAction(
+      ResourceGridCommands.CONTEXT_MENU,
+      { commandId: ResourceGridCommands.OPEN_TASK.id, label: ResourceGridCommands.OPEN_TASK.label },
     )
     /* END ag-grid */
   }

@@ -9,6 +9,7 @@ export class TreeGrid extends Component {
         super(...arguments);
         this.gridRef = null;
         this.onCellValueChanged = async (evt) => {
+            //
         };
         this.onGridReady = (params) => {
             this.props.model.setGridApi(params.api);
@@ -27,6 +28,12 @@ export class TreeGrid extends Component {
                     name: `Add child to ${name}`,
                     action: () => {
                         this.props.model.addChild(id);
+                    },
+                },
+                {
+                    name: `Add peer to ${name}`,
+                    action: () => {
+                        this.props.model.addPeer(id);
                     },
                 },
                 {

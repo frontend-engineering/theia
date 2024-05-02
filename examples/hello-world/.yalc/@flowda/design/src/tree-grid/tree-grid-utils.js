@@ -1,4 +1,5 @@
 import { __rest } from "tslib";
+import { cloneDeep } from 'lodash';
 export function convertMenuDataToAgTreeData(menuData) {
     const ret = [];
     menuData.forEach(tree => {
@@ -31,6 +32,7 @@ export function traverseUp(tree, visit) {
     return ret;
 }
 export function convertAgTreeDataToTreeData(input) {
+    input = cloneDeep(input);
     const rootNodes = [];
     const nodeMap = {};
     input.forEach((node) => {

@@ -1,12 +1,13 @@
-import { __decorate } from "tslib";
-import { injectable } from 'inversify';
+import { __decorate, __metadata, __param } from "tslib";
+import { inject, injectable } from 'inversify';
 import * as _ from 'radash';
 import { URI } from '@theia/core';
 import { getTreeUriQuery } from '../uri/uri-utils';
 import { convertAgTreeDataToTreeData, convertMenuDataToAgTreeData } from './tree-grid-utils';
-import { agMenuItemSchema } from '@flowda/types';
+import { agMenuItemSchema, ApiServiceSymbol } from '@flowda/types';
 let TreeGridModel = class TreeGridModel {
-    constructor() {
+    constructor(apiService) {
+        this.apiService = apiService;
         this.gridApi = null;
         this.columnDefs = [
             { field: 'name', editable: true },
@@ -57,16 +58,12 @@ let TreeGridModel = class TreeGridModel {
         // noop
     }
     async loadData() {
-        if (!this.gridModel)
-            throw new Error(`this.gridModel is null, call setGridModel() first`);
         if (!this.uri)
             throw new Error(`this.uri is null, call setUri() first`);
-        if (typeof this.gridModel.apis.getResourceData !== 'function')
-            throw new Error('handlers.getResourceData is not implemented');
         const uri = new URI(this.uri);
         const query = getTreeUriQuery(this.uri);
         // todo: any
-        const ret = await this.gridModel.apis.getResourceData({
+        const ret = await this.apiService.getResourceData({
             schemaName: `${uri.authority}.${query.schemaName}`,
             id: Number(query.id),
         });
@@ -82,11 +79,7 @@ let TreeGridModel = class TreeGridModel {
             throw new Error('gridApi is null');
         this.gridApi.setGridOption('rowData', treeData);
     }
-    setGridModel(gridModel) {
-        this.gridModel = gridModel;
-    }
     getDataPath(data) {
-        // @ts-expect-error
         if (!('hierarchy' in data) || !Array.isArray(data.hierarchy)) {
             throw new Error('Must provide hierarchy field.');
         }
@@ -100,21 +93,17 @@ let TreeGridModel = class TreeGridModel {
             agTreeData.push(node.data);
         });
         const menuData = convertAgTreeDataToTreeData(agTreeData);
-        if (!this.gridModel)
-            throw new Error(`this.gridModel is null, call setGridModel() first`);
-        if (typeof this.gridModel.apis.putResourceData !== 'function')
-            throw new Error('handlers.putResourceData is not implemented');
         if (!this.uri)
             throw new Error(`this.uri is null, call setUri() first`);
         const uri = new URI(this.uri);
         const query = getTreeUriQuery(this.uri);
         try {
-            this.gridModel.apis.putResourceData({
+            this.apiService.putResourceData({
                 schemaName: `${uri.authority}.${query.schemaName}`,
                 id: Number(query.id),
                 updatedValue: {
-                    [query.field]: menuData
-                }
+                    [query.field]: menuData,
+                },
             });
         }
         catch (e) {
@@ -140,6 +129,28 @@ let TreeGridModel = class TreeGridModel {
             add: [
                 {
                     hierarchy: [...findRet.hierarchy, String(newId)],
+                    id: newId,
+                },
+            ],
+        });
+        this.convertAndSaveMenuData();
+    }
+    addPeer(id) {
+        if (!this.gridApi)
+            throw new Error('gridApi is null');
+        const newId = _.uid(4);
+        let findRet = null;
+        this.gridApi.forEachNode(node => {
+            if (node.data.id === id)
+                findRet = node.data;
+        });
+        findRet = agMenuItemSchema.parse(findRet);
+        if (findRet == null)
+            throw new Error(`No row found, ${id}`);
+        this.gridApi.applyTransaction({
+            add: [
+                {
+                    hierarchy: [...findRet.hierarchy.slice(0, findRet.hierarchy.length - 1), String(newId)],
                     id: newId,
                 },
             ],
@@ -177,7 +188,9 @@ let TreeGridModel = class TreeGridModel {
     }
 };
 TreeGridModel = __decorate([
-    injectable()
+    injectable(),
+    __param(0, inject(ApiServiceSymbol)),
+    __metadata("design:paramtypes", [Object])
 ], TreeGridModel);
 export { TreeGridModel };
 //# sourceMappingURL=tree-grid.model.js.map

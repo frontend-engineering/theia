@@ -19,7 +19,7 @@ let LoginModel = class LoginModel {
     }
     async login(accept) {
         if (!this.formikProps)
-            throw new Error();
+            throw new Error(`formikProps not set`);
         this.formikProps.setSubmitting(true);
         try {
             if (typeof this.handlers.validate !== 'function') {

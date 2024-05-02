@@ -1,5 +1,5 @@
 import { __rest } from "tslib";
-import { treeGridUriQuerySchema } from '@flowda/types';
+import { taskUriInputSchema, treeGridUriQuerySchema } from '@flowda/types';
 import { URI } from '@theia/core';
 import * as qs from 'qs';
 import * as _ from 'radash';
@@ -143,12 +143,22 @@ export function createAssociationUri(input) {
             [input.association.foreign_key]: {
                 filterType: 'number',
                 type: 'equals',
-                // @ts-expect-error
+                // @ts-expect-error ag-grid
                 filter: (_c = input.cellRendererInput.data) === null || _c === void 0 ? void 0 : _c[input.association.primary_key],
             },
         },
     };
     const ret = `${uri.scheme}://${uri.authority}?${qs.stringify(query, { encode: false })}`;
+    return new URI(ret);
+}
+export function createTaskUri(input) {
+    const uri = new URI(input.uri);
+    const { id, taskDefinitionKey, name } = taskUriInputSchema.parse(input.cellRendererInput.data);
+    const ret = `task://${uri.authority}?${qs.stringify({
+        taskDefinitionKey,
+        taskId: id,
+        displayName: name
+    }, { encode: false })}`;
     return new URI(ret);
 }
 //# sourceMappingURL=uri-utils.js.map

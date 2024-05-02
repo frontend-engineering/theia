@@ -28,9 +28,14 @@ export namespace ResourceGridCommands {
     category: 'Examples',
     label: 'Open association',
   }
+
+  export const OPEN_TASK: Command = {
+    id: 'resource-grid.open-task',
+    category: 'Examples',
+    label: 'Open task',
+  }
 }
 
-// todo: 将 api handlers 赋值放在 bind onActivation 里 不需要做一个子类
 @injectable()
 export class ResourceGridModel extends GridModel {
   @inject(OpenerService) openerService: OpenerService
@@ -42,17 +47,13 @@ export class ResourceGridModel extends GridModel {
   postConstruct() {
     // this.handlers.onRefClick = this.handleOnRefClick
     // this.handlers.onMouseEnter = this.handleMouseEnter
-    this.handlers.onContextMenu = this.handleContextMenu
-
-    this.apis.getResourceData = this.trpcFactory().hello.getResourceData.query
-    this.apis.getResourceSchema = this.trpcFactory().hello.getResourceSchema.query
-    this.apis.putResourceData = this.trpcFactory().hello.putResourceData.mutate
+    this.handlers.onContextMenu = this.handleContextMenu.bind(this)
   }
 
   /*
   todo 实现 reference preview 未完全实现
    */
-  /*private readonly handleMouseEnter = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  /* private readonly handleMouseEnter = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     // todo: 判断是否按照 command
     this.hoverService.requestHover({
       content: document.createElement('reference-preview'),
