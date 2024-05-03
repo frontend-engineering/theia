@@ -1,11 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hi = void 0;
-function hi() {
-    /*
-    just a placeholder
-    the entry is defined in package.json#theiaExtensions
-    */
-}
-exports.hi = hi;
+const tslib_1 = require("tslib");
+tslib_1.__exportStar(require("./trpc-client"), exports);
 //# sourceMappingURL=index.js.map

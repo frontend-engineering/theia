@@ -8,7 +8,7 @@ let TaskForm = class TaskForm extends Component {
     render() {
         return (_jsx(Formik, { onSubmit: values => {
                 this.props.model.submit(values);
-            }, initialValues: this.props.model.defaultInitalValues, children: (formikProps) => {
+            }, initialValues: this.props.model.defaultInitialValues, children: (formikProps) => {
                 this.props.model.formikProps = formikProps;
                 const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting,
                 /* and other goodies */

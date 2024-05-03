@@ -9,12 +9,19 @@
   ],
   "peerDependencies": {
     "@anatine/zod-openapi": "*",
+    "@flowda-projects/flowda-shared": "*",
+    "@flowda-projects/flowda-shared-types": "*",
+    "@flowda/schema": "*",
     "@flowda/types": "*",
+    "@nestjs/common": "*",
     "inversify": "*",
+    "reflect-metadata": "*",
     "tslib": "*",
-    "zod": "*"
+    "zod": "*",
+    "zod-prisma-types": "*",
+    "@flowda-boot-yongcheng/trpc-server": "0.0.1"
   },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "6c6a9d10d21e245edad8ff4b531d2516"
+  "yalcSig": "39485f447c4c48497c0752c1d3f19528"
 }

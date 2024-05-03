@@ -6,12 +6,12 @@
       "file": true
     },
     "@flowda/types": {
-      "signature": "d57b9014ff8e67a20a9571fab06d0220",
-      "file": true
+      "signature": "1095cbcc137c74b559aa78a7a5cc6651",
+      "pure": true
     },
     "@flowda/design": {
-      "signature": "00da1c99fb53f8e5ef68241ea55fe07e",
-      "file": true
+      "signature": "7dbfb7c15b22cc693364fa2a1fb92959",
+      "pure": true
     }
   }
 }

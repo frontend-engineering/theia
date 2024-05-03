@@ -276,7 +276,7 @@ declare class TaskFormModel implements ManageableModel {
             reference_type: "has_one";
         } | undefined;
     }[];
-    get defaultInitalValues(): Record<string, string>;
+    get defaultInitialValues(): Record<string, string>;
     initialBackendValues: {};
     private uri?;
     constructor(theme: ThemeModel, apiService: ApiService, wfCfgs: z.infer<typeof wfCfgSchema>[]);

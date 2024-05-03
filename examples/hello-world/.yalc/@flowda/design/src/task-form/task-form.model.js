@@ -45,15 +45,17 @@ let TaskFormModel = class TaskFormModel {
             return Object.assign(Object.assign({}, resColRet), wfCol);
         });
     }
-    // supress warning: uncontrolled input to be controlled
-    get defaultInitalValues() {
+    // suppress warning: uncontrolled input to be controlled
+    get defaultInitialValues() {
+        if (this._taskDefinitionKey == null)
+            return {};
         return _.objectify(this.wfCfg.resource.columns, i => i.name, i => '');
     }
     constructor(theme, apiService, wfCfgs) {
         this.theme = theme;
         this.apiService = apiService;
         this.wfCfgs = wfCfgs;
-        // save intial backend responsed data, to computed changed value
+        // save initial backend response data to computed changed value
         this.initialBackendValues = {};
     }
     getUri() {
