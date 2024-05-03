@@ -3,7 +3,7 @@
         background-color: var(--ag-control-panel-background-color);
     }
 
-    .p-Menu-item.p-mod-active > div {
+    .p-Menu-item.p-mod-active>div {
         background-color: var(--ag-row-hover-color);
     }
 
@@ -35,7 +35,7 @@
         border-radius: 5px;
     }
 
-    .monaco-inputbox > .ibwrapper > .input {
+    .monaco-inputbox>.ibwrapper>.input {
         line-height: var(--theia-quickInput-rowHeight);
         height: var(--theia-quickInput-rowHeight);
     }
@@ -45,7 +45,7 @@
         line-height: var(--theia-quickInput-rowHeight);
     }
 
-    #theia-main-content-panel .p-TabBar .p-TabBar-tab.p-mod-current {
+    #theia-main-content-panel .p-TabBar.theia-tabBar-active .p-TabBar-tab.p-mod-current {
         border-top: 2px solid var(--theia-button-background);
     }
 }
