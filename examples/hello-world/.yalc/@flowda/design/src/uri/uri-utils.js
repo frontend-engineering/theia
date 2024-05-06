@@ -1,5 +1,5 @@
 import { __rest } from "tslib";
-import { taskUriInputSchema, treeGridUriQuerySchema } from '@flowda/types';
+import { newFormUriSchema, taskUriInputSchema, treeGridUriQuerySchema } from '@flowda/types';
 import { URI } from '@theia/core';
 import * as qs from 'qs';
 import * as _ from 'radash';
@@ -71,7 +71,7 @@ export function createRefUri(input) {
                 type: 'equals',
                 filter: id,
             },
-        }
+        },
     };
     const retUri = `grid://${uri.authority}?${qs.stringify(query)}`;
     return new URI(retUri);
@@ -82,7 +82,7 @@ export function getUriFilterModel(uri) {
     }
     const query = qs.parse(uri.query);
     const ret = qs.parse(query['filterModel']);
-    return _.mapValues(ret, (v) => {
+    return _.mapValues(ret, v => {
         if (v.filterType === 'number')
             v.filter = Number(v.filter);
         return v;
@@ -118,11 +118,11 @@ export function isUriLikeEqual(a, b) {
         a = new URI(a);
     if (typeof b === 'string')
         b = new URI(b);
-    return a.scheme === b.scheme
-        && a.authority === b.authority
-        && a.path.toString() === b.path.toString()
-        && _.isEqual(qs.parse(a.query), qs.parse(b.query))
-        && a.fragment === b.fragment;
+    return (a.scheme === b.scheme &&
+        a.authority === b.authority &&
+        a.path.toString() === b.path.toString() &&
+        _.isEqual(qs.parse(a.query), qs.parse(b.query)) &&
+        a.fragment === b.fragment);
 }
 export function isUriAsKeyLikeEqual(a, b) {
     if (typeof a === 'string')
@@ -157,8 +157,19 @@ export function createTaskUri(input) {
     const ret = `task://${uri.authority}?${qs.stringify({
         taskDefinitionKey,
         taskId: id,
-        displayName: name
+        displayName: name,
     }, { encode: false })}`;
     return new URI(ret);
+}
+export function createNewFormUri(uri) {
+    if (typeof uri === 'string') {
+        uri = new URI(uri);
+    }
+    const query = newFormUriSchema.parse(qs.parse(uri.query));
+    const ret = `new-form://${uri.authority}?${qs.stringify({
+        schemaName: query.schemaName,
+        displayName: '新增' + query.displayName,
+    }, { encode: false })}`;
+    return ret;
 }
 //# sourceMappingURL=uri-utils.js.map

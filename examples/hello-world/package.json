@@ -4,26 +4,16 @@
   "version": "1.45.0",
   "description": "Theia - Hello world",
   "dependencies": {
-    "@adobe/lit-mobx": "^2.2.2",
-    "@elastic/datemath": "^5.0.2",
-    "@emotion/css": "^11.11.2",
-    "@flowda-projects/flowda-gateway-trpc-server": "file:.yalc/@flowda-projects/flowda-gateway-trpc-server",
-    "@flowda/design": "file:.yalc/@flowda/design",
-    "@flowda/types": "file:.yalc/@flowda/types",
     "@theia/core": "1.45.0",
+    "@elastic/datemath": "^5.0.2",
+    "@emotion/react": "^11.11.2",
+    "@emotion/css": "^11.11.2",
+    "@emotion/styled": "^11.11.2",
+    "@flowda-projects/flowda-gateway-trpc-server": "link:.yalc/@flowda-projects/flowda-gateway-trpc-server",
+    "@flowda/design": "link:.yalc/@flowda/design",
+    "@flowda/types": "link:.yalc/@flowda/types",
     "@trpc/client": "^10.45.0",
-    "@trpc/server": "^10.45.0",
-    "lit": "^3.1.2",
-    "prop-types": "^15.5.0",
-    "socket.io-mock": "^1.3.2",
-    "mock-socket": "^9.3.1"
-  },
-  "workspaces": {
-    "nohoist": [
-      "@flowda-projects/flowda-gateway-trpc-server",
-      "@flowda/design",
-      "@flowda/types"
-    ]
+    "@trpc/server": "^10.45.0"
   },
   "theiaExtensions": [
     {

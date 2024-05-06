@@ -35,11 +35,11 @@ export function convertAgTreeDataToTreeData(input) {
     input = cloneDeep(input);
     const rootNodes = [];
     const nodeMap = {};
-    input.forEach((node) => {
+    input.forEach(node => {
         node.children = [];
         nodeMap[node.id] = node;
     });
-    input.forEach((node) => {
+    input.forEach(node => {
         const { hierarchy } = node, rest = __rest(node, ["hierarchy"]);
         const parentNode = hierarchy.length > 1 ? nodeMap[hierarchy[hierarchy.length - 2]] : null;
         if (parentNode) {

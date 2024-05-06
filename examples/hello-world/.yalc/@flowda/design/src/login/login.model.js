@@ -1,5 +1,5 @@
 import { __decorate, __metadata, __param } from "tslib";
-import { action, makeObservable, observable, } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { injectable, inject } from 'inversify';
 import { ThemeModelSymbol } from '@flowda/types';
 import { ThemeModel } from '../theme/theme.model';

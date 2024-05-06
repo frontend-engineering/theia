@@ -29,8 +29,8 @@
     "@theia/preferences": "1.45.0",
     "@theia/preview": "1.45.0",
     "@theia/hello-world": "1.45.0",
-    "@flowda/types": "file:.yalc/@flowda/types",
-    "@flowda-boot-yongcheng/plugin": "file:.yalc/@flowda-boot-yongcheng/plugin"
+    "@flowda/types": "link:.yalc/@flowda/types",
+    "@flowda-boot-yongcheng/plugin": "link:.yalc/@flowda-boot-yongcheng/plugin"
   },
   "workspaces": {
     "nohoist": [

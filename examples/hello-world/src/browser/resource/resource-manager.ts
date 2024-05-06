@@ -28,20 +28,15 @@ export class ResourceManager extends EditorManager {
       if (widget instanceof ManageableWidget) {
         const manageableModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri)
         const uri_ = manageableModel.getUri()
-        // const uri = new URI(widget.uri)
         const uri = new URI(uri_)
         this.logger.info(`[ResourceManager] onCurrentEditorChanged ${uri.toString(true)}`)
 
         if (uri.scheme === 'grid') {
           const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as GridModel
-
           gridModel!.getCol(`${uri.authority}.${getUriSchemaName(uri)}`)
         }
         if (uri.scheme === 'tree-grid') {
           const treeGridModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as TreeGridModel
-          const gridUri = new URI(convertTreeGridUriToGridUri(uri))
-          const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(gridUri) as GridModel
-
           treeGridModel.resetGridReadyPromise(uri)
           treeGridModel.loadData()
         }

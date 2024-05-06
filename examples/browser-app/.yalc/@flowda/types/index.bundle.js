@@ -1,26 +1,34 @@
 'use strict';
 
+var tslib = require('tslib');
+var inversify = require('inversify');
 var zod = require('zod');
 
-/**
- * getServices 方法会将 inversify module 转换成 nestjs module，这样 nestjs controller 就可以使用了
- * 所以，注意：如果不需要给 controller 使用，则不需要 bind
- */
-const ServiceSymbol = Symbol('Service');
-const ApiServiceSymbol = Symbol('ApiService');
-const TreeGridModelSymbol = Symbol.for('TreeGridModel');
-const GridModelSymbol = Symbol.for('GridModel');
-const PreviewModelSymbol = Symbol.for('PreviewModel');
-const WorkflowConfigModelSymbol = Symbol.for('WorkflowConfigModel');
-const LoginModelSymbol = Symbol.for('LoginModel');
-const ThemeModelSymbol = Symbol.for('ThemeModel');
-const TaskFormModelSymbol = Symbol.for('TaskFormModel');
-const WorkflowConfigSymbol = Symbol.for('WorkflowConfig');
-
-// schema.service data.service 依赖下面3个 toConstantValue
-// todo: 后续开源相关服务后再同步调整
-const PrismaClientSymbol = Symbol('PrismaClient');
-const CustomZodSchemaSymbol = Symbol.for('CustomZodSchema');
+/// <reference types="@types/react" />
+function CustomResource(schemaName) {
+    const _customRender = new Map();
+    let AbstractCustomResource = class AbstractCustomResource {
+        constructor() {
+            this.schemaName = schemaName;
+        }
+        getCellRenderer(colName) {
+            if (!_customRender.has(colName))
+                return;
+            return _customRender.get(colName);
+        }
+        registerCellRenderer(colName, reactNode) {
+            if (_customRender.has(colName)) {
+                console.warn(`ignore already registered schema field, schema: ${this.schemaName}, field: ${colName}`);
+                return;
+            }
+            _customRender.set(colName, reactNode);
+        }
+    };
+    AbstractCustomResource = tslib.__decorate([
+        inversify.injectable()
+    ], AbstractCustomResource);
+    return AbstractCustomResource;
+}
 
 const agFilterInnerSchema = zod.z.object({
     filterType: zod.z.enum(['text', 'number']),
@@ -53,30 +61,15 @@ const cellRendererInputSchema = zod.z.object({
     }),
 });
 
-function createZodDto(schema) {
-    class AugmentedZodDto {
-        static create(input) {
-            return this.schema.parse(input);
-        }
-    }
-    AugmentedZodDto.isZodDto = true;
-    AugmentedZodDto.schema = schema;
-    return AugmentedZodDto;
-}
-
 const loginInputSchema = zod.z.object({
     username: zod.z.string(),
     password: zod.z.string().min(4),
 });
-class loginInputSchemaDto extends createZodDto(loginInputSchema) {
-}
 const loginOutputSchema = zod.z.object({
     at: zod.z.object({
-        token: zod.z.string()
-    })
+        token: zod.z.string(),
+    }),
 });
-class loginOutputSchemaDto extends createZodDto(loginOutputSchema) {
-}
 
 const ColumnKeySchema = zod.z.object({
     column_type: zod.z.string(),
@@ -125,8 +118,7 @@ const ResourceKeySchema = zod.z.object({
     searchable_columns: zod.z.string().optional(),
     plugins: zod.z.any().optional(),
     // openapi3-ts
-    properties: zod.z.record(zod.z.string(), zod.z.union([ColumnKeySchema, AssociationKeySchema, ReferenceKeySchema]))
-        .optional(),
+    properties: zod.z.record(zod.z.string(), zod.z.union([ColumnKeySchema, AssociationKeySchema, ReferenceKeySchema])).optional(),
     required: zod.z.array(zod.z.string()).optional(),
 });
 
@@ -148,13 +140,17 @@ const handleContextMenuInputSchema = zod.z.object({
     uri: zod.z.string().describe('所属 Grid 的 uri'),
     cellRendererInput: cellRendererInputSchema,
     column: ColumnUISchema.optional(),
-    association: AssociationKeySchema.optional()
+    association: AssociationKeySchema.optional(),
 });
 const treeGridUriQuerySchema = zod.z.object({
     schemaName: zod.z.string(),
     displayName: zod.z.string(),
     id: zod.z.string(),
-    field: zod.z.string()
+    field: zod.z.string(),
+});
+const newFormUriOutputSchema = zod.z.object({
+    displayName: zod.z.string(),
+    schemaName: zod.z.string(),
 });
 
 // todo: 后续开源相关服务后再同步调整
@@ -231,15 +227,11 @@ const ctxTenantSchema = zod.z.object({
     id: zod.z.number(),
     name: zod.z.string(),
 });
-class ctxTenantSchemaDto extends createZodDto(ctxTenantSchema) {
-}
 const ctxUserSchema = zod.z.object({
     id: zod.z.number(),
     tenantId: zod.z.number(),
     username: zod.z.string(),
 });
-class ctxUserSchemaDto extends createZodDto(ctxUserSchema) {
-}
 
 const taskSchema = zod.z.object({
     id: zod.z.string(),
@@ -255,15 +247,15 @@ const taskSchema = zod.z.object({
 const taskUriInputSchema = taskSchema.pick({
     id: true,
     name: true,
-    taskDefinitionKey: true
+    taskDefinitionKey: true,
 });
 // displayName 是为了兼容 getUriDisplayName()
 const taskUriOutputSchema = zod.z.object({
     taskId: zod.z.string(),
     displayName: zod.z.string(),
-    taskDefinitionKey: zod.z.string()
+    taskDefinitionKey: zod.z.string(),
 });
-// 逐步增强，现在仅支持单个 resource 
+// 逐步增强，现在仅支持单个 resource
 // 后续可支持多个，且不仅仅是 resource 可以是 view 甚至 plugin
 const wfCfgSchema = zod.z.array(zod.z.object({
     taskDefinitionKey: zod.z.string(),
@@ -272,27 +264,65 @@ const wfCfgSchema = zod.z.array(zod.z.object({
         inputMap: zod.z.record(zod.z.string(), zod.z.string()),
         columns: zod.z.array(zod.z.object({
             name: zod.z.string(),
-            access_type: zod.z.union([zod.z.literal('read_only'), zod.z.literal('read_write')])
-        }))
-    })
+            access_type: zod.z.union([zod.z.literal('read_only'), zod.z.literal('read_write')]),
+        })),
+    }),
 }));
+// displayName 是为了兼容 getUriDisplayName()
+const newFormUriSchema = zod.z.object({
+    displayName: zod.z.string(),
+    schemaName: zod.z.string(),
+});
+
+// schema.service data.service 依赖下面3个 toConstantValue
+// todo: 后续开源相关服务后再同步调整
+const PrismaClientSymbol = Symbol('PrismaClient');
+const CustomZodSchemaSymbol = Symbol.for('CustomZodSchema');
 
 const builtinPluginSchema = zod.z.object({
-    axios: zod.z.object({
+    axios: zod.z
+        .object({
         method: zod.z.string(),
         url: zod.z.string(),
         data: zod.z.any(),
-    }).optional(),
-    open_task: zod.z.boolean().optional()
+    })
+        .optional(),
+    open_task: zod.z.boolean().optional(),
 });
+
+/**
+ * getServices 方法会将 inversify module 转换成 nestjs module，这样 nestjs controller 就可以使用了
+ * 所以，注意：如果不需要给 controller 使用，则不需要 bind
+ */
+const ServiceSymbol = Symbol('Service');
+const ApiServiceSymbol = Symbol('ApiService');
+const TreeGridModelSymbol = Symbol.for('TreeGridModel');
+const GridModelSymbol = Symbol.for('GridModel');
+const PreviewModelSymbol = Symbol.for('PreviewModel');
+const WorkflowConfigModelSymbol = Symbol.for('WorkflowConfigModel');
+const LoginModelSymbol = Symbol.for('LoginModel');
+const ThemeModelSymbol = Symbol.for('ThemeModel');
+const TaskFormModelSymbol = Symbol.for('TaskFormModel');
+const NewFormModelSymbol = Symbol.for('NewFormModel');
+const WorkflowConfigSymbol = Symbol.for('WorkflowConfig');
+const CustomResourceSymbol = Symbol.for('CustomResourceSymbol');
+const ManageableServiceSymbol = Symbol.for('ManageableService');
+const ManageableModelSymbol = Symbol.for('ManageableModel');
+const ManageableModelFactorySymbol = Symbol.for('ManageableModelFactory');
 
 exports.ApiServiceSymbol = ApiServiceSymbol;
 exports.AssociationKeySchema = AssociationKeySchema;
 exports.ColumnKeySchema = ColumnKeySchema;
 exports.ColumnUISchema = ColumnUISchema;
+exports.CustomResource = CustomResource;
+exports.CustomResourceSymbol = CustomResourceSymbol;
 exports.CustomZodSchemaSymbol = CustomZodSchemaSymbol;
 exports.GridModelSymbol = GridModelSymbol;
 exports.LoginModelSymbol = LoginModelSymbol;
+exports.ManageableModelFactorySymbol = ManageableModelFactorySymbol;
+exports.ManageableModelSymbol = ManageableModelSymbol;
+exports.ManageableServiceSymbol = ManageableServiceSymbol;
+exports.NewFormModelSymbol = NewFormModelSymbol;
 exports.PreviewModelSymbol = PreviewModelSymbol;
 exports.PrismaClientSymbol = PrismaClientSymbol;
 exports.ReferenceKeySchema = ReferenceKeySchema;
@@ -313,9 +343,7 @@ exports.baseMenuItemSchema = baseMenuItemSchema;
 exports.builtinPluginSchema = builtinPluginSchema;
 exports.cellRendererInputSchema = cellRendererInputSchema;
 exports.ctxTenantSchema = ctxTenantSchema;
-exports.ctxTenantSchemaDto = ctxTenantSchemaDto;
 exports.ctxUserSchema = ctxUserSchema;
-exports.ctxUserSchemaDto = ctxUserSchemaDto;
 exports.findManyResourceDataInputSchema = findManyResourceDataInputSchema;
 exports.findUniqueResourceDataInputSchema = findUniqueResourceDataInputSchema;
 exports.getDataSchema = getDataSchema;
@@ -325,10 +353,10 @@ exports.getResourceDataOutputSchema = getResourceDataOutputSchema;
 exports.getResourceInputSchema = getResourceInputSchema;
 exports.handleContextMenuInputSchema = handleContextMenuInputSchema;
 exports.loginInputSchema = loginInputSchema;
-exports.loginInputSchemaDto = loginInputSchemaDto;
 exports.loginOutputSchema = loginOutputSchema;
-exports.loginOutputSchemaDto = loginOutputSchemaDto;
 exports.menuItemSchema = menuItemSchema;
+exports.newFormUriOutputSchema = newFormUriOutputSchema;
+exports.newFormUriSchema = newFormUriSchema;
 exports.putDataSchema = putDataSchema;
 exports.putResourceDataInputSchema = putResourceDataInputSchema;
 exports.resourceKeySchema = resourceKeySchema;

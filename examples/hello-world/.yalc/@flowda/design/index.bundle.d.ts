@@ -3,7 +3,7 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, IRowNode, CellValueChangedEvent, SortModelItem } from 'ag-grid-community';
 import { URI } from '@theia/core';
-import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, agFilterSchema, cellRendererInputSchema, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema } from '@flowda/types';
+import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType } from '@flowda/types';
 import { ContainerModule, interfaces } from 'inversify';
 import { z } from 'zod';
 import { FormikProps } from 'formik';
@@ -55,8 +55,76 @@ declare class NotImplementedApiService implements ApiService {
 }
 declare const bindDesignModule: (bind: interfaces.Bind) => void;
 
+declare class ThemeModel {
+    colorMode: 'light' | 'dark';
+    constructor();
+    setColorMode(colorMode: 'light' | 'dark'): void;
+}
+declare const EUI_DARK_COLORS: {
+    ghost: string;
+    ink: string;
+    primary: string;
+    accent: string;
+    success: string;
+    warning: string;
+    danger: string;
+    emptyShade: string;
+    lightestShade: string;
+    lightShade: string;
+    mediumShade: string;
+    darkShade: string;
+    darkestShade: string;
+    fullShade: string;
+    body: string;
+    highlight: string;
+    disabled: string;
+    disabledText: string;
+    shadow: string;
+    primaryText: string;
+    accentText: string;
+    successText: string;
+    warningText: string;
+    dangerText: string;
+    text: string;
+    title: string;
+    subduedText: string;
+    link: string;
+};
+declare const EUI_LIGHT_COLORS: {
+    ghost: string;
+    ink: string;
+    primary: string;
+    accent: string;
+    success: string;
+    warning: string;
+    danger: string;
+    emptyShade: string;
+    lightestShade: string;
+    lightShade: string;
+    mediumShade: string;
+    darkShade: string;
+    darkestShade: string;
+    fullShade: string;
+    body: string;
+    highlight: string;
+    disabled: string;
+    disabledText: string;
+    shadow: string;
+    primaryText: string;
+    accentText: string;
+    successText: string;
+    warningText: string;
+    dangerText: string;
+    text: string;
+    title: string;
+    subduedText: string;
+    link: string;
+};
+
 declare class GridModel implements ManageableModel {
+    theme: ThemeModel;
     apiService: ApiService;
+    private customResources;
     columnDefs: z.infer<typeof ColumnUISchema>[];
     schemaName: string | null;
     schema: ResourceUI | null;
@@ -68,6 +136,9 @@ declare class GridModel implements ManageableModel {
      * 原因是 setColDefs 有 React（cellRenderer）不能放在 grid.model 里
      */
     private refPromise?;
+    private refResolve?;
+    private schemaReadyResolve?;
+    schemaReadyPromise?: Promise<boolean>;
     handlers: Partial<{
         onRefClick: (v: {
             schemaName: string;
@@ -76,12 +147,12 @@ declare class GridModel implements ManageableModel {
         }) => void;
         onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
         onContextMenu: (input: z.infer<typeof handleContextMenuInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+        onClickNew: (uri: string) => void;
     }>;
     private ref;
     private _uri?;
-    private refResolve?;
     private _isFirstGetRows;
-    constructor(apiService: ApiService);
+    constructor(theme: ThemeModel, apiService: ApiService, customResources: ICustomResource[]);
     getUri(): string;
     setUri(uri: string | URI): void;
     resetIsFirstGetRows(): void;
@@ -96,6 +167,8 @@ declare class GridModel implements ManageableModel {
      */
     setRef(ref: unknown, uri?: string): void;
     setSchemaName(schemaName: string): void;
+    getCustomResource(): ICustomResource | undefined;
+    getCustomCellRenderer(colName: string): undefined | CellRenderer;
     getCol(schemaName: string): Promise<void>;
     isOpenTask(colName: string): boolean | undefined;
     getData(params: {
@@ -112,10 +185,11 @@ declare class GridModel implements ManageableModel {
     }>;
     putData(id: number, updatedValue: unknown): Promise<void>;
     readonly onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    readonly onContextMenu: (cellRendererInput: z.infer<typeof cellRendererInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>, options?: {
+    readonly onContextMenu: (cellRendererInput: CellRendererInput, e: React.MouseEvent<HTMLElement, MouseEvent>, options?: {
         type: 'association' | undefined;
     }) => void;
-    onRefClick(field: string, value: any): void;
+    onRefClick(field: string, value: string | number): void;
+    onNewForm(): void;
 }
 
 type GridProps = {
@@ -124,17 +198,11 @@ type GridProps = {
 };
 declare class Grid extends React$1.Component<GridProps> {
     private gridRef;
+    render(): JSX.Element;
     private readonly onGridReady;
     private readonly onCellValueChanged;
     setColDefs: () => void;
     autoResizeAll(): void;
-    render(): JSX.Element;
-}
-
-declare class ThemeModel {
-    colorMode: 'light' | 'dark';
-    constructor();
-    setColorMode(colorMode: 'light' | 'dark'): void;
 }
 
 declare class LoginModel {
@@ -181,8 +249,8 @@ declare function isUriLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function isUriAsKeyLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function createAssociationUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 declare function createTaskUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
+declare function createNewFormUri(uri: string | URI): string;
 
-type DefaultFormValueType = Record<string, string | number | undefined>;
 declare class TaskFormModel implements ManageableModel {
     theme: ThemeModel;
     apiService: ApiService;
@@ -286,10 +354,19 @@ declare class TaskFormModel implements ManageableModel {
     submit(values: DefaultFormValueType): Promise<void>;
 }
 
-declare class TaskForm extends Component<{
+type TaskFormProps = {
     model: TaskFormModel;
-}> {
+};
+declare class TaskForm extends Component<TaskFormProps> {
     render(): JSX.Element;
 }
 
-export { type DefaultFormValueType, Grid, GridModel, type GridProps, Login, LoginModel, NotImplementedApiService, TaskForm, TaskFormModel, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };
+declare const NOT_REGISTERED = "No matching bindings found for serviceIdentifier:";
+declare class ManageableService {
+    private manageableModelFactory;
+    private manageableModelMap;
+    constructor(manageableModelFactory: (named: string) => ManageableModel);
+    getOrCreateGridModel<T>(uri: URI | string): ManageableModel;
+}
+
+export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, Login, LoginModel, ManageableService, NOT_REGISTERED, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };

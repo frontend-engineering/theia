@@ -1,20 +1,26 @@
 import { __decorate, __metadata, __param } from "tslib";
-import { inject, injectable } from 'inversify';
-import { ApiServiceSymbol, builtinPluginSchema, cellRendererInputSchema, getResourceDataOutputInnerSchema, } from '@flowda/types';
-import { isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel } from '../uri/uri-utils';
+import { inject, injectable, multiInject, optional } from 'inversify';
+import { ApiServiceSymbol, builtinPluginSchema, cellRendererInputSchema, CustomResourceSymbol, getResourceDataOutputInnerSchema, ThemeModelSymbol, } from '@flowda/types';
+import { createNewFormUri, isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel } from '../uri/uri-utils';
 import { URI } from '@theia/core';
 import axios from 'axios';
+import { ThemeModel } from '../theme/theme.model';
 let GridModel = class GridModel {
     get isFirstGetRows() {
         return this._isFirstGetRows;
     }
-    constructor(apiService) {
+    constructor(theme, apiService, customResources) {
+        this.theme = theme;
         this.apiService = apiService;
+        this.customResources = customResources;
         this.columnDefs = [];
         this.schemaName = null;
         this.schema = null;
         this.isNotEmpty = false;
         this.gridApi = null;
+        this.schemaReadyPromise = new Promise(resolve => {
+            this.schemaReadyResolve = resolve;
+        });
         // todo: extract to a interface
         this.handlers = {};
         this._isFirstGetRows = true;
@@ -102,6 +108,21 @@ let GridModel = class GridModel {
     setSchemaName(schemaName) {
         this.schemaName = schemaName;
     }
+    getCustomResource() {
+        if (this.schemaName == null) {
+            throw new Error('schemaName is null');
+        }
+        return (this.customResources || []).find(i => i.schemaName === this.schemaName);
+    }
+    getCustomCellRenderer(colName) {
+        if (this.schemaName == null) {
+            throw new Error('schemaName is null');
+        }
+        const customResource = (this.customResources || []).find(i => i.schemaName === this.schemaName);
+        if (customResource == null)
+            return;
+        return customResource.getCellRenderer(colName);
+    }
     async getCol(schemaName) {
         this.setSchemaName(schemaName);
         if (this.schemaName == null) {
@@ -115,6 +136,7 @@ let GridModel = class GridModel {
             const schemaRes = await this.apiService.getResourceSchema({
                 schemaName: this.schemaName,
             });
+            this.schemaReadyResolve(true);
             if (schemaRes.columns.length > 0) {
                 this.columnDefs = schemaRes.columns;
             }
@@ -199,11 +221,20 @@ let GridModel = class GridModel {
             });
         }
     }
+    onNewForm() {
+        if (typeof this.handlers.onClickNew === 'function') {
+            const uri = createNewFormUri(this.getUri());
+            this.handlers.onClickNew(uri);
+        }
+    }
 };
 GridModel = __decorate([
     injectable(),
-    __param(0, inject(ApiServiceSymbol)),
-    __metadata("design:paramtypes", [Object])
+    __param(0, inject(ThemeModelSymbol)),
+    __param(1, inject(ApiServiceSymbol)),
+    __param(2, optional()),
+    __param(2, multiInject(CustomResourceSymbol)),
+    __metadata("design:paramtypes", [ThemeModel, Object, Array])
 ], GridModel);
 export { GridModel };
 //# sourceMappingURL=grid.model.js.map

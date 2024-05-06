@@ -13,8 +13,10 @@
     "@ag-grid-community/infinite-row-model": "31.1.1",
     "@ag-grid-enterprise/menu": "31.1.1",
     "@ag-grid-enterprise/row-grouping": "31.1.1",
-    "@elastic/eui": "^93.2.0",
+    "@elastic/eui": "^94.2.1",
     "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@rebass/grid": "^6.1.0",
     "ag-grid-community": "31.1.1",
     "ag-grid-react": "31.1.1",
     "axios": "^1.6.8",
@@ -35,5 +37,5 @@
   },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "7dbfb7c15b22cc693364fa2a1fb92959"
+  "yalcSig": "bc7de3f27dbecb90c412c2184a715dc8"
 }

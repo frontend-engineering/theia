@@ -3,7 +3,7 @@ import * as _ from 'radash';
 // todo: 理想状态 getChangedValues<{ a: string | null, b: boolean | null }>
 // 返回值能提示 ret.a
 export const getChangedValues = (values, initialValues, options = {
-    ignoreEmptyString: true
+    ignoreEmptyString: true,
 }) => {
     return Object.entries(values).reduce((acc, [key, value]) => {
         if (options.ignoreEmptyString && value === '')

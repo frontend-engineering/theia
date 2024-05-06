@@ -5,7 +5,7 @@ import { ThemeModel } from '../theme/theme.model';
 import axios from 'axios';
 import * as _ from 'radash';
 import { getChangedValues } from './task-form-utils';
-import { computed, observable, runInAction } from 'mobx';
+import { computed, makeObservable, observable, runInAction } from 'mobx';
 import { URI } from '@theia/core';
 import * as qs from 'qs';
 let TaskFormModel = class TaskFormModel {
@@ -57,6 +57,7 @@ let TaskFormModel = class TaskFormModel {
         this.wfCfgs = wfCfgs;
         // save initial backend response data to computed changed value
         this.initialBackendValues = {};
+        makeObservable(this);
     }
     getUri() {
         if (!this.uri)
@@ -105,7 +106,7 @@ let TaskFormModel = class TaskFormModel {
             return vars[v].value;
         });
         // todo: type infer 没有 work
-        const ret = await this.apiService.getResourceData({
+        const ret = (await this.apiService.getResourceData({
             schemaName: this.wfCfg.resource.schemaName,
             current: 0,
             pageSize: 1,
@@ -117,14 +118,12 @@ let TaskFormModel = class TaskFormModel {
                     filter: input.number,
                 },
             },
-        });
+        }));
         const values = ret.data[0];
         if (!this.formikProps)
             throw new Error(`formikProps is null`);
         this.initialBackendValues = values;
-        this.formikProps.setValues(values == null
-            ? {}
-            : _.mapValues(values, v => (v == null ? '' : v)));
+        this.formikProps.setValues(values == null ? {} : _.mapValues(values, v => (v == null ? '' : v)));
     }
     async submit(values) {
         const changedValues = getChangedValues(values, this.initialBackendValues);

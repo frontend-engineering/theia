@@ -8,6 +8,7 @@ import * as qs from 'qs';
 import * as express_serve_static_core from 'express-serve-static-core';
 import { LoggerService, INestApplication } from '@nestjs/common';
 import * as trpcExpress from '@trpc/server/adapters/express';
+import { AxiosInstance } from 'axios';
 import * as znv_dist_util from 'znv/dist/util';
 
 declare const flowdaGatewayTrpcServerModule: ContainerModule;
@@ -244,10 +245,10 @@ declare class TrpcService {
         _ctx_out: {
             user: _flowda_types.ctxUserSchemaDto | undefined;
             requestId: string;
-            tenant: _flowda_types.ctxTenantSchemaDto | undefined;
             req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
             res: express.Response<any, Record<string, any>>;
             _diagnosis: any[];
+            tenant: _flowda_types.ctxTenantSchemaDto | undefined;
         };
         _input_in: typeof _trpc_server.unsetMarker;
         _input_out: typeof _trpc_server.unsetMarker;
@@ -298,7 +299,7 @@ type Service = {
      */
     id: string;
     name: string;
-    trpc: any;
+    trpcEndpoint: string;
 };
 declare class GatewayRegister {
     private readonly logger;
@@ -311,9 +312,10 @@ declare class GatewayRegister {
 }
 declare class HelloRouter {
     private trpc;
+    private axios;
     private gatewayRegister;
     private readonly logger;
-    constructor(trpc: TrpcService, gatewayRegister: GatewayRegister, loggerFactory: (name: string) => LoggerService);
+    constructor(trpc: TrpcService, axios: AxiosInstance, gatewayRegister: GatewayRegister, loggerFactory: (name: string) => LoggerService);
     helloRouter: _trpc_server.CreateRouterInner<_trpc_server.RootConfig<{
         ctx: {
             req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
@@ -493,10 +495,10 @@ declare class HelloRouter {
             _ctx_out: {
                 user: _flowda_types.ctxUserSchemaDto | undefined;
                 requestId: string;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
                 _diagnosis: any[];
+                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
             };
             _input_in: {
                 pid: string;
@@ -541,10 +543,10 @@ declare class HelloRouter {
             _ctx_out: {
                 user: _flowda_types.ctxUserSchemaDto | undefined;
                 requestId: string;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
                 _diagnosis: any[];
+                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
             };
             _input_in: {
                 schemaName: string;
@@ -582,10 +584,10 @@ declare class HelloRouter {
             _ctx_out: {
                 user: _flowda_types.ctxUserSchemaDto | undefined;
                 requestId: string;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
                 _diagnosis: any[];
+                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
             };
             _input_in: {
                 sort: {
@@ -667,10 +669,10 @@ declare class HelloRouter {
             _ctx_out: {
                 user: _flowda_types.ctxUserSchemaDto | undefined;
                 requestId: string;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
                 _diagnosis: any[];
+                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
             };
             _input_in: {
                 id: number;
@@ -893,10 +895,10 @@ declare class TrpcRouter {
                 _ctx_out: {
                     user: _flowda_types.ctxUserSchemaDto | undefined;
                     requestId: string;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
                     _diagnosis: any[];
+                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                 };
                 _input_in: {
                     pid: string;
@@ -941,10 +943,10 @@ declare class TrpcRouter {
                 _ctx_out: {
                     user: _flowda_types.ctxUserSchemaDto | undefined;
                     requestId: string;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
                     _diagnosis: any[];
+                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                 };
                 _input_in: {
                     schemaName: string;
@@ -982,10 +984,10 @@ declare class TrpcRouter {
                 _ctx_out: {
                     user: _flowda_types.ctxUserSchemaDto | undefined;
                     requestId: string;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
                     _diagnosis: any[];
+                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                 };
                 _input_in: {
                     sort: {
@@ -1067,10 +1069,10 @@ declare class TrpcRouter {
                 _ctx_out: {
                     user: _flowda_types.ctxUserSchemaDto | undefined;
                     requestId: string;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
                     _diagnosis: any[];
+                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
                 };
                 _input_in: {
                     id: number;

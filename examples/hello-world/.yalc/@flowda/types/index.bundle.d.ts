@@ -1,30 +1,11 @@
-import { z, ZodTypeDef, ZodSchema } from 'zod';
+/// <reference types="@types/react" />
 import { URI } from '@theia/core';
+import { z } from 'zod';
 
-type JSONValue = string | number | boolean | {
-    [x: string]: JSONValue;
-} | Array<JSONValue>;
-interface JSONObject {
-    [x: string]: JSONValue;
+interface ManageableModel {
+    getUri(): string;
+    setUri(uri: string | URI): void;
 }
-
-/**
- * getServices 方法会将 inversify module 转换成 nestjs module，这样 nestjs controller 就可以使用了
- * 所以，注意：如果不需要给 controller 使用，则不需要 bind
- */
-declare const ServiceSymbol: unique symbol;
-declare const ApiServiceSymbol: unique symbol;
-declare const TreeGridModelSymbol: unique symbol;
-declare const GridModelSymbol: unique symbol;
-declare const PreviewModelSymbol: unique symbol;
-declare const WorkflowConfigModelSymbol: unique symbol;
-declare const LoginModelSymbol: unique symbol;
-declare const ThemeModelSymbol: unique symbol;
-declare const TaskFormModelSymbol: unique symbol;
-declare const WorkflowConfigSymbol: unique symbol;
-
-declare const PrismaClientSymbol: unique symbol;
-declare const CustomZodSchemaSymbol: unique symbol;
 
 declare const agFilterInnerSchema: z.ZodObject<{
     filterType: z.ZodEnum<["text", "number"]>;
@@ -153,13 +134,7 @@ declare const cellRendererInputSchema: z.ZodObject<{
     value?: any;
     data?: unknown;
 }>;
-
-interface ZodDto<TOutput = any, TDef extends ZodTypeDef = ZodTypeDef, TInput = TOutput> {
-    new (): TOutput;
-    isZodDto: true;
-    schema: ZodSchema<TOutput, TDef, TInput>;
-    create(input: unknown): TOutput;
-}
+type CellRendererInput = z.infer<typeof cellRendererInputSchema>;
 
 declare const loginInputSchema: z.ZodObject<{
     username: z.ZodString;
@@ -171,18 +146,7 @@ declare const loginInputSchema: z.ZodObject<{
     username: string;
     password: string;
 }>;
-declare const loginInputSchemaDto_base: ZodDto<{
-    username: string;
-    password: string;
-}, z.ZodObjectDef<{
-    username: z.ZodString;
-    password: z.ZodString;
-}, "strip", z.ZodTypeAny>, {
-    username: string;
-    password: string;
-}>;
-declare class loginInputSchemaDto extends loginInputSchemaDto_base {
-}
+type loginInputSchemaDto = z.infer<typeof loginInputSchema>;
 declare const loginOutputSchema: z.ZodObject<{
     at: z.ZodObject<{
         token: z.ZodString;
@@ -200,25 +164,7 @@ declare const loginOutputSchema: z.ZodObject<{
         token: string;
     };
 }>;
-declare const loginOutputSchemaDto_base: ZodDto<{
-    at: {
-        token: string;
-    };
-}, z.ZodObjectDef<{
-    at: z.ZodObject<{
-        token: z.ZodString;
-    }, "strip", z.ZodTypeAny, {
-        token: string;
-    }, {
-        token: string;
-    }>;
-}, "strip", z.ZodTypeAny>, {
-    at: {
-        token: string;
-    };
-}>;
-declare class loginOutputSchemaDto extends loginOutputSchemaDto_base {
-}
+type loginOutputSchemaDto = z.infer<typeof loginOutputSchema>;
 
 declare const handleContextMenuInputSchema: z.ZodObject<{
     uri: z.ZodString;
@@ -471,6 +417,16 @@ declare const treeGridUriQuerySchema: z.ZodObject<{
     schemaName: string;
     displayName: string;
     id: string;
+}>;
+declare const newFormUriOutputSchema: z.ZodObject<{
+    displayName: z.ZodString;
+    schemaName: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    schemaName: string;
+    displayName: string;
+}, {
+    schemaName: string;
+    displayName: string;
 }>;
 
 declare const selectOptionSchema: z.ZodObject<{
@@ -861,18 +817,7 @@ declare const ctxTenantSchema: z.ZodObject<{
     name: string;
     id: number;
 }>;
-declare const ctxTenantSchemaDto_base: ZodDto<{
-    name: string;
-    id: number;
-}, z.ZodObjectDef<{
-    id: z.ZodNumber;
-    name: z.ZodString;
-}, "strip", z.ZodTypeAny>, {
-    name: string;
-    id: number;
-}>;
-declare class ctxTenantSchemaDto extends ctxTenantSchemaDto_base {
-}
+type ctxTenantSchemaDto = z.infer<typeof ctxTenantSchema>;
 declare const ctxUserSchema: z.ZodObject<{
     id: z.ZodNumber;
     tenantId: z.ZodNumber;
@@ -886,21 +831,7 @@ declare const ctxUserSchema: z.ZodObject<{
     id: number;
     tenantId: number;
 }>;
-declare const ctxUserSchemaDto_base: ZodDto<{
-    username: string;
-    id: number;
-    tenantId: number;
-}, z.ZodObjectDef<{
-    id: z.ZodNumber;
-    tenantId: z.ZodNumber;
-    username: z.ZodString;
-}, "strip", z.ZodTypeAny>, {
-    username: string;
-    id: number;
-    tenantId: number;
-}>;
-declare class ctxUserSchemaDto extends ctxUserSchemaDto_base {
-}
+type ctxUserSchemaDto = z.infer<typeof ctxUserSchema>;
 type TCtx = {
     _diagnosis: any[];
 };
@@ -1015,6 +946,24 @@ declare const wfCfgSchema: z.ZodArray<z.ZodObject<{
     };
     taskDefinitionKey: string;
 }>, "many">;
+declare const newFormUriSchema: z.ZodObject<{
+    displayName: z.ZodString;
+    schemaName: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    schemaName: string;
+    displayName: string;
+}, {
+    schemaName: string;
+    displayName: string;
+}>;
+
+type JSONValue = string | number | boolean | {
+    [x: string]: JSONValue;
+} | Array<JSONValue>;
+interface JSONObject {
+    [x: string]: JSONValue;
+}
+type DefaultFormValueType = Record<string, string | number | undefined>;
 
 interface PluginType {
     [x: string]: unknown;
@@ -1665,16 +1614,25 @@ declare const ResourceUISchema: z.ZodObject<{
 type ResourceUI = z.infer<typeof ResourceUISchema>;
 type ColumUI = z.infer<typeof ColumnUISchema>;
 
-interface ManageableModel {
-    getUri(): string;
-    setUri(uri: string | URI): void;
-}
-
 interface ApiService {
     getResourceSchema: (input: z.infer<typeof getResourceInputSchema>) => Promise<z.infer<typeof ResourceUISchema>>;
     getResourceData: (input: z.infer<typeof getResourceDataInputSchema>) => Promise<z.infer<typeof getResourceDataOutputSchema>>;
     putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
 }
+
+type CellRenderer = (param: CellRendererInput) => JSX.Element;
+interface ICustomResource {
+    schemaName: string;
+    getCellRenderer(colName: string): undefined | CellRenderer;
+}
+declare function CustomResource(schemaName: string): abstract new () => {
+    schemaName: string;
+    getCellRenderer(colName: string): CellRenderer | undefined;
+    registerCellRenderer(colName: string, reactNode: CellRenderer): void;
+};
+
+declare const PrismaClientSymbol: unique symbol;
+declare const CustomZodSchemaSymbol: unique symbol;
 
 declare const builtinPluginSchema: z.ZodObject<{
     axios: z.ZodOptional<z.ZodObject<{
@@ -1712,4 +1670,24 @@ declare module '@flowda/types' {
     }
 }
 
-export { type ApiService, ApiServiceSymbol, type AssociationKey, AssociationKeySchema, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, CustomZodSchemaSymbol, GridModelSymbol, type JSONObject, type JSONValue, LoginModelSymbol, type ManageableModel, type MenuItem, type PluginType, PreviewModelSymbol, PrismaClientSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, type ResourceUI, ResourceUISchema, ServiceSymbol, type TCtx, TaskFormModelSymbol, ThemeModelSymbol, TreeGridModelSymbol, WorkflowConfigModelSymbol, WorkflowConfigSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agMenuItemSchema, agSortSchema, baseMenuItemSchema, builtinPluginSchema, cellRendererInputSchema, ctxTenantSchema, ctxTenantSchemaDto, ctxUserSchema, ctxUserSchemaDto, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getDataSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, loginInputSchemaDto, loginOutputSchema, loginOutputSchemaDto, menuItemSchema, putDataSchema, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, taskSchema, taskUriInputSchema, taskUriOutputSchema, treeGridUriQuerySchema, wfCfgSchema };
+/**
+ * getServices 方法会将 inversify module 转换成 nestjs module，这样 nestjs controller 就可以使用了
+ * 所以，注意：如果不需要给 controller 使用，则不需要 bind
+ */
+declare const ServiceSymbol: unique symbol;
+declare const ApiServiceSymbol: unique symbol;
+declare const TreeGridModelSymbol: unique symbol;
+declare const GridModelSymbol: unique symbol;
+declare const PreviewModelSymbol: unique symbol;
+declare const WorkflowConfigModelSymbol: unique symbol;
+declare const LoginModelSymbol: unique symbol;
+declare const ThemeModelSymbol: unique symbol;
+declare const TaskFormModelSymbol: unique symbol;
+declare const NewFormModelSymbol: unique symbol;
+declare const WorkflowConfigSymbol: unique symbol;
+declare const CustomResourceSymbol: unique symbol;
+declare const ManageableServiceSymbol: unique symbol;
+declare const ManageableModelSymbol: unique symbol;
+declare const ManageableModelFactorySymbol: unique symbol;
+
+export { type ApiService, ApiServiceSymbol, type AssociationKey, AssociationKeySchema, type CellRenderer, type CellRendererInput, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, CustomResource, CustomResourceSymbol, CustomZodSchemaSymbol, type DefaultFormValueType, GridModelSymbol, type ICustomResource, type JSONObject, type JSONValue, LoginModelSymbol, type ManageableModel, ManageableModelFactorySymbol, ManageableModelSymbol, ManageableServiceSymbol, type MenuItem, NewFormModelSymbol, type PluginType, PreviewModelSymbol, PrismaClientSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, type ResourceUI, ResourceUISchema, ServiceSymbol, type TCtx, TaskFormModelSymbol, ThemeModelSymbol, TreeGridModelSymbol, WorkflowConfigModelSymbol, WorkflowConfigSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agMenuItemSchema, agSortSchema, baseMenuItemSchema, builtinPluginSchema, cellRendererInputSchema, ctxTenantSchema, type ctxTenantSchemaDto, ctxUserSchema, type ctxUserSchemaDto, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getDataSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, type loginInputSchemaDto, loginOutputSchema, type loginOutputSchemaDto, menuItemSchema, newFormUriOutputSchema, newFormUriSchema, putDataSchema, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, taskSchema, taskUriInputSchema, taskUriOutputSchema, treeGridUriQuerySchema, wfCfgSchema };

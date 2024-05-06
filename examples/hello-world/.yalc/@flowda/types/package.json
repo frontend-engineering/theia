@@ -4,13 +4,14 @@
   "type": "commonjs",
   "peerDependencies": {
     "@anatine/zod-openapi": "*",
-    "tslib": "2.6.2"
+    "tslib": "~2.6.2"
   },
   "dependencies": {
-    "openapi3-ts": "3.2.0",
-    "zod": "3.22.4"
+    "inversify": "^6.0.2",
+    "openapi3-ts": "^3.2.0",
+    "zod": "^3.22.4"
   },
   "main": "./index.bundle.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "1095cbcc137c74b559aa78a7a5cc6651"
+  "yalcSig": "1cc4869d4a5fb6bbef62264580e1e9a0"
 }

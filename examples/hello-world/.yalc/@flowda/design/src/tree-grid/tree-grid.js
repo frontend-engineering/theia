@@ -46,11 +46,7 @@ export class TreeGrid extends Component {
         };
     }
     render() {
-        return (_jsx(AgGridReact, { modules: [
-                ClientSideRowModelModule,
-                RowGroupingModule,
-                MenuModule,
-            ], ref: ref => (this.gridRef = ref), columnDefs: this.props.model.columnDefs, defaultColDef: {
+        return (_jsx(AgGridReact, { modules: [ClientSideRowModelModule, RowGroupingModule, MenuModule], ref: ref => (this.gridRef = ref), columnDefs: this.props.model.columnDefs, defaultColDef: {
                 flex: 1,
             }, autoGroupColumnDef: {
                 headerName: '#',

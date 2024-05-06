@@ -30,7 +30,7 @@ let TreeGridModel = class TreeGridModel {
         if (typeof uri === 'string')
             uri = new URI(uri);
         this.setUri(uri);
-        this.gridReadyPromise = new Promise((resolve) => {
+        this.gridReadyPromise = new Promise(resolve => {
             this.gridReadyResolve = resolve;
         });
     }
@@ -180,9 +180,7 @@ let TreeGridModel = class TreeGridModel {
             return;
         }
         this.gridApi.applyTransaction({
-            remove: [
-                node.data,
-            ],
+            remove: [node.data],
         });
         this.convertAndSaveMenuData();
     }
