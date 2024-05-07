@@ -1629,7 +1629,7 @@ declare function CustomResource(schemaName: string): abstract new () => {
 };
 
 declare const NOT_REGISTERED = "No matching bindings found for serviceIdentifier:";
-declare const MANAGEABLE_EDITOR_ID = "manageable-editor-open";
+declare const MANAGEABLE_EDITOR_ID = "resource-editor-opener";
 declare const NOT_REGISTERED_SCHEME = "unknown uri:";
 
 declare const PrismaClientSymbol: unique symbol;

@@ -270,7 +270,7 @@ const wfCfgSchema = zod.z.array(zod.z.object({
 }));
 
 const NOT_REGISTERED = 'No matching bindings found for serviceIdentifier:';
-const MANAGEABLE_EDITOR_ID = 'manageable-editor-open';
+const MANAGEABLE_EDITOR_ID = 'resource-editor-opener';
 const NOT_REGISTERED_SCHEME = 'unknown uri:';
 
 // schema.service data.service 依赖下面3个 toConstantValue

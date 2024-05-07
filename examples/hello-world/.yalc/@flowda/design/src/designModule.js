@@ -10,7 +10,6 @@ import { TaskFormModel } from './task-form/task-form.model';
 import { NewFormModel } from './new-form/new-form.model';
 import { ManageableService } from './manageable/manageable.service';
 import { registerManageableFactory } from './ioc-utils';
-import { GridWidget } from './grid/grid.widget';
 import { MenuWidget } from './tree-grid/menu.widget';
 import { TaskFormWidget } from './task-form/task-form.widget';
 import { NewFormWidget } from './new-form/new-form.widget';
@@ -61,7 +60,7 @@ export const bindDesignModule = (bind) => {
         };
     });
     // built in
-    registerManageableFactory(bind, 'grid', GridModel, GridWidget);
+    // registerManageableFactory(bind, 'grid', GridModel, GridWidget)
     registerManageableFactory(bind, 'tree-grid', TreeGridModel, MenuWidget);
     registerManageableFactory(bind, 'task', TaskFormModel, TaskFormWidget);
     registerManageableFactory(bind, 'new-form', NewFormModel, NewFormWidget);

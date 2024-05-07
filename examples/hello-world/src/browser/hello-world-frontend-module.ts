@@ -8,7 +8,6 @@ import {
   CommandRegistry,
   FilterContribution,
   MenuContribution,
-  MessageService,
 } from '@theia/core'
 import { ContainerModule, interfaces } from '@theia/core/shared/inversify'
 import {
@@ -40,10 +39,10 @@ import { HelloThemeService } from './hello-theming'
 import { MonacoThemeRegistry } from '@theia/monaco/lib/browser/textmate/monaco-theme-registry'
 import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry'
 import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-widget'
-import { bindDesignModule, GridModel, TaskFormModel, TreeGridModel } from '@flowda/design'
+import { bindDesignModule, GridWidget, registerManageableFactory } from '@flowda/design'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import type { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
-import { type ApiService, ApiServiceSymbol, GridModelSymbol, TreeGridModelSymbol, TaskFormModelSymbol } from '@flowda/types'
+import { type ApiService, ApiServiceSymbol, GridModelSymbol } from '@flowda/types'
 import { environment } from './environments/environment'
 import { HelloFrontendContribution } from './hello-frontend-contribution'
 import { ResourceGridModel } from './resource/resource-grid-model'
@@ -105,28 +104,9 @@ export default new ContainerModule(
     bind(WidgetFactory).toService(ResourceWidgetFactory)
 
     bindDesignModule(bind)
+    registerManageableFactory(bind, 'grid', ResourceGridModel, GridWidget)
+
     rebind(GridModelSymbol).to(ResourceGridModel).inTransientScope()
-
-    bind<interfaces.Factory<GridModel>>('Factory<GridModel>').toFactory<GridModel>(context => {
-      return () => {
-        return context.container.get<GridModel>(GridModelSymbol)
-      }
-    })
-
-    bind<interfaces.Factory<TreeGridModel>>('Factory<TreeGridModel>').toFactory<TreeGridModel>(context => {
-      return () => {
-        const treeGridModel = context.container.get<TreeGridModel>(TreeGridModelSymbol)
-        const messageService = context.container.get(MessageService)
-        treeGridModel.handlers.message = messageService.info.bind(messageService)
-        return treeGridModel
-      }
-    })
-
-    bind<interfaces.Factory<TaskFormModel>>('Factory<TaskFormModel>').toFactory<TaskFormModel>(context => {
-      return () => {
-        return context.container.get<TaskFormModel>(TaskFormModelSymbol)
-      }
-    })
 
     bind(ResourceManager).toSelf().inSingletonScope()
     bind(OpenHandler).toService(ResourceManager)

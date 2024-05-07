@@ -6,8 +6,8 @@ import { URI } from '@theia/core';
 import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType, WidgetOption } from '@flowda/types';
 import { ContainerModule, interfaces } from 'inversify';
 import { z } from 'zod';
-import { FormikProps } from 'formik';
 import { ReactWidget } from '@theia/core/lib/browser';
+import { FormikProps } from 'formik';
 
 declare class TreeGridModel implements ManageableModel {
     apiService: ApiService;
@@ -206,6 +206,18 @@ declare class Grid extends React$1.Component<GridProps> {
     autoResizeAll(): void;
 }
 
+declare abstract class ManageableWidget extends ReactWidget {
+    uri?: string;
+    model?: ManageableModel;
+}
+
+declare class GridWidget extends ManageableWidget {
+    model?: GridModel | undefined;
+    static readonly ID = "grid-widget";
+    constructor(model?: GridModel | undefined);
+    protected render(): React$1.ReactNode;
+}
+
 declare class LoginModel {
     theme: ThemeModel;
     formikProps: FormikProps<loginInputSchemaDto> | undefined;
@@ -363,11 +375,6 @@ declare class TaskForm extends Component<TaskFormProps> {
     render(): JSX.Element;
 }
 
-declare abstract class ManageableWidget extends ReactWidget {
-    uri?: string;
-    model?: ManageableModel;
-}
-
 declare class ManageableService {
     private modelFactory;
     private widgetAbstractFactory;
@@ -380,4 +387,6 @@ declare class ManageableService {
     }): ManageableWidget;
 }
 
-export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, Login, LoginModel, ManageableService, ManageableWidget, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };
+declare function registerManageableFactory<WIDGET extends ManageableWidget, MODEL extends ManageableModel>(bind: interfaces.Bind, name: string, Model: interfaces.Newable<MODEL>, Widget: interfaces.Newable<WIDGET>): void;
+
+export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, GridWidget, Login, LoginModel, ManageableService, ManageableWidget, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, registerManageableFactory, updateUriFilterModel, uriAsKey, uriWithoutId };
