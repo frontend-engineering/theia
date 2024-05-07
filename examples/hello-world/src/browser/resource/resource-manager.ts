@@ -4,8 +4,7 @@ import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
 import { NavigatableWidgetOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
-import { convertTreeGridUriToGridUri, getUriSchemaName, GridModel, TreeGridModel, uriAsKey } from '@flowda/design'
-import { ManageableWidget } from './widgets/manageable-widget'
+import { getUriSchemaName, GridModel, ManageableWidget, TreeGridModel, uriAsKey } from '@flowda/design'
 
 @injectable()
 export class ResourceManager extends EditorManager {
@@ -26,6 +25,7 @@ export class ResourceManager extends EditorManager {
       }
 
       if (widget instanceof ManageableWidget) {
+        if (widget.uri == null) throw new Error('widget uri is null')
         const manageableModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri)
         const uri_ = manageableModel.getUri()
         const uri = new URI(uri_)
@@ -53,9 +53,9 @@ export class ResourceManager extends EditorManager {
       return super.extractIdFromWidget(widget as EditorWidget)
     }
     if (widget instanceof ManageableWidget) {
-      const uri = widget.uri
+      if (widget.uri == null) throw new Error('widget uri is null')
       const id = Number(widget.id.slice(widget.id.lastIndexOf(':') + 1))
-      return { id, uri }
+      return { id, uri: widget.uri }
     }
     throw new Error(`widget is not valid`)
   }

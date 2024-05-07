@@ -1,5 +1,5 @@
 import { __decorate, __metadata, __param } from "tslib";
-import { ApiServiceSymbol, newFormUriOutputSchema, ThemeModelSymbol, } from '@flowda/types';
+import { ApiServiceSymbol, newFormUriSchema, ThemeModelSymbol, } from '@flowda/types';
 import { inject, injectable } from 'inversify';
 import { ThemeModel } from '../theme/theme.model';
 import * as _ from 'radash';
@@ -18,6 +18,9 @@ let NewFormModel = class NewFormModel {
                 return false;
             return col.access_type !== 'read_only';
         });
+    }
+    resetGridReadyPromise() {
+        //
     }
     // suppress warning: uncontrolled input to be controlled
     get defaultInitialValues() {
@@ -54,7 +57,7 @@ let NewFormModel = class NewFormModel {
         if (typeof uri === 'string') {
             uri = new URI(uri);
         }
-        const query = newFormUriOutputSchema.parse(qs.parse(uri.query));
+        const query = newFormUriSchema.parse(qs.parse(uri.query));
         const ret = await this.apiService.getResourceSchema({
             schemaName: query.schemaName,
         });

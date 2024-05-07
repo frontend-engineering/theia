@@ -9,6 +9,9 @@ import { computed, makeObservable, observable, runInAction } from 'mobx';
 import { URI } from '@theia/core';
 import * as qs from 'qs';
 let TaskFormModel = class TaskFormModel {
+    resetGridReadyPromise() {
+        //
+    }
     get taskId() {
         if (!this._taskId)
             throw new Error(`Not found taskId, call loadTask first`);

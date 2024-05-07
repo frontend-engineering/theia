@@ -3,10 +3,11 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, IRowNode, CellValueChangedEvent, SortModelItem } from 'ag-grid-community';
 import { URI } from '@theia/core';
-import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType } from '@flowda/types';
+import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType, WidgetOption } from '@flowda/types';
 import { ContainerModule, interfaces } from 'inversify';
 import { z } from 'zod';
 import { FormikProps } from 'formik';
+import { ReactWidget } from '@theia/core/lib/browser';
 
 declare class TreeGridModel implements ManageableModel {
     apiService: ApiService;
@@ -160,7 +161,7 @@ declare class GridModel implements ManageableModel {
      * 在 ResourceWidgetFactory#createWidget 重置 promise
      * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
      */
-    resetRefPromise(uri: string | URI): void;
+    resetGridReadyPromise(uri: string | URI): void;
     refresh(): void;
     /**
      * `<Grid ref={ref => this.setRef(ref)} />`
@@ -259,6 +260,7 @@ declare class TaskFormModel implements ManageableModel {
     private _taskDefinitionKey;
     private _taskId;
     schema: ResourceUI | undefined;
+    resetGridReadyPromise(): void;
     get taskId(): string;
     get taskDefinitionKey(): string;
     get wfCfg(): {
@@ -361,12 +363,21 @@ declare class TaskForm extends Component<TaskFormProps> {
     render(): JSX.Element;
 }
 
-declare const NOT_REGISTERED = "No matching bindings found for serviceIdentifier:";
-declare class ManageableService {
-    private manageableModelFactory;
-    private manageableModelMap;
-    constructor(manageableModelFactory: (named: string) => ManageableModel);
-    getOrCreateGridModel<T>(uri: URI | string): ManageableModel;
+declare abstract class ManageableWidget extends ReactWidget {
+    uri?: string;
+    model?: ManageableModel;
 }
 
-export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, Login, LoginModel, ManageableService, NOT_REGISTERED, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };
+declare class ManageableService {
+    private modelFactory;
+    private widgetAbstractFactory;
+    private manageableModelMap;
+    constructor(modelFactory: (named: string) => ManageableModel, widgetAbstractFactory: (named: string) => (options: WidgetOption<ManageableModel>) => ManageableWidget);
+    getOrCreateGridModel<T>(uri: URI | string): ManageableModel;
+    createWidget(options: {
+        uri: string;
+        counter: number | undefined;
+    }): ManageableWidget;
+}
+
+export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, Login, LoginModel, ManageableService, ManageableWidget, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };

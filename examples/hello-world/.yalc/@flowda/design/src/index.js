@@ -9,5 +9,6 @@ export * from './theme/theme.model';
 export * from './uri/uri-utils';
 export * from './task-form/task-form';
 export * from './task-form/task-form.model';
-export * from './manageable/manageable.sevice';
+export * from './manageable/manageable.service';
+export * from './manageable/manageable.widget';
 //# sourceMappingURL=index.js.map

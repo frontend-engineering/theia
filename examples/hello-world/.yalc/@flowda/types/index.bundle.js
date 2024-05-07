@@ -148,7 +148,7 @@ const treeGridUriQuerySchema = zod.z.object({
     id: zod.z.string(),
     field: zod.z.string(),
 });
-const newFormUriOutputSchema = zod.z.object({
+const newFormUriSchema = zod.z.object({
     displayName: zod.z.string(),
     schemaName: zod.z.string(),
 });
@@ -268,11 +268,10 @@ const wfCfgSchema = zod.z.array(zod.z.object({
         })),
     }),
 }));
-// displayName 是为了兼容 getUriDisplayName()
-const newFormUriSchema = zod.z.object({
-    displayName: zod.z.string(),
-    schemaName: zod.z.string(),
-});
+
+const NOT_REGISTERED = 'No matching bindings found for serviceIdentifier:';
+const MANAGEABLE_EDITOR_ID = 'manageable-editor-open';
+const NOT_REGISTERED_SCHEME = 'unknown uri:';
 
 // schema.service data.service 依赖下面3个 toConstantValue
 // todo: 后续开源相关服务后再同步调整
@@ -308,6 +307,8 @@ const WorkflowConfigSymbol = Symbol.for('WorkflowConfig');
 const CustomResourceSymbol = Symbol.for('CustomResourceSymbol');
 const ManageableServiceSymbol = Symbol.for('ManageableService');
 const ManageableModelSymbol = Symbol.for('ManageableModel');
+const ManageableWidgetSymbol = Symbol.for('ManageableWidget');
+const ManageableWidgetFactorySymbol = Symbol.for('ManageableWidgetFactory');
 const ManageableModelFactorySymbol = Symbol.for('ManageableModelFactory');
 
 exports.ApiServiceSymbol = ApiServiceSymbol;
@@ -319,9 +320,14 @@ exports.CustomResourceSymbol = CustomResourceSymbol;
 exports.CustomZodSchemaSymbol = CustomZodSchemaSymbol;
 exports.GridModelSymbol = GridModelSymbol;
 exports.LoginModelSymbol = LoginModelSymbol;
+exports.MANAGEABLE_EDITOR_ID = MANAGEABLE_EDITOR_ID;
 exports.ManageableModelFactorySymbol = ManageableModelFactorySymbol;
 exports.ManageableModelSymbol = ManageableModelSymbol;
 exports.ManageableServiceSymbol = ManageableServiceSymbol;
+exports.ManageableWidgetFactorySymbol = ManageableWidgetFactorySymbol;
+exports.ManageableWidgetSymbol = ManageableWidgetSymbol;
+exports.NOT_REGISTERED = NOT_REGISTERED;
+exports.NOT_REGISTERED_SCHEME = NOT_REGISTERED_SCHEME;
 exports.NewFormModelSymbol = NewFormModelSymbol;
 exports.PreviewModelSymbol = PreviewModelSymbol;
 exports.PrismaClientSymbol = PrismaClientSymbol;
@@ -355,7 +361,6 @@ exports.handleContextMenuInputSchema = handleContextMenuInputSchema;
 exports.loginInputSchema = loginInputSchema;
 exports.loginOutputSchema = loginOutputSchema;
 exports.menuItemSchema = menuItemSchema;
-exports.newFormUriOutputSchema = newFormUriOutputSchema;
 exports.newFormUriSchema = newFormUriSchema;
 exports.putDataSchema = putDataSchema;
 exports.putResourceDataInputSchema = putResourceDataInputSchema;
