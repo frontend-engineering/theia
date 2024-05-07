@@ -22,10 +22,12 @@ declare class GridWidget extends ManageableWidget {
 }
 
 declare class ManageableService {
+    private checkManageableFactory;
     private modelFactory;
     private widgetAbstractFactory;
     private manageableModelMap;
-    constructor(modelFactory: (named: string) => ManageableModel, widgetAbstractFactory: (named: string) => (options: WidgetOption<ManageableModel>) => ManageableWidget);
+    constructor(checkManageableFactory: (named: string) => boolean, modelFactory: (named: string) => ManageableModel, widgetAbstractFactory: (named: string) => (options: WidgetOption<ManageableModel>) => ManageableWidget);
+    isManageable(scheme: string): boolean;
     getOrCreateGridModel<T>(uri: URI | string): ManageableModel;
     removeModel(uri: URI | string): void;
     createWidget(options: {

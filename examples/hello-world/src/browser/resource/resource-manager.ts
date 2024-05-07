@@ -68,7 +68,7 @@ export class ResourceManager extends EditorManager {
   }
 
   protected override createWidgetOptions(uri: URI, options?: EditorOpenerOptions): NavigatableWidgetOptions {
-    if (uri.scheme === 'grid' || uri.scheme === 'tree-grid') {
+    if (this.manageableService.isManageable(uri.scheme)) {
       const navigatableOptions: NavigatableWidgetOptions = {
         kind: 'navigatable',
         uri: uri.withoutFragment().toString(true),

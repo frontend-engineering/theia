@@ -1,5 +1,5 @@
 import { ManageableService } from './manageable/manageable.service';
-import { ManageableModelFactorySymbol, ManageableModelSymbol, ManageableServiceSymbol, ManageableWidgetFactorySymbol, ManageableWidgetSymbol, } from '@flowda/types';
+import { CheckManageableFactorySymbol, ManageableModelFactorySymbol, ManageableModelSymbol, ManageableServiceSymbol, ManageableWidgetFactorySymbol, ManageableWidgetSymbol, } from '@flowda/types';
 import { registerManageableFactory } from './ioc-utils';
 import { NewFormModel, TaskFormModel, TreeGridModel } from '@flowda/design';
 import { MenuWidget } from './menu.widget';
@@ -23,6 +23,11 @@ export const bindTheiaModule = (bind) => {
             // recall theia ReactWidget#render
             widget.update();
             return widget;
+        };
+    });
+    bind(CheckManageableFactorySymbol).toFactory((ctx) => {
+        return (scheme) => {
+            return ctx.container.isBoundNamed(ManageableModelSymbol, scheme);
         };
     });
     // built in

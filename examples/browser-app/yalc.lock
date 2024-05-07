@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@flowda/types": {
-      "signature": "b45936fffee0759e275531590eaa9693",
+      "signature": "91d533ca19a84bc8c3255fefb815ecf1",
       "link": true
     },
     "@flowda-boot-yongcheng/plugin": {

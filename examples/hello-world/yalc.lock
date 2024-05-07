@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@flowda/types": {
-      "signature": "b45936fffee0759e275531590eaa9693",
+      "signature": "91d533ca19a84bc8c3255fefb815ecf1",
       "link": true
     },
     "@flowda-projects/flowda-gateway-trpc-server": {
@@ -14,7 +14,7 @@
       "link": true
     },
     "@flowda/theia": {
-      "signature": "0c2483c460b6cca8ddc9b3b671fbe8bf",
+      "signature": "31c9872b2a35c5b493dbb21c0ea5bdc3",
       "link": true
     }
   }

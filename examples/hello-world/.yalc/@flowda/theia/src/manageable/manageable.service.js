@@ -1,13 +1,17 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { URI } from '@theia/core';
 import { inject, injectable } from 'inversify';
-import { MANAGEABLE_EDITOR_ID, ManageableModelFactorySymbol, ManageableWidgetFactorySymbol, NOT_REGISTERED, NOT_REGISTERED_SCHEME, } from '@flowda/types';
+import { CheckManageableFactorySymbol, MANAGEABLE_EDITOR_ID, ManageableModelFactorySymbol, ManageableWidgetFactorySymbol, NOT_REGISTERED, NOT_REGISTERED_SCHEME, } from '@flowda/types';
 import { getUriDisplayName, uriAsKey } from '@flowda/design';
 let ManageableService = class ManageableService {
-    constructor(modelFactory, widgetAbstractFactory) {
+    constructor(checkManageableFactory, modelFactory, widgetAbstractFactory) {
+        this.checkManageableFactory = checkManageableFactory;
         this.modelFactory = modelFactory;
         this.widgetAbstractFactory = widgetAbstractFactory;
         this.manageableModelMap = new Map();
+    }
+    isManageable(scheme) {
+        return this.checkManageableFactory(scheme);
     }
     getOrCreateGridModel(uri) {
         if (typeof uri === 'string') {
@@ -65,9 +69,10 @@ let ManageableService = class ManageableService {
 };
 ManageableService = __decorate([
     injectable(),
-    __param(0, inject(ManageableModelFactorySymbol)),
-    __param(1, inject(ManageableWidgetFactorySymbol)),
-    __metadata("design:paramtypes", [Function, Function])
+    __param(0, inject(CheckManageableFactorySymbol)),
+    __param(1, inject(ManageableModelFactorySymbol)),
+    __param(2, inject(ManageableWidgetFactorySymbol)),
+    __metadata("design:paramtypes", [Function, Function, Function])
 ], ManageableService);
 export { ManageableService };
 //# sourceMappingURL=manageable.service.js.map

@@ -307,12 +307,14 @@ const WorkflowConfigSymbol = Symbol.for('WorkflowConfig');
 const CustomResourceSymbol = Symbol.for('CustomResourceSymbol');
 const ManageableServiceSymbol = Symbol.for('ManageableService');
 const ManageableModelSymbol = Symbol.for('ManageableModel');
+const CheckManageableFactorySymbol = Symbol.for('CheckManageableFactory');
 const ManageableWidgetSymbol = Symbol.for('ManageableWidget');
 const ManageableWidgetFactorySymbol = Symbol.for('ManageableWidgetFactory');
 const ManageableModelFactorySymbol = Symbol.for('ManageableModelFactory');
 
 exports.ApiServiceSymbol = ApiServiceSymbol;
 exports.AssociationKeySchema = AssociationKeySchema;
+exports.CheckManageableFactorySymbol = CheckManageableFactorySymbol;
 exports.ColumnKeySchema = ColumnKeySchema;
 exports.ColumnUISchema = ColumnUISchema;
 exports.CustomResource = CustomResource;
