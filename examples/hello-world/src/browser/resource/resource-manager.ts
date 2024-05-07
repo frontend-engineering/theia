@@ -4,7 +4,15 @@ import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
 import { NavigatableWidgetOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
-import { getUriSchemaName, GridModel, ManageableWidget, TreeGridModel, uriAsKey } from '@flowda/design'
+import {
+  getUriSchemaName,
+  GridModel,
+  ManageableService,
+  ManageableWidget,
+  TreeGridModel,
+  uriAsKey,
+} from '@flowda/design'
+import { ManageableServiceSymbol } from '@flowda/types'
 
 @injectable()
 export class ResourceManager extends EditorManager {
@@ -12,12 +20,20 @@ export class ResourceManager extends EditorManager {
   override readonly label = 'Hello Editor'
 
   @inject(ILogger) protected logger: ILogger
-
   @inject(ResourceWidgetFactory) protected resourceWidgetFactory: ResourceWidgetFactory
+  @inject(ManageableServiceSymbol) private readonly manageableService: ManageableService
 
   @postConstruct()
   protected override init(): void {
     super.init()
+    this.onCreated(widget => {
+      if (widget instanceof ManageableWidget) {
+        widget.disposed.connect(() => {
+          if (widget.uri == null) throw new Error('widget uri is null')
+          this.manageableService.removeModel(widget.uri)
+        })
+      }
+    })
     this.onCurrentEditorChanged(widget => {
       if (widget == null) {
         this.logger.warn(`onCurrentEditorChanged widget is null`)

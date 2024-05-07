@@ -381,12 +381,13 @@ declare class ManageableService {
     private manageableModelMap;
     constructor(modelFactory: (named: string) => ManageableModel, widgetAbstractFactory: (named: string) => (options: WidgetOption<ManageableModel>) => ManageableWidget);
     getOrCreateGridModel<T>(uri: URI | string): ManageableModel;
+    removeModel(uri: URI | string): void;
     createWidget(options: {
         uri: string;
         counter: number | undefined;
     }): ManageableWidget;
 }
 
-declare function registerManageableFactory<WIDGET extends ManageableWidget, MODEL extends ManageableModel>(bind: interfaces.Bind, name: string, Model: interfaces.Newable<MODEL>, Widget: interfaces.Newable<WIDGET>): void;
+declare function registerManageableFactory<WIDGET extends ManageableWidget, MODEL extends ManageableModel>(bind: interfaces.Bind | interfaces.Rebind, name: string, Model: interfaces.Newable<MODEL>, Widget: interfaces.Newable<WIDGET>): void;
 
 export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, GridWidget, Login, LoginModel, ManageableService, ManageableWidget, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, registerManageableFactory, updateUriFilterModel, uriAsKey, uriWithoutId };

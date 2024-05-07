@@ -40,6 +40,16 @@ let ManageableService = class ManageableService {
             }
         }
     }
+    removeModel(uri) {
+        if (typeof uri === 'string') {
+            uri = new URI(uri);
+        }
+        const key = uriAsKey(uri);
+        if (!this.manageableModelMap.has(key)) {
+            throw new Error(`Not exist ${uri.toString(false)}`);
+        }
+        this.manageableModelMap.delete(key);
+    }
     createWidget(options) {
         const uri = new URI(options.uri);
         const model = this.getOrCreateGridModel(uri);
