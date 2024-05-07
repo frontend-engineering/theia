@@ -1,7 +1,7 @@
 import { GridModel } from '@flowda/design'
 import { inject, injectable, postConstruct } from '@theia/core/shared/inversify'
 import { ContextMenuRenderer, HoverService, OpenerService } from '@theia/core/lib/browser'
-import { Command } from '@theia/core'
+import { Command, CommandRegistry, URI } from '@theia/core'
 import * as React from '@theia/core/shared/react'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
@@ -34,6 +34,12 @@ export namespace ResourceGridCommands {
     category: 'Examples',
     label: 'Open task',
   }
+
+  export const NEW_FORM: Command = {
+    id: 'resource-grid.new-form',
+    category: 'Examples',
+    label: 'New form',
+  }
 }
 
 @injectable()
@@ -42,12 +48,16 @@ export class ResourceGridModel extends GridModel {
   @inject(HoverService) hoverService: HoverService
   @inject(ContextMenuRenderer) protected readonly contextMenuRenderer: ContextMenuRenderer
   @inject('trpcFactory') protected trpcFactory: () => CreateTRPCProxyClient<AppRouter>
+  @inject(CommandRegistry) protected readonly commandRegistry: CommandRegistry
 
   @postConstruct()
   postConstruct() {
     // this.handlers.onRefClick = this.handleOnRefClick
     // this.handlers.onMouseEnter = this.handleMouseEnter
     this.handlers.onContextMenu = this.handleContextMenu.bind(this)
+    this.handlers.onClickNew = (uri: URI) => this.commandRegistry.executeCommand(ResourceGridCommands.NEW_FORM.id, {
+      uri,
+    })
   }
 
   /*

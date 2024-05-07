@@ -1,5 +1,5 @@
 import { inject, injectable } from '@theia/core/shared/inversify'
-import { CommandContribution, CommandRegistry, MessageService } from '@theia/core'
+import { CommandContribution, CommandRegistry, MessageService, URI } from '@theia/core'
 import { LoginDialog } from './login/login-dialog'
 import { ResourceGridCommands, type ResourceGridModel } from './resource/resource-grid-model'
 import { NavigatorDiffCommands } from '@theia/navigator/lib/browser/navigator-diff'
@@ -99,8 +99,18 @@ export class SampleCommandContribution implements CommandContribution {
       execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
         const uri = createTaskUri(input)
         const model = this.resourceWidgetFactory.getOrCreateGridModel(uri)
-        model.onCurrentEditorChanged()
         open(this.openerService, uri, {
+          mode: 'reveal',
+          preview: true,
+        })
+      },
+      isEnabled: (...args) => true,
+      isVisible: (...args) => true,
+    })
+    commandRegistry.registerCommand(ResourceGridCommands.NEW_FORM, {
+      execute: (input: { uri: URI }) => {
+        const model = this.resourceWidgetFactory.getOrCreateGridModel(input.uri)
+        open(this.openerService, input.uri, {
           mode: 'reveal',
           preview: true,
         })

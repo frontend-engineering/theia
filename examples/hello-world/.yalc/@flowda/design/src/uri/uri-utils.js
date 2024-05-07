@@ -170,6 +170,6 @@ export function createNewFormUri(uri) {
         schemaName: query.schemaName,
         displayName: '新增' + query.displayName,
     }, { encode: false })}`;
-    return ret;
+    return new URI(ret);
 }
 //# sourceMappingURL=uri-utils.js.map

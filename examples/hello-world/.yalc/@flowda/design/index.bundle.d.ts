@@ -145,7 +145,7 @@ declare class GridModel implements ManageableModel {
         }) => void;
         onMouseEnter: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
         onContextMenu: (input: z.infer<typeof handleContextMenuInputSchema>, e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-        onClickNew: (uri: string) => void;
+        onClickNew: (uri: URI) => void;
     }>;
     private ref;
     private _uri?;
@@ -241,7 +241,7 @@ declare function isUriLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function isUriAsKeyLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function createAssociationUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 declare function createTaskUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
-declare function createNewFormUri(uri: string | URI): string;
+declare function createNewFormUri(uri: string | URI): URI;
 
 declare class TaskFormModel implements ManageableModel {
     theme: ThemeModel;
