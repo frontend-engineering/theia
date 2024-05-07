@@ -3,7 +3,7 @@ import { inject, injectable } from '@theia/core/shared/inversify'
 import { EditorWidget } from '@theia/editor/lib/browser'
 import { NavigatableWidgetOptions } from '@theia/core/lib/browser'
 import { URI } from '@theia/core'
-import { ManageableService } from '@flowda/design'
+import { ManageableService } from '@flowda/theia'
 import {
   MANAGEABLE_EDITOR_ID,
   type ManageableModel,

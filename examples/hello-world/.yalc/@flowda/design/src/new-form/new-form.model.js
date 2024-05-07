@@ -19,7 +19,7 @@ let NewFormModel = class NewFormModel {
             return col.access_type !== 'read_only';
         });
     }
-    resetGridReadyPromise() {
+    async onCurrentEditorChanged() {
         //
     }
     // suppress warning: uncontrolled input to be controlled

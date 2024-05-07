@@ -1,14 +1,11 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { inject, injectable, multiInject, optional } from 'inversify';
 import { ApiServiceSymbol, builtinPluginSchema, cellRendererInputSchema, CustomResourceSymbol, getResourceDataOutputInnerSchema, ThemeModelSymbol, } from '@flowda/types';
-import { createNewFormUri, isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel } from '../uri/uri-utils';
+import { createNewFormUri, getUriSchemaName, isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel, } from '../uri/uri-utils';
 import { URI } from '@theia/core';
 import axios from 'axios';
 import { ThemeModel } from '../theme/theme.model';
 let GridModel = class GridModel {
-    get isFirstGetRows() {
-        return this._isFirstGetRows;
-    }
     constructor(theme, apiService, customResources) {
         this.theme = theme;
         this.apiService = apiService;
@@ -23,7 +20,6 @@ let GridModel = class GridModel {
         });
         // todo: extract to a interface
         this.handlers = {};
-        this._isFirstGetRows = true;
         this.onMouseEnter = (e) => {
             if (typeof this.handlers.onMouseEnter === 'function') {
                 this.handlers.onMouseEnter(e);
@@ -58,6 +54,9 @@ let GridModel = class GridModel {
                 }
             }
         };
+        this.refPromise = new Promise(resolve => {
+            this.refResolve = resolve;
+        });
     }
     getUri() {
         if (!this._uri)
@@ -69,22 +68,13 @@ let GridModel = class GridModel {
             uri = new URI(uri);
         this._uri = uri;
     }
-    resetIsFirstGetRows() {
-        this._isFirstGetRows = true;
-    }
-    /**
-     * 在 ResourceWidgetFactory#createWidget 重置 promise
-     * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
-     */
-    resetGridReadyPromise(uri) {
-        this.setUri(uri);
-        this.resetIsFirstGetRows();
-        this.refPromise = new Promise(resolve => {
-            this.refResolve = resolve;
-        });
-    }
     refresh() {
-        if (this.gridApi && !this.gridApi.isDestroyed()) {
+        if (this.gridApi == null)
+            throw new Error('gridApi is null');
+        if (this.gridApi.isDestroyed()) {
+            throw new Error(`gridApi isDestroyed: ${this._uri}`);
+        }
+        else {
             this.gridApi.refreshInfiniteCache();
         }
     }
@@ -122,6 +112,11 @@ let GridModel = class GridModel {
         if (customResource == null)
             return;
         return customResource.getCellRenderer(colName);
+    }
+    async onCurrentEditorChanged() {
+        const uri = new URI(this.getUri());
+        const schemaName = `${uri.authority}.${getUriSchemaName(uri)}`;
+        await this.getCol(schemaName);
     }
     async getCol(schemaName) {
         this.setSchemaName(schemaName);
@@ -168,8 +163,7 @@ let GridModel = class GridModel {
         }
     }
     async getData(params) {
-        var _a, _b;
-        this._isFirstGetRows = false;
+        var _a;
         if (this.schema == null)
             throw new Error('schema is null');
         const builtInParseRet = builtinPluginSchema.safeParse((_a = this.schema.plugins) === null || _a === void 0 ? void 0 : _a['builtin']);
@@ -186,7 +180,9 @@ let GridModel = class GridModel {
         }
         else {
             params.filterModel = mergeUriFilterModel(this.getUri(), params.filterModel);
-            (_b = this.gridApi) === null || _b === void 0 ? void 0 : _b.setFilterModel(params.filterModel);
+            if (this.gridApi == null)
+                throw new Error('gridApi is null');
+            this.gridApi.setFilterModel(params.filterModel);
             const uri = updateUriFilterModel(this.getUri(), params.filterModel);
             this.setUri(uri);
             const dataRet = await this.apiService.getResourceData(params);

@@ -1,8 +1,9 @@
 {
-  "name": "@flowda/design",
+  "name": "@flowda/theia",
   "version": "0.0.1",
   "peerDependencies": {
     "@anatine/zod-openapi": "*",
+    "@flowda/design": "0.0.1",
     "@flowda/types": "0.0.1",
     "reflect-metadata": "^0.1.13",
     "vscode-uri": "^3.0.8",
@@ -37,5 +38,5 @@
   },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "34c358b5f672e90595720547bfd8f867"
+  "yalcSig": "0c2483c460b6cca8ddc9b3b671fbe8bf"
 }

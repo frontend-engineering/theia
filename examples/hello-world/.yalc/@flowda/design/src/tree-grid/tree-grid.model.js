@@ -20,24 +20,17 @@ let TreeGridModel = class TreeGridModel {
                 throw new Error('gridApi is null');
             this.convertAndSaveMenuData();
         };
+        this.gridReadyPromise = new Promise(resolve => {
+            this.gridReadyResolve = resolve;
+        });
     }
     getUri() {
         if (!this.uri)
             throw new Error('uri is null');
         return this.uri;
     }
-    resetGridReadyPromise(uri) {
-        if (typeof uri === 'string')
-            uri = new URI(uri);
-        this.setUri(uri);
-        this.gridReadyPromise = new Promise(resolve => {
-            this.gridReadyResolve = resolve;
-        });
-    }
     setGridApi(gridApi) {
         this.gridApi = gridApi;
-        if (!this.gridReadyResolve)
-            throw new Error('gridReadyResolve is null, call resetGridReadyPromise() first');
         this.gridReadyResolve(true);
     }
     setUri(uri) {
@@ -54,8 +47,8 @@ let TreeGridModel = class TreeGridModel {
             }
         }
     }
-    resetIsFirstGetRows() {
-        // noop
+    async onCurrentEditorChanged() {
+        await this.loadData();
     }
     async loadData() {
         if (!this.uri)
@@ -72,8 +65,6 @@ let TreeGridModel = class TreeGridModel {
             menuData = JSON.parse(ret[query.field]);
         }
         const treeData = convertMenuDataToAgTreeData(menuData);
-        if (!this.gridReadyPromise)
-            throw new Error('gridReadyPromise is null, call resetGridReadyPromise() first');
         await this.gridReadyPromise;
         if (!this.gridApi)
             throw new Error('gridApi is null');

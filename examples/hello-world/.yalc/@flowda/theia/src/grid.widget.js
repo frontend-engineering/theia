@@ -1,9 +1,8 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { jsx as _jsx } from "react/jsx-runtime";
-import { ManageableWidget } from '../manageable/manageable.widget';
-import { GridModel } from './grid.model';
-import { Grid } from './grid';
+import { ManageableWidget } from './manageable/manageable.widget';
 import { injectable, unmanaged } from 'inversify';
+import { Grid, GridModel } from '@flowda/design';
 let GridWidget = class GridWidget extends ManageableWidget {
     constructor(model) {
         super();

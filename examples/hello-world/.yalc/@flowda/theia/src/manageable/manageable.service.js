@@ -2,7 +2,7 @@ import { __decorate, __metadata, __param } from "tslib";
 import { URI } from '@theia/core';
 import { inject, injectable } from 'inversify';
 import { MANAGEABLE_EDITOR_ID, ManageableModelFactorySymbol, ManageableWidgetFactorySymbol, NOT_REGISTERED, NOT_REGISTERED_SCHEME, } from '@flowda/types';
-import { getUriDisplayName, uriAsKey } from '../uri/uri-utils';
+import { getUriDisplayName, uriAsKey } from '@flowda/design';
 let ManageableService = class ManageableService {
     constructor(modelFactory, widgetAbstractFactory) {
         this.modelFactory = modelFactory;
@@ -53,7 +53,6 @@ let ManageableService = class ManageableService {
     createWidget(options) {
         const uri = new URI(options.uri);
         const model = this.getOrCreateGridModel(uri);
-        model.resetGridReadyPromise(options.uri);
         const factory = this.widgetAbstractFactory(uri.scheme);
         const widget = factory({
             id: MANAGEABLE_EDITOR_ID + ':' + uriAsKey(options.uri) + ':' + options.counter,

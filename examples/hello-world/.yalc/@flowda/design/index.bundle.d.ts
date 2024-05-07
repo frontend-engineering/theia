@@ -3,10 +3,9 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, IRowNode, CellValueChangedEvent, SortModelItem } from 'ag-grid-community';
 import { URI } from '@theia/core';
-import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType, WidgetOption } from '@flowda/types';
+import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType } from '@flowda/types';
 import { ContainerModule, interfaces } from 'inversify';
 import { z } from 'zod';
-import { ReactWidget } from '@theia/core/lib/browser';
 import { FormikProps } from 'formik';
 
 declare class TreeGridModel implements ManageableModel {
@@ -17,17 +16,16 @@ declare class TreeGridModel implements ManageableModel {
     /**
      * 等待 onGridReady 对 gridApi 赋值
      */
-    private gridReadyPromise?;
+    private gridReadyPromise;
     private gridReadyResolve?;
     constructor(apiService: ApiService);
     handlers: Partial<{
         message: (title: string) => void;
     }>;
     getUri(): string;
-    resetGridReadyPromise(uri: string | URI): void;
     setGridApi(gridApi: GridApi): void;
     setUri(uri: string | URI): void;
-    resetIsFirstGetRows(): void;
+    onCurrentEditorChanged(): Promise<void>;
     loadData(): Promise<void>;
     getDataPath(data: Record<string, unknown>): string[];
     private convertAndSaveMenuData;
@@ -131,12 +129,11 @@ declare class GridModel implements ManageableModel {
     schema: ResourceUI | null;
     isNotEmpty: boolean;
     gridApi: GridApi | null;
-    get isFirstGetRows(): boolean;
     /**
      * 等待 setRef 也就是 widget render 然后才能调用 this.ref.setColDefs
      * 原因是 setColDefs 有 React（cellRenderer）不能放在 grid.model 里
      */
-    private refPromise?;
+    private refPromise;
     private refResolve?;
     private schemaReadyResolve?;
     schemaReadyPromise?: Promise<boolean>;
@@ -152,16 +149,9 @@ declare class GridModel implements ManageableModel {
     }>;
     private ref;
     private _uri?;
-    private _isFirstGetRows;
     constructor(theme: ThemeModel, apiService: ApiService, customResources: ICustomResource[]);
     getUri(): string;
     setUri(uri: string | URI): void;
-    resetIsFirstGetRows(): void;
-    /**
-     * 在 ResourceWidgetFactory#createWidget 重置 promise
-     * 因为目前 grid.model 在 tab 关闭并不会销毁 todo 可以销毁 这样流程简单很多
-     */
-    resetGridReadyPromise(uri: string | URI): void;
     refresh(): void;
     /**
      * `<Grid ref={ref => this.setRef(ref)} />`
@@ -170,6 +160,7 @@ declare class GridModel implements ManageableModel {
     setSchemaName(schemaName: string): void;
     getCustomResource(): ICustomResource | undefined;
     getCustomCellRenderer(colName: string): undefined | CellRenderer;
+    onCurrentEditorChanged(): Promise<void>;
     getCol(schemaName: string): Promise<void>;
     isOpenTask(colName: string): boolean | undefined;
     getData(params: {
@@ -204,18 +195,6 @@ declare class Grid extends React$1.Component<GridProps> {
     private readonly onCellValueChanged;
     setColDefs: () => void;
     autoResizeAll(): void;
-}
-
-declare abstract class ManageableWidget extends ReactWidget {
-    uri?: string;
-    model?: ManageableModel;
-}
-
-declare class GridWidget extends ManageableWidget {
-    model?: GridModel | undefined;
-    static readonly ID = "grid-widget";
-    constructor(model?: GridModel | undefined);
-    protected render(): React$1.ReactNode;
 }
 
 declare class LoginModel {
@@ -272,7 +251,7 @@ declare class TaskFormModel implements ManageableModel {
     private _taskDefinitionKey;
     private _taskId;
     schema: ResourceUI | undefined;
-    resetGridReadyPromise(): void;
+    onCurrentEditorChanged(): Promise<void>;
     get taskId(): string;
     get taskDefinitionKey(): string;
     get wfCfg(): {
@@ -375,19 +354,51 @@ declare class TaskForm extends Component<TaskFormProps> {
     render(): JSX.Element;
 }
 
-declare class ManageableService {
-    private modelFactory;
-    private widgetAbstractFactory;
-    private manageableModelMap;
-    constructor(modelFactory: (named: string) => ManageableModel, widgetAbstractFactory: (named: string) => (options: WidgetOption<ManageableModel>) => ManageableWidget);
-    getOrCreateGridModel<T>(uri: URI | string): ManageableModel;
-    removeModel(uri: URI | string): void;
-    createWidget(options: {
-        uri: string;
-        counter: number | undefined;
-    }): ManageableWidget;
+declare class NewFormModel implements ManageableModel {
+    theme: ThemeModel;
+    apiService: ApiService;
+    formikProps: FormikProps<DefaultFormValueType> | undefined;
+    schema: ResourceUI | undefined;
+    get formItemColumns(): {
+        column_type: string;
+        display_name: string;
+        visible: boolean;
+        access_type: "read_only" | "read_write";
+        name: string;
+        validators: unknown[];
+        description?: string | undefined;
+        example?: string | undefined;
+        plugins?: any;
+        reference?: {
+            display_name: string;
+            model_name: string;
+            foreign_key: string;
+            primary_key: string;
+            reference_type: "belongs_to";
+        } | {
+            display_name: string;
+            visible: boolean;
+            model_name: string;
+            foreign_key: string;
+            primary_key: string;
+            reference_type: "has_one";
+        } | undefined;
+    }[] | undefined;
+    onCurrentEditorChanged(): Promise<void>;
+    get defaultInitialValues(): Record<string, string>;
+    private uri?;
+    constructor(theme: ThemeModel, apiService: ApiService);
+    getUri(): string;
+    setUri(uri: string | URI): void;
+    loadSchema(uri: string | URI): Promise<void>;
+    submit(values: DefaultFormValueType): Promise<void>;
 }
 
-declare function registerManageableFactory<WIDGET extends ManageableWidget, MODEL extends ManageableModel>(bind: interfaces.Bind | interfaces.Rebind, name: string, Model: interfaces.Newable<MODEL>, Widget: interfaces.Newable<WIDGET>): void;
+type NewFormProps = {
+    model: NewFormModel;
+};
+declare class NewForm extends Component<NewFormProps> {
+    render(): JSX.Element;
+}
 
-export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, GridWidget, Login, LoginModel, ManageableService, ManageableWidget, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, registerManageableFactory, updateUriFilterModel, uriAsKey, uriWithoutId };
+export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, Login, LoginModel, NewForm, NewFormModel, type NewFormProps, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };

@@ -9,8 +9,8 @@ import { computed, makeObservable, observable, runInAction } from 'mobx';
 import { URI } from '@theia/core';
 import * as qs from 'qs';
 let TaskFormModel = class TaskFormModel {
-    resetGridReadyPromise() {
-        //
+    async onCurrentEditorChanged() {
+        await this.loadTask(this.getUri());
     }
     get taskId() {
         if (!this._taskId)

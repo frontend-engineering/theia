@@ -1,9 +1,8 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { jsx as _jsx } from "react/jsx-runtime";
-import { ManageableWidget } from '../manageable/manageable.widget';
-import { TaskForm } from './task-form';
-import { TaskFormModel } from './task-form.model';
+import { ManageableWidget } from './manageable/manageable.widget';
 import { injectable, unmanaged } from 'inversify';
+import { TaskForm, TaskFormModel } from '@flowda/design';
 let TaskFormWidget = class TaskFormWidget extends ManageableWidget {
     constructor(model) {
         super();

@@ -4,15 +4,9 @@ import { ResourceWidgetFactory } from './resource-widget-factory'
 import URI from '@theia/core/lib/common/uri'
 import { NavigatableWidgetOptions, WidgetOpenerOptions } from '@theia/core/lib/browser'
 import { ILogger } from '@theia/core'
-import {
-  getUriSchemaName,
-  GridModel,
-  ManageableService,
-  ManageableWidget,
-  TreeGridModel,
-  uriAsKey,
-} from '@flowda/design'
+import { uriAsKey } from '@flowda/design'
 import { ManageableServiceSymbol } from '@flowda/types'
+import { ManageableService, ManageableWidget } from '@flowda/theia'
 
 @injectable()
 export class ResourceManager extends EditorManager {
@@ -43,19 +37,8 @@ export class ResourceManager extends EditorManager {
       if (widget instanceof ManageableWidget) {
         if (widget.uri == null) throw new Error('widget uri is null')
         const manageableModel = this.resourceWidgetFactory.getOrCreateGridModel(widget.uri)
-        const uri_ = manageableModel.getUri()
-        const uri = new URI(uri_)
-        this.logger.info(`[ResourceManager] onCurrentEditorChanged ${uri.toString(true)}`)
-
-        if (uri.scheme === 'grid') {
-          const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as GridModel
-          gridModel!.getCol(`${uri.authority}.${getUriSchemaName(uri)}`)
-        }
-        if (uri.scheme === 'tree-grid') {
-          const treeGridModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as TreeGridModel
-          treeGridModel.resetGridReadyPromise(uri)
-          treeGridModel.loadData()
-        }
+        this.logger.info(`[ResourceManager] onCurrentEditorChanged ${widget.uri}`)
+        manageableModel.onCurrentEditorChanged()
       }
     })
   }

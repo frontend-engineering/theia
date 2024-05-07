@@ -19,7 +19,7 @@ import { EditorCommands } from '@theia/editor/lib/browser'
 import { PreviewCommands } from '@theia/preview/lib/browser/preview-contribution'
 import { z } from 'zod'
 import { handleContextMenuInputSchema } from '@flowda/types'
-import { GridModel, TaskFormModel, createAssociationUri, createRefUri, createTaskUri, createTreeGridUri } from '@flowda/design'
+import { createAssociationUri, createRefUri, createTaskUri, createTreeGridUri } from '@flowda/design'
 import { ResourceWidgetFactory } from './resource/resource-widget-factory'
 
 @injectable()
@@ -59,11 +59,8 @@ export class SampleCommandContribution implements CommandContribution {
     commandRegistry.registerCommand(ResourceGridCommands.OPEN_REFERENCE, {
       execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
         const uri = createRefUri(input)
-
-        const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as GridModel
-        gridModel.setUri(uri)
-        gridModel.resetIsFirstGetRows()
-
+        const model = this.resourceWidgetFactory.getOrCreateGridModel(uri)
+        model.setUri(uri)
         open(this.openerService, uri, {
           mode: 'reveal',
           preview: true,
@@ -81,10 +78,8 @@ export class SampleCommandContribution implements CommandContribution {
     commandRegistry.registerCommand(ResourceGridCommands.OPEN_ASSOCIATION, {
       execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
         const uri = createAssociationUri(input)
-        const gridModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as GridModel
-        gridModel.setUri(uri)
-        gridModel.resetIsFirstGetRows()
-
+        const model = this.resourceWidgetFactory.getOrCreateGridModel(uri)
+        model.setUri(uri)
         open(this.openerService, uri, {
           mode: 'reveal',
           preview: true,
@@ -103,8 +98,8 @@ export class SampleCommandContribution implements CommandContribution {
     commandRegistry.registerCommand(ResourceGridCommands.OPEN_TASK, {
       execute: (input: z.infer<typeof handleContextMenuInputSchema>, resourceGridModel: ResourceGridModel, __) => {
         const uri = createTaskUri(input)
-        const taskFormModel = this.resourceWidgetFactory.getOrCreateGridModel(uri) as TaskFormModel
-        taskFormModel.loadTask(uri)
+        const model = this.resourceWidgetFactory.getOrCreateGridModel(uri)
+        model.onCurrentEditorChanged()
         open(this.openerService, uri, {
           mode: 'reveal',
           preview: true,

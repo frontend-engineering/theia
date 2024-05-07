@@ -1,9 +1,8 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { jsx as _jsx } from "react/jsx-runtime";
-import { ManageableWidget } from '../manageable/manageable.widget';
-import { NewFormModel } from './new-form.model';
-import { NewForm } from './new-form';
+import { ManageableWidget } from './manageable/manageable.widget';
 import { injectable, unmanaged } from 'inversify';
+import { NewForm, NewFormModel } from '@flowda/design';
 let NewFormWidget = class NewFormWidget extends ManageableWidget {
     constructor(model) {
         super();

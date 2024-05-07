@@ -5,7 +5,7 @@ import { z } from 'zod';
 interface ManageableModel {
     getUri(): string;
     setUri(uri: string | URI): void;
-    resetGridReadyPromise(uri: string | URI): void;
+    onCurrentEditorChanged(): Promise<void>;
 }
 
 declare const agFilterInnerSchema: z.ZodObject<{

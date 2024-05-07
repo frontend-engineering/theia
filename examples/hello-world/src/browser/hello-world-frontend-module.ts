@@ -39,7 +39,8 @@ import { HelloThemeService } from './hello-theming'
 import { MonacoThemeRegistry } from '@theia/monaco/lib/browser/textmate/monaco-theme-registry'
 import { HelloMonacoThemeRegistry } from './textmate/hello-monaco-theme-registry'
 import { HelloSidebarBottomMenuWidget } from './shell/hello-sidebar-bottom-menu-widget'
-import { bindDesignModule, GridWidget, registerManageableFactory } from '@flowda/design'
+import { bindDesignModule } from '@flowda/design'
+import { bindTheiaModule, GridWidget, registerManageableFactory } from '@flowda/theia'
 import { CreateTRPCProxyClient } from '@trpc/client'
 import type { AppRouter } from '@flowda-projects/flowda-gateway-trpc-server'
 import { type ApiService, ApiServiceSymbol, GridModelSymbol } from '@flowda/types'
@@ -104,6 +105,7 @@ export default new ContainerModule(
     bind(WidgetFactory).toService(ResourceWidgetFactory)
 
     bindDesignModule(bind)
+    bindTheiaModule(bind)
     registerManageableFactory(bind, 'grid', ResourceGridModel, GridWidget)
 
     rebind(GridModelSymbol).to(ResourceGridModel).inTransientScope()
