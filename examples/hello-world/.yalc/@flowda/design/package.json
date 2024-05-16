@@ -2,7 +2,6 @@
   "name": "@flowda/design",
   "version": "0.0.1",
   "peerDependencies": {
-    "@anatine/zod-openapi": "*",
     "@flowda/types": "0.0.1",
     "reflect-metadata": "^0.1.13",
     "vscode-uri": "^3.0.8",
@@ -27,7 +26,6 @@
     "mobx": "^6.6.2",
     "mobx-react": "^7.6.0",
     "moment": "^2.13.0",
-    "openapi3-ts": "^3.2.0",
     "qs": "^6.12.0",
     "radash": "^12.0.0",
     "react": "18.2.0",
@@ -37,5 +35,5 @@
   },
   "main": "./src/index.js",
   "types": "./index.bundle.d.ts",
-  "yalcSig": "64d63c7a7b78ecc680a98cb6f1399e68"
+  "yalcSig": "e2381c12c6d6f95e01b28ca424f69a56"
 }

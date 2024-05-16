@@ -28,7 +28,7 @@ declare class ManageableService {
     private manageableModelMap;
     constructor(checkManageableFactory: (named: string) => boolean, modelFactory: (named: string) => ManageableModel, widgetAbstractFactory: (named: string) => (options: WidgetOption<ManageableModel>) => ManageableWidget);
     isManageable(scheme: string): boolean;
-    getOrCreateGridModel<T>(uri: URI | string): ManageableModel;
+    getOrCreateGridModel(uri: URI | string): ManageableModel;
     removeModel(uri: URI | string): void;
     createWidget(options: {
         uri: string;

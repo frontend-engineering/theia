@@ -26,7 +26,7 @@ export const bindTheiaModule = (bind) => {
         };
     });
     bind(CheckManageableFactorySymbol).toFactory((ctx) => {
-        return (scheme) => {
+        return scheme => {
             return ctx.container.isBoundNamed(ManageableModelSymbol, scheme);
         };
     });

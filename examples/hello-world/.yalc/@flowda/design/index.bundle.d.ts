@@ -3,7 +3,7 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, IRowNode, CellValueChangedEvent, SortModelItem } from 'ag-grid-community';
 import { URI } from '@theia/core';
-import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType } from '@flowda/types';
+import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType, ColumUI } from '@flowda/types';
 import { ContainerModule, interfaces } from 'inversify';
 import { z } from 'zod';
 import { FormikProps } from 'formik';
@@ -23,6 +23,7 @@ declare class TreeGridModel implements ManageableModel {
         message: (title: string) => void;
     }>;
     getUri(): string;
+    getTenant(): string;
     setGridApi(gridApi: GridApi): void;
     setUri(uri: string | URI): void;
     onCurrentEditorChanged(): Promise<void>;
@@ -130,6 +131,13 @@ declare class GridModel implements ManageableModel {
     isNotEmpty: boolean;
     gridApi: GridApi | null;
     /**
+     * 是否是首次请求数据
+     * 首次请求数据 smartMergeFilterModel 则只返回 uri
+     * 否则根据 params.filterModel 进行合并
+     */
+    private _isFirstGetRows;
+    get isFirstGetRows(): boolean;
+    /**
      * 等待 setRef 也就是 widget render 然后才能调用 this.ref.setColDefs
      * 原因是 setColDefs 有 React（cellRenderer）不能放在 grid.model 里
      */
@@ -150,9 +158,11 @@ declare class GridModel implements ManageableModel {
     private ref;
     private _uri?;
     constructor(theme: ThemeModel, apiService: ApiService, customResources: ICustomResource[]);
+    setGridApi(api: GridApi<unknown>): void;
     getUri(): string;
+    getTenant(): string;
     setUri(uri: string | URI): void;
-    refresh(): void;
+    refresh(fromToolbar?: boolean): Promise<void>;
     /**
      * `<Grid ref={ref => this.setRef(ref)} />`
      */
@@ -221,7 +231,7 @@ declare class Login extends React$1.Component<{
 }
 
 declare function getUriDisplayName(uri: URI): string;
-declare function getUriSchemaName(uri: URI): string;
+declare function getUriSchemaName(uri: string | URI): string;
 declare function createTreeGridUri(uri: string | URI, id: string, field: string): URI;
 declare function uriAsKey(uri: URI | string): string;
 declare function uriWithoutId(uri: string): string;
@@ -235,8 +245,11 @@ declare function getTreeUriQuery(uri: string | URI): {
 };
 declare function createRefUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
 declare function getUriFilterModel(uri: URI | string): z.infer<typeof agFilterSchema>;
+/**
+ * @deprecated @see smartMergeFilterModel
+ */
 declare function mergeUriFilterModel(uri: URI | string, filterModel: z.infer<typeof agFilterSchema>): z.infer<typeof agFilterSchema>;
-declare function updateUriFilterModel(uri: URI | string, filterModel: z.infer<typeof agFilterSchema>): URI;
+declare function updateUriFilterModel(uri: URI | string, paramsFilterModel: z.infer<typeof agFilterSchema>): URI;
 declare function isUriLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function isUriAsKeyLikeEqual(a: URI | string, b: URI | string): boolean;
 declare function createAssociationUri(input: z.infer<typeof handleContextMenuInputSchema>): URI;
@@ -342,6 +355,7 @@ declare class TaskFormModel implements ManageableModel {
     private uri?;
     constructor(theme: ThemeModel, apiService: ApiService, wfCfgs: z.infer<typeof wfCfgSchema>[]);
     getUri(): string;
+    getTenant(): string;
     setUri(uri: string | URI): void;
     loadTask(uri: string | URI): Promise<void>;
     submit(values: DefaultFormValueType): Promise<void>;
@@ -359,35 +373,12 @@ declare class NewFormModel implements ManageableModel {
     apiService: ApiService;
     formikProps: FormikProps<DefaultFormValueType> | undefined;
     schema: ResourceUI | undefined;
-    get formItemColumns(): {
-        column_type: string;
-        display_name: string;
-        visible: boolean;
-        access_type: "read_only" | "read_write";
-        name: string;
-        validators: unknown[];
-        description?: string | undefined;
-        example?: string | undefined;
-        plugins?: any;
-        reference?: {
-            display_name: string;
-            model_name: string;
-            foreign_key: string;
-            primary_key: string;
-            reference_type: "belongs_to";
-        } | {
-            display_name: string;
-            visible: boolean;
-            model_name: string;
-            foreign_key: string;
-            primary_key: string;
-            reference_type: "has_one";
-        } | undefined;
-    }[] | undefined;
+    formItemColumns: ColumUI[];
     onCurrentEditorChanged(): Promise<void>;
     get defaultInitialValues(): Record<string, string>;
     private uri?;
     constructor(theme: ThemeModel, apiService: ApiService);
+    getTenant(): string;
     getUri(): string;
     setUri(uri: string | URI): void;
     loadSchema(uri: string | URI): Promise<void>;
@@ -400,5 +391,10 @@ type NewFormProps = {
 declare class NewForm extends Component<NewFormProps> {
     render(): JSX.Element;
 }
+declare class NewFormInner extends Component<NewFormProps & {
+    formikProps: FormikProps<DefaultFormValueType>;
+}> {
+    render(): JSX.Element;
+}
 
-export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, Login, LoginModel, NewForm, NewFormModel, type NewFormProps, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };
+export { EUI_DARK_COLORS, EUI_LIGHT_COLORS, Grid, GridModel, type GridProps, Login, LoginModel, NewForm, NewFormInner, NewFormModel, type NewFormProps, NotImplementedApiService, TaskForm, TaskFormModel, type TaskFormProps, ThemeModel, TreeGrid, TreeGridModel, type TreeGridProps, bindDesignModule, convertTreeGridUriToGridUri, createAssociationUri, createNewFormUri, createRefUri, createTaskUri, createTreeGridUri, designModule, extractId, getTreeUriQuery, getUriDisplayName, getUriFilterModel, getUriSchemaName, isUriAsKeyLikeEqual, isUriLikeEqual, mergeUriFilterModel, updateUriFilterModel, uriAsKey, uriWithoutId };

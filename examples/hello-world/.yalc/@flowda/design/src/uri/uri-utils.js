@@ -10,6 +10,9 @@ export function getUriDisplayName(uri) {
     return query.displayName;
 }
 export function getUriSchemaName(uri) {
+    if (typeof uri === 'string') {
+        uri = new URI(uri);
+    }
     const query = qs.parse(uri.query);
     if (!('schemaName' in query) || typeof query.schemaName !== 'string')
         throw new Error(`query must have schemaName and is string, ${uri.toString(true)}`);
@@ -88,6 +91,9 @@ export function getUriFilterModel(uri) {
         return v;
     });
 }
+/**
+ * @deprecated @see smartMergeFilterModel
+ */
 export function mergeUriFilterModel(uri, filterModel) {
     const origFilterModel = getUriFilterModel(uri);
     const ret = Object.assign(Object.assign({}, origFilterModel), filterModel);
@@ -103,12 +109,13 @@ export function mergeUriFilterModel(uri, filterModel) {
     }, {});
     return ret2;
 }
-export function updateUriFilterModel(uri, filterModel) {
+// todo 配合 grid.model 调用处简化
+export function updateUriFilterModel(uri, paramsFilterModel) {
     if (typeof uri === 'string') {
         uri = new URI(uri);
     }
-    const query = qs.parse(uri.query);
-    const query2 = Object.assign(Object.assign({}, query), { filterModel });
+    const _a = qs.parse(uri.query), { filterModel } = _a, rest = __rest(_a, ["filterModel"]);
+    const query2 = Object.assign(Object.assign({}, rest), { filterModel: paramsFilterModel });
     const query3 = qs.stringify(query2, { encode: false });
     const ret = uri.withQuery(query3);
     return ret;

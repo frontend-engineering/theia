@@ -1,11 +1,15 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { inject, injectable, multiInject, optional } from 'inversify';
 import { ApiServiceSymbol, builtinPluginSchema, cellRendererInputSchema, CustomResourceSymbol, getResourceDataOutputInnerSchema, ThemeModelSymbol, } from '@flowda/types';
-import { createNewFormUri, getUriSchemaName, isUriAsKeyLikeEqual, mergeUriFilterModel, updateUriFilterModel, } from '../uri/uri-utils';
+import { createNewFormUri, getUriSchemaName, isUriAsKeyLikeEqual, updateUriFilterModel } from '../uri/uri-utils';
 import { URI } from '@theia/core';
 import axios from 'axios';
 import { ThemeModel } from '../theme/theme.model';
+import { smartMergeFilterModel } from './grid-utils';
 let GridModel = class GridModel {
+    get isFirstGetRows() {
+        return this._isFirstGetRows;
+    }
     constructor(theme, apiService, customResources) {
         this.theme = theme;
         this.apiService = apiService;
@@ -15,6 +19,12 @@ let GridModel = class GridModel {
         this.schema = null;
         this.isNotEmpty = false;
         this.gridApi = null;
+        /**
+         * 是否是首次请求数据
+         * 首次请求数据 smartMergeFilterModel 则只返回 uri
+         * 否则根据 params.filterModel 进行合并
+         */
+        this._isFirstGetRows = false;
         this.schemaReadyPromise = new Promise(resolve => {
             this.schemaReadyResolve = resolve;
         });
@@ -58,23 +68,34 @@ let GridModel = class GridModel {
             this.refResolve = resolve;
         });
     }
+    setGridApi(api) {
+        this.gridApi = api;
+    }
     getUri() {
         if (!this._uri)
             throw new Error('uri is null');
         return this._uri.toString(true);
+    }
+    getTenant() {
+        if (!this._uri)
+            throw new Error('uri is null');
+        return this._uri.authority;
     }
     setUri(uri) {
         if (typeof uri === 'string')
             uri = new URI(uri);
         this._uri = uri;
     }
-    refresh() {
+    async refresh(fromToolbar = false) {
         if (this.gridApi == null)
             throw new Error('gridApi is null');
         if (this.gridApi.isDestroyed()) {
             throw new Error(`gridApi isDestroyed: ${this._uri}`);
         }
         else {
+            if (fromToolbar) {
+                this.gridApi.showLoadingOverlay();
+            }
             this.gridApi.refreshInfiniteCache();
         }
     }
@@ -115,8 +136,10 @@ let GridModel = class GridModel {
     }
     async onCurrentEditorChanged() {
         const uri = new URI(this.getUri());
-        const schemaName = `${uri.authority}.${getUriSchemaName(uri)}`;
+        const schemaName = getUriSchemaName(uri);
+        this._isFirstGetRows = true;
         await this.getCol(schemaName);
+        this._isFirstGetRows = false;
     }
     async getCol(schemaName) {
         this.setSchemaName(schemaName);
@@ -125,27 +148,28 @@ let GridModel = class GridModel {
         }
         if (this.columnDefs.length > 0) {
             console.warn(`columns is not empty, only refresh data, ${schemaName}`);
-            this.refresh();
+            await this.refresh();
         }
         else {
             const schemaRes = await this.apiService.getResourceSchema({
+                tenant: this.getTenant(),
                 schemaName: this.schemaName,
             });
+            this.schema = schemaRes;
             this.schemaReadyResolve(true);
             if (schemaRes.columns.length > 0) {
                 this.columnDefs = schemaRes.columns;
+                if (this.refPromise == null)
+                    throw new Error('refPromise is null, call resetRefPromise in getOrCreateGridModel()');
+                await this.refPromise;
+                // @ts-expect-error invoke react ref
+                if (this.ref == null || typeof this.ref['setColDefs'] !== 'function') {
+                    throw new Error('ref is null');
+                }
+                // @ts-expect-error invoke react ref
+                this.ref['setColDefs']();
             }
-            this.schema = schemaRes;
         }
-        if (this.refPromise == null)
-            throw new Error('refPromise is null, call resetRefPromise in getOrCreateGridModel()');
-        await this.refPromise;
-        // @ts-expect-error invoke react ref
-        if (this.ref == null || typeof this.ref['setColDefs'] !== 'function') {
-            throw new Error('ref is null');
-        }
-        // @ts-expect-error invoke react ref
-        this.ref['setColDefs']();
     }
     isOpenTask(colName) {
         var _a;
@@ -179,13 +203,17 @@ let GridModel = class GridModel {
             };
         }
         else {
-            params.filterModel = mergeUriFilterModel(this.getUri(), params.filterModel);
+            // todo: 这块逻辑需要优化，核心逻辑不变，但是步骤繁琐了 又是合并 又是 set 又是更新 uri 可以简化的
+            // 因为 test pass 现在这个中间状态也是 work 的，所以有 test refactor 可以随时停下来
+            // 核心逻辑不变 是 grid filterModel 和 uri 有一个合并策略
+            // 然后更新到 uri
+            params.filterModel = smartMergeFilterModel(this.getUri(), params.filterModel, this.isFirstGetRows);
             if (this.gridApi == null)
                 throw new Error('gridApi is null');
             this.gridApi.setFilterModel(params.filterModel);
             const uri = updateUriFilterModel(this.getUri(), params.filterModel);
             this.setUri(uri);
-            const dataRet = await this.apiService.getResourceData(params);
+            const dataRet = await this.apiService.getResourceData(Object.assign(Object.assign({}, params), { tenant: this.getTenant() }));
             const parseRet = getResourceDataOutputInnerSchema.safeParse(dataRet);
             if (parseRet.success) {
                 return parseRet.data;
@@ -198,6 +226,7 @@ let GridModel = class GridModel {
     }
     async putData(id, updatedValue) {
         await this.apiService.putResourceData({
+            tenant: this.getTenant(),
             schemaName: this.schemaName,
             id: id,
             updatedValue: updatedValue,

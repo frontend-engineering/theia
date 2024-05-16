@@ -29,6 +29,12 @@ let TreeGridModel = class TreeGridModel {
             throw new Error('uri is null');
         return this.uri;
     }
+    getTenant() {
+        if (!this.uri)
+            throw new Error('uri is null');
+        const uri_ = new URI(this.uri);
+        return uri_.authority;
+    }
     setGridApi(gridApi) {
         this.gridApi = gridApi;
         this.gridReadyResolve(true);
@@ -57,6 +63,7 @@ let TreeGridModel = class TreeGridModel {
         const query = getTreeUriQuery(this.uri);
         // todo: any
         const ret = await this.apiService.getResourceData({
+            tenant: this.getTenant(),
             schemaName: `${uri.authority}.${query.schemaName}`,
             id: Number(query.id),
         });
@@ -90,6 +97,7 @@ let TreeGridModel = class TreeGridModel {
         const query = getTreeUriQuery(this.uri);
         try {
             this.apiService.putResourceData({
+                tenant: this.getTenant(),
                 schemaName: `${uri.authority}.${query.schemaName}`,
                 id: Number(query.id),
                 updatedValue: {
