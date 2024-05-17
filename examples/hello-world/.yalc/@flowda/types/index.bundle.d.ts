@@ -472,15 +472,28 @@ declare const getDataSchema: z.ZodObject<{
 declare const putDataSchema: z.ZodObject<{
     user: z.ZodAny;
     path: z.ZodString;
-    values: z.ZodAny;
+    updatedValue: z.ZodAny;
 }, "strip", z.ZodTypeAny, {
     path: string;
     user?: any;
-    values?: any;
+    updatedValue?: any;
 }, {
     path: string;
     user?: any;
-    values?: any;
+    updatedValue?: any;
+}>;
+declare const postDataSchema: z.ZodObject<{
+    user: z.ZodAny;
+    path: z.ZodString;
+    value: z.ZodAny;
+}, "strip", z.ZodTypeAny, {
+    path: string;
+    user?: any;
+    value?: any;
+}, {
+    path: string;
+    user?: any;
+    value?: any;
 }>;
 
 declare const getResourceInputSchema: z.ZodObject<{
@@ -783,6 +796,19 @@ declare const putResourceDataInputSchema: z.ZodObject<{
     id: number;
     tenant: string;
     updatedValue?: any;
+}>;
+declare const postResourceDataInputSchema: z.ZodObject<{
+    tenant: z.ZodString;
+    schemaName: z.ZodString;
+    value: z.ZodAny;
+}, "strip", z.ZodTypeAny, {
+    schemaName: string;
+    tenant: string;
+    value?: any;
+}, {
+    schemaName: string;
+    tenant: string;
+    value?: any;
 }>;
 
 declare const baseMenuItemSchema: z.ZodObject<{
@@ -1633,6 +1659,7 @@ interface ApiService {
     getResourceSchema: (input: z.infer<typeof getResourceInputSchema>) => Promise<z.infer<typeof ResourceUISchema>>;
     getResourceData: (input: z.infer<typeof getResourceDataInputSchema>) => Promise<z.infer<typeof getResourceDataOutputSchema>>;
     putResourceData: (input: z.infer<typeof putResourceDataInputSchema>) => Promise<unknown>;
+    postResourceData: (input: z.infer<typeof postResourceDataInputSchema>) => Promise<unknown>;
 }
 
 type CellRenderer = (param: CellRendererInput) => JSX.Element;
@@ -1712,4 +1739,4 @@ declare const ManageableWidgetSymbol: unique symbol;
 declare const ManageableWidgetFactorySymbol: unique symbol;
 declare const ManageableModelFactorySymbol: unique symbol;
 
-export { type ApiService, ApiServiceSymbol, type AssociationKey, AssociationKeySchema, type CellRenderer, type CellRendererInput, CheckManageableFactorySymbol, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, CustomResource, CustomResourceSymbol, CustomZodSchemaSymbol, type DefaultFormValueType, GridModelSymbol, type ICustomResource, type JSONObject, type JSONValue, LoginModelSymbol, MANAGEABLE_EDITOR_ID, type ManageableModel, ManageableModelFactorySymbol, ManageableModelSymbol, ManageableServiceSymbol, ManageableWidgetFactorySymbol, ManageableWidgetSymbol, type MenuItem, NOT_REGISTERED, NOT_REGISTERED_SCHEME, NewFormModelSymbol, type PluginType, PreviewModelSymbol, PrismaClientSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, type ResourceUI, ResourceUISchema, ServiceSymbol, type TCtx, TaskFormModelSymbol, ThemeModelSymbol, TreeGridModelSymbol, type WidgetOption, WorkflowConfigModelSymbol, WorkflowConfigSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agMenuItemSchema, agSortSchema, baseMenuItemSchema, builtinPluginSchema, cellRendererInputSchema, ctxTenantSchema, type ctxTenantSchemaDto, ctxUserSchema, type ctxUserSchemaDto, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getDataSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, type loginInputSchemaDto, loginOutputSchema, type loginOutputSchemaDto, menuItemSchema, newFormUriSchema, putDataSchema, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, taskSchema, taskUriInputSchema, taskUriOutputSchema, treeGridUriQuerySchema, wfCfgSchema };
+export { type ApiService, ApiServiceSymbol, type AssociationKey, AssociationKeySchema, type CellRenderer, type CellRendererInput, CheckManageableFactorySymbol, type ColumUI, type ColumnKey, ColumnKeySchema, ColumnUISchema, CustomResource, CustomResourceSymbol, CustomZodSchemaSymbol, type DefaultFormValueType, GridModelSymbol, type ICustomResource, type JSONObject, type JSONValue, LoginModelSymbol, MANAGEABLE_EDITOR_ID, type ManageableModel, ManageableModelFactorySymbol, ManageableModelSymbol, ManageableServiceSymbol, ManageableWidgetFactorySymbol, ManageableWidgetSymbol, type MenuItem, NOT_REGISTERED, NOT_REGISTERED_SCHEME, NewFormModelSymbol, type PluginType, PreviewModelSymbol, PrismaClientSymbol, type ReferenceKey, ReferenceKeySchema, type ResourceKey, ResourceKeySchema, type ResourceUI, ResourceUISchema, ServiceSymbol, type TCtx, TaskFormModelSymbol, ThemeModelSymbol, TreeGridModelSymbol, type WidgetOption, WorkflowConfigModelSymbol, WorkflowConfigSymbol, agFilterInner2Schema, agFilterInnerSchema, agFilterSchema, agMenuItemSchema, agSortSchema, baseMenuItemSchema, builtinPluginSchema, cellRendererInputSchema, ctxTenantSchema, type ctxTenantSchemaDto, ctxUserSchema, type ctxUserSchemaDto, findManyResourceDataInputSchema, findUniqueResourceDataInputSchema, getDataSchema, getResourceDataInputSchema, getResourceDataOutputInnerSchema, getResourceDataOutputSchema, getResourceInputSchema, handleContextMenuInputSchema, loginInputSchema, type loginInputSchemaDto, loginOutputSchema, type loginOutputSchemaDto, menuItemSchema, newFormUriSchema, postDataSchema, postResourceDataInputSchema, putDataSchema, putResourceDataInputSchema, resourceKeySchema, selectOptionSchema, taskSchema, taskUriInputSchema, taskUriOutputSchema, treeGridUriQuerySchema, wfCfgSchema };

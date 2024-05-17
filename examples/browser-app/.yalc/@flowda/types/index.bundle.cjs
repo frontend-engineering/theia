@@ -172,7 +172,12 @@ const getDataSchema = zod.z.object({
 const putDataSchema = zod.z.object({
     user: zod.z.any(),
     path: zod.z.string(),
-    values: zod.z.any(),
+    updatedValue: zod.z.any(),
+});
+const postDataSchema = zod.z.object({
+    user: zod.z.any(),
+    path: zod.z.string(),
+    value: zod.z.any(),
 });
 
 const getResourceInputSchema = zod.z.object({
@@ -192,24 +197,24 @@ const findUniqueResourceDataInputSchema = zod.z.object({
     schemaName: zod.z.string(),
     id: zod.z.number(),
 });
-const getResourceDataInputSchema = zod.z.union([
-    findManyResourceDataInputSchema,
-    findUniqueResourceDataInputSchema
-]);
+const getResourceDataInputSchema = zod.z.union([findManyResourceDataInputSchema, findUniqueResourceDataInputSchema]);
 const getResourceDataOutputInnerSchema = zod.z.object({
     pagination: zod.z.object({
         total: zod.z.number(),
     }),
     data: zod.z.array(zod.z.any()),
 });
-const getResourceDataOutputSchema = zod.z.union([
-    getResourceDataOutputInnerSchema, zod.z.unknown(),
-]);
+const getResourceDataOutputSchema = zod.z.union([getResourceDataOutputInnerSchema, zod.z.unknown()]);
 const putResourceDataInputSchema = zod.z.object({
     tenant: zod.z.string(),
     schemaName: zod.z.string(),
     id: zod.z.number(),
     updatedValue: zod.z.any(),
+});
+const postResourceDataInputSchema = zod.z.object({
+    tenant: zod.z.string(),
+    schemaName: zod.z.string(),
+    value: zod.z.any(),
 });
 
 // https://github.com/colinhacks/zod/discussions/2245
@@ -368,6 +373,8 @@ exports.loginInputSchema = loginInputSchema;
 exports.loginOutputSchema = loginOutputSchema;
 exports.menuItemSchema = menuItemSchema;
 exports.newFormUriSchema = newFormUriSchema;
+exports.postDataSchema = postDataSchema;
+exports.postResourceDataInputSchema = postResourceDataInputSchema;
 exports.putDataSchema = putDataSchema;
 exports.putResourceDataInputSchema = putResourceDataInputSchema;
 exports.resourceKeySchema = resourceKeySchema;

@@ -3,7 +3,7 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, IRowNode, CellValueChangedEvent, SortModelItem } from 'ag-grid-community';
 import { URI } from '@theia/core';
-import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType, ColumUI } from '@flowda/types';
+import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, postResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType, ColumUI } from '@flowda/types';
 import { ContainerModule, interfaces } from 'inversify';
 import { z } from 'zod';
 import { FormikProps } from 'formik';
@@ -52,6 +52,7 @@ declare class NotImplementedApiService implements ApiService {
     getResourceSchema(input: z.infer<typeof getResourceInputSchema>): Promise<z.infer<typeof ResourceUISchema>>;
     getResourceData(input: z.infer<typeof getResourceDataInputSchema>): Promise<z.infer<typeof getResourceDataOutputSchema>>;
     putResourceData(input: z.infer<typeof putResourceDataInputSchema>): Promise<unknown>;
+    postResourceData(input: z.infer<typeof postResourceDataInputSchema>): Promise<unknown>;
 }
 declare const bindDesignModule: (bind: interfaces.Bind) => void;
 
@@ -371,8 +372,8 @@ declare class TaskForm extends Component<TaskFormProps> {
 declare class NewFormModel implements ManageableModel {
     theme: ThemeModel;
     apiService: ApiService;
-    formikProps: FormikProps<DefaultFormValueType> | undefined;
-    schema: ResourceUI | undefined;
+    formikProps?: FormikProps<DefaultFormValueType>;
+    schema?: ResourceUI;
     formItemColumns: ColumUI[];
     onCurrentEditorChanged(): Promise<void>;
     get defaultInitialValues(): Record<string, string>;
@@ -382,7 +383,7 @@ declare class NewFormModel implements ManageableModel {
     getUri(): string;
     setUri(uri: string | URI): void;
     loadSchema(uri: string | URI): Promise<void>;
-    submit(values: DefaultFormValueType): Promise<void>;
+    submit(): Promise<void>;
 }
 
 type NewFormProps = {
@@ -391,9 +392,7 @@ type NewFormProps = {
 declare class NewForm extends Component<NewFormProps> {
     render(): JSX.Element;
 }
-declare class NewFormInner extends Component<NewFormProps & {
-    formikProps: FormikProps<DefaultFormValueType>;
-}> {
+declare class NewFormInner extends Component<NewFormProps> {
     render(): JSX.Element;
 }
 

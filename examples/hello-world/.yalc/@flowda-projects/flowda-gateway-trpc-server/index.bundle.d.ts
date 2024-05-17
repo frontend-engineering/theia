@@ -1,8 +1,7 @@
 /// <reference types="@types/qs" />
 import { ContainerModule } from 'inversify';
-import * as _yalc__prisma_client_flowda from '.yalc/@prisma/client-flowda';
+import * as _prisma_client_flowda from '@prisma/client-flowda';
 import * as _trpc_server from '@trpc/server';
-import * as _flowda_types from '@flowda/types';
 import * as express from 'express';
 import * as qs from 'qs';
 import * as express_serve_static_core from 'express-serve-static-core';
@@ -23,8 +22,15 @@ declare class TrpcService {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
@@ -46,8 +52,15 @@ declare class TrpcService {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -67,8 +80,15 @@ declare class TrpcService {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             _input_in: typeof _trpc_server.unsetMarker;
             _input_out: typeof _trpc_server.unsetMarker;
@@ -83,8 +103,15 @@ declare class TrpcService {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -112,8 +139,15 @@ declare class TrpcService {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -141,8 +175,15 @@ declare class TrpcService {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
@@ -164,8 +205,15 @@ declare class TrpcService {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
@@ -188,8 +236,15 @@ declare class TrpcService {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
@@ -209,8 +264,15 @@ declare class TrpcService {
             res: express.Response<any, Record<string, any>>;
             requestId: string;
             _diagnosis: any[];
-            user: _flowda_types.ctxUserSchemaDto | undefined;
-            tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+            user: {
+                username: string;
+                id: number;
+                tenantId: number;
+            } | undefined;
+            tenant: {
+                name: string;
+                id: number;
+            } | undefined;
         };
         _input_in: typeof _trpc_server.unsetMarker;
         _input_out: typeof _trpc_server.unsetMarker;
@@ -225,8 +287,15 @@ declare class TrpcService {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
@@ -243,12 +312,19 @@ declare class TrpcService {
         }>;
         _meta: object;
         _ctx_out: {
-            user: _flowda_types.ctxUserSchemaDto | undefined;
+            user: {
+                username: string;
+                id: number;
+                tenantId: number;
+            } | undefined;
             requestId: string;
             req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
             res: express.Response<any, Record<string, any>>;
             _diagnosis: any[];
-            tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+            tenant: {
+                name: string;
+                id: number;
+            } | undefined;
         };
         _input_in: typeof _trpc_server.unsetMarker;
         _input_out: typeof _trpc_server.unsetMarker;
@@ -261,8 +337,15 @@ declare class TrpcService {
             res: express.Response<any, Record<string, any>>;
             requestId: string;
             _diagnosis: any[];
-            user: _flowda_types.ctxUserSchemaDto | undefined;
-            tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+            user: {
+                username: string;
+                id: number;
+                tenantId: number;
+            } | undefined;
+            tenant: {
+                name: string;
+                id: number;
+            } | undefined;
         };
         meta: object;
         errorShape: _trpc_server.DefaultErrorShape;
@@ -288,8 +371,15 @@ declare class ContextFactory {
         res: express.Response<any, Record<string, any>>;
         requestId: string;
         _diagnosis: any[];
-        user: _flowda_types.ctxUserSchemaDto | undefined;
-        tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+        user: {
+            username: string;
+            id: number;
+            tenantId: number;
+        } | undefined;
+        tenant: {
+            name: string;
+            id: number;
+        } | undefined;
     }>;
 }
 
@@ -322,8 +412,15 @@ declare class HelloRouter {
             res: express.Response<any, Record<string, any>>;
             requestId: string;
             _diagnosis: any[];
-            user: _flowda_types.ctxUserSchemaDto | undefined;
-            tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+            user: {
+                username: string;
+                id: number;
+                tenantId: number;
+            } | undefined;
+            tenant: {
+                name: string;
+                id: number;
+            } | undefined;
         };
         meta: object;
         errorShape: _trpc_server.DefaultErrorShape;
@@ -345,8 +442,15 @@ declare class HelloRouter {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -367,8 +471,15 @@ declare class HelloRouter {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             _input_in: {
                 username: string;
@@ -393,7 +504,7 @@ declare class HelloRouter {
                     name: string;
                 };
                 orderProfile: {
-                    productType: _yalc__prisma_client_flowda.ProductType;
+                    productType: _prisma_client_flowda.ProductType;
                     plan: number | null;
                     amount: number | null;
                     expireAt: Date | null;
@@ -424,8 +535,15 @@ declare class HelloRouter {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -446,8 +564,15 @@ declare class HelloRouter {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             _input_in: any;
             _input_out: any;
@@ -475,8 +600,15 @@ declare class HelloRouter {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -493,12 +625,19 @@ declare class HelloRouter {
             }>;
             _meta: object;
             _ctx_out: {
-                user: _flowda_types.ctxUserSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
                 requestId: string;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
                 _diagnosis: any[];
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             _input_in: {
                 pid: string;
@@ -523,8 +662,15 @@ declare class HelloRouter {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -541,18 +687,27 @@ declare class HelloRouter {
             }>;
             _meta: object;
             _ctx_out: {
-                user: _flowda_types.ctxUserSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
                 requestId: string;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
                 _diagnosis: any[];
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             _input_in: {
                 schemaName: string;
+                tenant: string;
             };
             _input_out: {
                 schemaName: string;
+                tenant: string;
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
@@ -564,8 +719,15 @@ declare class HelloRouter {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -582,12 +744,19 @@ declare class HelloRouter {
             }>;
             _meta: object;
             _ctx_out: {
-                user: _flowda_types.ctxUserSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
                 requestId: string;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
                 _diagnosis: any[];
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             _input_in: {
                 sort: {
@@ -595,6 +764,7 @@ declare class HelloRouter {
                     colId: string;
                 }[];
                 schemaName: string;
+                tenant: string;
                 current: number;
                 pageSize: number;
                 filterModel: Record<string, {
@@ -613,6 +783,7 @@ declare class HelloRouter {
             } | {
                 schemaName: string;
                 id: number;
+                tenant: string;
             };
             _input_out: {
                 sort: {
@@ -620,6 +791,7 @@ declare class HelloRouter {
                     colId: string;
                 }[];
                 schemaName: string;
+                tenant: string;
                 current: number;
                 pageSize: number;
                 filterModel: Record<string, {
@@ -638,6 +810,7 @@ declare class HelloRouter {
             } | {
                 schemaName: string;
                 id: number;
+                tenant: string;
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
@@ -649,8 +822,15 @@ declare class HelloRouter {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 meta: object;
                 errorShape: _trpc_server.DefaultErrorShape;
@@ -667,22 +847,90 @@ declare class HelloRouter {
             }>;
             _meta: object;
             _ctx_out: {
-                user: _flowda_types.ctxUserSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
                 requestId: string;
                 req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                 res: express.Response<any, Record<string, any>>;
                 _diagnosis: any[];
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             _input_in: {
-                id: number;
                 schemaName: string;
+                id: number;
+                tenant: string;
                 updatedValue?: any;
             };
             _input_out: {
-                id: number;
                 schemaName: string;
+                id: number;
+                tenant: string;
                 updatedValue?: any;
+            };
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, any>;
+        postResourceData: _trpc_server.BuildProcedure<"mutation", {
+            _config: _trpc_server.RootConfig<{
+                ctx: {
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    requestId: string;
+                    _diagnosis: any[];
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
+                };
+                meta: object;
+                errorShape: _trpc_server.DefaultErrorShape;
+                transformer: {
+                    input: {
+                        serialize: (object: any) => any;
+                        deserialize: (object: any) => any;
+                    };
+                    output: {
+                        serialize: (object: any) => any;
+                        deserialize: (object: any) => any;
+                    };
+                };
+            }>;
+            _meta: object;
+            _ctx_out: {
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                requestId: string;
+                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                res: express.Response<any, Record<string, any>>;
+                _diagnosis: any[];
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
+            };
+            _input_in: {
+                schemaName: string;
+                tenant: string;
+                value?: any;
+            };
+            _input_out: {
+                schemaName: string;
+                tenant: string;
+                value?: any;
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
@@ -703,8 +951,15 @@ declare class TrpcRouter {
             res: express.Response<any, Record<string, any>>;
             requestId: string;
             _diagnosis: any[];
-            user: _flowda_types.ctxUserSchemaDto | undefined;
-            tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+            user: {
+                username: string;
+                id: number;
+                tenantId: number;
+            } | undefined;
+            tenant: {
+                name: string;
+                id: number;
+            } | undefined;
         };
         meta: object;
         errorShape: _trpc_server.DefaultErrorShape;
@@ -725,8 +980,15 @@ declare class TrpcRouter {
                 res: express.Response<any, Record<string, any>>;
                 requestId: string;
                 _diagnosis: any[];
-                user: _flowda_types.ctxUserSchemaDto | undefined;
-                tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
             };
             meta: object;
             errorShape: _trpc_server.DefaultErrorShape;
@@ -748,8 +1010,15 @@ declare class TrpcRouter {
                         res: express.Response<any, Record<string, any>>;
                         requestId: string;
                         _diagnosis: any[];
-                        user: _flowda_types.ctxUserSchemaDto | undefined;
-                        tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                        user: {
+                            username: string;
+                            id: number;
+                            tenantId: number;
+                        } | undefined;
+                        tenant: {
+                            name: string;
+                            id: number;
+                        } | undefined;
                     };
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
@@ -770,8 +1039,15 @@ declare class TrpcRouter {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 _input_in: {
                     username: string;
@@ -796,7 +1072,7 @@ declare class TrpcRouter {
                         name: string;
                     };
                     orderProfile: {
-                        productType: _yalc__prisma_client_flowda.ProductType;
+                        productType: _prisma_client_flowda.ProductType;
                         plan: number | null;
                         amount: number | null;
                         expireAt: Date | null;
@@ -827,8 +1103,15 @@ declare class TrpcRouter {
                         res: express.Response<any, Record<string, any>>;
                         requestId: string;
                         _diagnosis: any[];
-                        user: _flowda_types.ctxUserSchemaDto | undefined;
-                        tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                        user: {
+                            username: string;
+                            id: number;
+                            tenantId: number;
+                        } | undefined;
+                        tenant: {
+                            name: string;
+                            id: number;
+                        } | undefined;
                     };
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
@@ -849,8 +1132,15 @@ declare class TrpcRouter {
                     res: express.Response<any, Record<string, any>>;
                     requestId: string;
                     _diagnosis: any[];
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 _input_in: any;
                 _input_out: any;
@@ -875,8 +1165,15 @@ declare class TrpcRouter {
                         res: express.Response<any, Record<string, any>>;
                         requestId: string;
                         _diagnosis: any[];
-                        user: _flowda_types.ctxUserSchemaDto | undefined;
-                        tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                        user: {
+                            username: string;
+                            id: number;
+                            tenantId: number;
+                        } | undefined;
+                        tenant: {
+                            name: string;
+                            id: number;
+                        } | undefined;
                     };
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
@@ -893,12 +1190,19 @@ declare class TrpcRouter {
                 }>;
                 _meta: object;
                 _ctx_out: {
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
                     requestId: string;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
                     _diagnosis: any[];
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 _input_in: {
                     pid: string;
@@ -923,8 +1227,15 @@ declare class TrpcRouter {
                         res: express.Response<any, Record<string, any>>;
                         requestId: string;
                         _diagnosis: any[];
-                        user: _flowda_types.ctxUserSchemaDto | undefined;
-                        tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                        user: {
+                            username: string;
+                            id: number;
+                            tenantId: number;
+                        } | undefined;
+                        tenant: {
+                            name: string;
+                            id: number;
+                        } | undefined;
                     };
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
@@ -941,18 +1252,27 @@ declare class TrpcRouter {
                 }>;
                 _meta: object;
                 _ctx_out: {
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
                     requestId: string;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
                     _diagnosis: any[];
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 _input_in: {
                     schemaName: string;
+                    tenant: string;
                 };
                 _input_out: {
                     schemaName: string;
+                    tenant: string;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -964,8 +1284,15 @@ declare class TrpcRouter {
                         res: express.Response<any, Record<string, any>>;
                         requestId: string;
                         _diagnosis: any[];
-                        user: _flowda_types.ctxUserSchemaDto | undefined;
-                        tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                        user: {
+                            username: string;
+                            id: number;
+                            tenantId: number;
+                        } | undefined;
+                        tenant: {
+                            name: string;
+                            id: number;
+                        } | undefined;
                     };
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
@@ -982,12 +1309,19 @@ declare class TrpcRouter {
                 }>;
                 _meta: object;
                 _ctx_out: {
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
                     requestId: string;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
                     _diagnosis: any[];
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 _input_in: {
                     sort: {
@@ -995,6 +1329,7 @@ declare class TrpcRouter {
                         colId: string;
                     }[];
                     schemaName: string;
+                    tenant: string;
                     current: number;
                     pageSize: number;
                     filterModel: Record<string, {
@@ -1013,6 +1348,7 @@ declare class TrpcRouter {
                 } | {
                     schemaName: string;
                     id: number;
+                    tenant: string;
                 };
                 _input_out: {
                     sort: {
@@ -1020,6 +1356,7 @@ declare class TrpcRouter {
                         colId: string;
                     }[];
                     schemaName: string;
+                    tenant: string;
                     current: number;
                     pageSize: number;
                     filterModel: Record<string, {
@@ -1038,6 +1375,7 @@ declare class TrpcRouter {
                 } | {
                     schemaName: string;
                     id: number;
+                    tenant: string;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1049,8 +1387,15 @@ declare class TrpcRouter {
                         res: express.Response<any, Record<string, any>>;
                         requestId: string;
                         _diagnosis: any[];
-                        user: _flowda_types.ctxUserSchemaDto | undefined;
-                        tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                        user: {
+                            username: string;
+                            id: number;
+                            tenantId: number;
+                        } | undefined;
+                        tenant: {
+                            name: string;
+                            id: number;
+                        } | undefined;
                     };
                     meta: object;
                     errorShape: _trpc_server.DefaultErrorShape;
@@ -1067,22 +1412,90 @@ declare class TrpcRouter {
                 }>;
                 _meta: object;
                 _ctx_out: {
-                    user: _flowda_types.ctxUserSchemaDto | undefined;
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
                     requestId: string;
                     req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
                     res: express.Response<any, Record<string, any>>;
                     _diagnosis: any[];
-                    tenant: _flowda_types.ctxTenantSchemaDto | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
                 };
                 _input_in: {
-                    id: number;
                     schemaName: string;
+                    id: number;
+                    tenant: string;
                     updatedValue?: any;
                 };
                 _input_out: {
-                    id: number;
                     schemaName: string;
+                    id: number;
+                    tenant: string;
                     updatedValue?: any;
+                };
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, any>;
+            postResourceData: _trpc_server.BuildProcedure<"mutation", {
+                _config: _trpc_server.RootConfig<{
+                    ctx: {
+                        req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                        res: express.Response<any, Record<string, any>>;
+                        requestId: string;
+                        _diagnosis: any[];
+                        user: {
+                            username: string;
+                            id: number;
+                            tenantId: number;
+                        } | undefined;
+                        tenant: {
+                            name: string;
+                            id: number;
+                        } | undefined;
+                    };
+                    meta: object;
+                    errorShape: _trpc_server.DefaultErrorShape;
+                    transformer: {
+                        input: {
+                            serialize: (object: any) => any;
+                            deserialize: (object: any) => any;
+                        };
+                        output: {
+                            serialize: (object: any) => any;
+                            deserialize: (object: any) => any;
+                        };
+                    };
+                }>;
+                _meta: object;
+                _ctx_out: {
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    requestId: string;
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    _diagnosis: any[];
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
+                };
+                _input_in: {
+                    schemaName: string;
+                    tenant: string;
+                    value?: any;
+                };
+                _input_out: {
+                    schemaName: string;
+                    tenant: string;
+                    value?: any;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1098,6 +1511,8 @@ declare const FLOWDA_GATEWAY_ENV: znv_dist_util.DeepReadonlyObject<{
     FLOWDA_URL: string;
     CMS_ADMIN_URL: string;
     YONGCHENG_URL: string;
+    TIANBAO_URL: string;
+    C7_REST_URL: string;
 }>;
 
 export { type AppRouter, FLOWDA_GATEWAY_ENV, TrpcRouter, flowdaGatewayTrpcServerModule };

@@ -1,14 +1,14 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { ApiServiceSymbol, newFormUriSchema, ThemeModelSymbol, } from '@flowda/types';
-import { inject, injectable } from 'inversify';
-import { ThemeModel } from '../theme/theme.model';
-import * as _ from 'radash';
-import { makeObservable, observable, runInAction } from 'mobx';
 import { URI } from '@theia/core';
+import { inject, injectable } from 'inversify';
+import { makeObservable, observable, runInAction } from 'mobx';
 import * as qs from 'qs';
-let count = 0;
+import { ThemeModel } from '../theme/theme.model';
+import { getDefaultInitialValues, getFormItemColumns } from './new-form-utils';
 let NewFormModel = class NewFormModel {
-    // 不清楚为何 computed 失效
+    // 暂不清楚为何 computed 失效 先绕过
+    // 只有 theia 失效 storybook 没有问题
     // @computed get formItemColumns() {
     //   return this.schema == null ? [] : this.schema.columns.filter(col => {
     //     if (this.schema?.primary_key === col.name) return false
@@ -19,11 +19,8 @@ let NewFormModel = class NewFormModel {
     async onCurrentEditorChanged() {
         this.loadSchema(this.getUri());
     }
-    // suppress warning: uncontrolled input to be controlled
     get defaultInitialValues() {
-        if (this.schema == null)
-            return {};
-        return _.objectify(this.schema.columns, i => i.name, i => '');
+        return getDefaultInitialValues(this.schema);
     }
     constructor(theme, apiService) {
         this.theme = theme;
@@ -68,21 +65,20 @@ let NewFormModel = class NewFormModel {
         });
         runInAction(() => {
             this.schema = ret;
-            this.formItemColumns = this.schema.columns.filter(col => {
-                var _a;
-                if (((_a = this.schema) === null || _a === void 0 ? void 0 : _a.primary_key) === col.name)
-                    return false;
-                if (!col.visible)
-                    return false;
-                return col.access_type !== 'read_only';
-            });
+            this.formItemColumns = getFormItemColumns(this.schema);
         });
     }
-    async submit(values) {
+    async submit() {
         if (!this.formikProps)
             throw new Error(`formikProps not set`);
         this.formikProps.setSubmitting(true);
-        console.log('submit', values);
+        const uri = new URI(this.getUri());
+        const query = newFormUriSchema.parse(qs.parse(uri.query));
+        await this.apiService.postResourceData({
+            tenant: this.getTenant(),
+            schemaName: query.schemaName,
+            value: this.formikProps.values,
+        });
         this.formikProps.setSubmitting(false);
     }
 };

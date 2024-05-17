@@ -19,7 +19,10 @@ let NotImplementedApiService = class NotImplementedApiService {
         throw new Error('handlers.getResourceSchema is not implemented');
     }
     putResourceData(input) {
-        throw new Error('handlers.getResourceSchema is not implemented');
+        throw new Error('handlers.putResourceData is not implemented');
+    }
+    postResourceData(input) {
+        throw new Error('handlers.postResourceData is not implemented');
     }
 };
 NotImplementedApiService = __decorate([

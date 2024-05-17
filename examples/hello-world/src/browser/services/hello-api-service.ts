@@ -5,6 +5,7 @@ import {
     getResourceDataOutputSchema,
     putResourceDataInputSchema,
     type ApiService,
+    postResourceDataInputSchema,
 } from '@flowda/types'
 import { z } from 'zod'
 import { injectable, inject } from '@theia/core/shared/inversify'
@@ -26,5 +27,8 @@ export class HelloApiService implements ApiService {
     }
     putResourceData(input: z.infer<typeof putResourceDataInputSchema>): Promise<unknown> {
         return this.trpcFactory().hello.putResourceData.mutate(input)
+    }
+    postResourceData(input: z.infer<typeof postResourceDataInputSchema>): Promise<unknown> {
+        return this.trpcFactory().hello.postResourceData.mutate(input)
     }
 }
