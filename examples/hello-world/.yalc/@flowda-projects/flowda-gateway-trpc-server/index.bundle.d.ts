@@ -318,13 +318,13 @@ declare class TrpcService {
                 tenantId: number;
             } | undefined;
             requestId: string;
-            req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-            res: express.Response<any, Record<string, any>>;
-            _diagnosis: any[];
             tenant: {
                 name: string;
                 id: number;
             } | undefined;
+            req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+            res: express.Response<any, Record<string, any>>;
+            _diagnosis: any[];
         };
         _input_in: typeof _trpc_server.unsetMarker;
         _input_out: typeof _trpc_server.unsetMarker;
@@ -631,13 +631,13 @@ declare class HelloRouter {
                     tenantId: number;
                 } | undefined;
                 requestId: string;
-                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                res: express.Response<any, Record<string, any>>;
-                _diagnosis: any[];
                 tenant: {
                     name: string;
                     id: number;
                 } | undefined;
+                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                res: express.Response<any, Record<string, any>>;
+                _diagnosis: any[];
             };
             _input_in: {
                 pid: string;
@@ -693,21 +693,21 @@ declare class HelloRouter {
                     tenantId: number;
                 } | undefined;
                 requestId: string;
-                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                res: express.Response<any, Record<string, any>>;
-                _diagnosis: any[];
                 tenant: {
                     name: string;
                     id: number;
                 } | undefined;
+                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                res: express.Response<any, Record<string, any>>;
+                _diagnosis: any[];
             };
             _input_in: {
-                schemaName: string;
                 tenant: string;
+                schemaName: string;
             };
             _input_out: {
-                schemaName: string;
                 tenant: string;
+                schemaName: string;
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
@@ -750,67 +750,67 @@ declare class HelloRouter {
                     tenantId: number;
                 } | undefined;
                 requestId: string;
-                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                res: express.Response<any, Record<string, any>>;
-                _diagnosis: any[];
                 tenant: {
                     name: string;
                     id: number;
                 } | undefined;
+                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                res: express.Response<any, Record<string, any>>;
+                _diagnosis: any[];
             };
             _input_in: {
+                tenant: string;
+                schemaName: string;
                 sort: {
                     sort: "asc" | "desc";
                     colId: string;
                 }[];
-                schemaName: string;
-                tenant: string;
                 current: number;
                 pageSize: number;
                 filterModel: Record<string, {
-                    filterType: "number" | "text";
                     filter: string | number;
                     type: "contains" | "equals";
+                    filterType: "number" | "text";
                 } | {
                     filterType: "text";
                     operator: "OR" | "AND";
                     conditions: {
-                        filterType: "number" | "text";
                         filter: string | number;
                         type: "contains" | "equals";
+                        filterType: "number" | "text";
                     }[];
                 }>;
             } | {
+                tenant: string;
                 schemaName: string;
                 id: number;
-                tenant: string;
             };
             _input_out: {
+                tenant: string;
+                schemaName: string;
                 sort: {
                     sort: "asc" | "desc";
                     colId: string;
                 }[];
-                schemaName: string;
-                tenant: string;
                 current: number;
                 pageSize: number;
                 filterModel: Record<string, {
-                    filterType: "number" | "text";
                     filter: string | number;
                     type: "contains" | "equals";
+                    filterType: "number" | "text";
                 } | {
                     filterType: "text";
                     operator: "OR" | "AND";
                     conditions: {
-                        filterType: "number" | "text";
                         filter: string | number;
                         type: "contains" | "equals";
+                        filterType: "number" | "text";
                     }[];
                 }>;
             } | {
+                tenant: string;
                 schemaName: string;
                 id: number;
-                tenant: string;
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
@@ -853,24 +853,24 @@ declare class HelloRouter {
                     tenantId: number;
                 } | undefined;
                 requestId: string;
-                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                res: express.Response<any, Record<string, any>>;
-                _diagnosis: any[];
                 tenant: {
                     name: string;
                     id: number;
                 } | undefined;
+                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                res: express.Response<any, Record<string, any>>;
+                _diagnosis: any[];
             };
             _input_in: {
+                tenant: string;
                 schemaName: string;
                 id: number;
-                tenant: string;
                 updatedValue?: any;
             };
             _input_out: {
+                tenant: string;
                 schemaName: string;
                 id: number;
-                tenant: string;
                 updatedValue?: any;
             };
             _output_in: typeof _trpc_server.unsetMarker;
@@ -914,23 +914,82 @@ declare class HelloRouter {
                     tenantId: number;
                 } | undefined;
                 requestId: string;
-                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                res: express.Response<any, Record<string, any>>;
-                _diagnosis: any[];
                 tenant: {
                     name: string;
                     id: number;
                 } | undefined;
+                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                res: express.Response<any, Record<string, any>>;
+                _diagnosis: any[];
             };
             _input_in: {
-                schemaName: string;
                 tenant: string;
+                schemaName: string;
                 value?: any;
             };
             _input_out: {
-                schemaName: string;
                 tenant: string;
+                schemaName: string;
                 value?: any;
+            };
+            _output_in: typeof _trpc_server.unsetMarker;
+            _output_out: typeof _trpc_server.unsetMarker;
+        }, any>;
+        removeResourceData: _trpc_server.BuildProcedure<"mutation", {
+            _config: _trpc_server.RootConfig<{
+                ctx: {
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    requestId: string;
+                    _diagnosis: any[];
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
+                };
+                meta: object;
+                errorShape: _trpc_server.DefaultErrorShape;
+                transformer: {
+                    input: {
+                        serialize: (object: any) => any;
+                        deserialize: (object: any) => any;
+                    };
+                    output: {
+                        serialize: (object: any) => any;
+                        deserialize: (object: any) => any;
+                    };
+                };
+            }>;
+            _meta: object;
+            _ctx_out: {
+                user: {
+                    username: string;
+                    id: number;
+                    tenantId: number;
+                } | undefined;
+                requestId: string;
+                tenant: {
+                    name: string;
+                    id: number;
+                } | undefined;
+                req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                res: express.Response<any, Record<string, any>>;
+                _diagnosis: any[];
+            };
+            _input_in: {
+                tenant: string;
+                schemaName: string;
+                id: string | number | null;
+            };
+            _input_out: {
+                tenant: string;
+                schemaName: string;
+                id: string | number | null;
             };
             _output_in: typeof _trpc_server.unsetMarker;
             _output_out: typeof _trpc_server.unsetMarker;
@@ -1196,13 +1255,13 @@ declare class TrpcRouter {
                         tenantId: number;
                     } | undefined;
                     requestId: string;
-                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                    res: express.Response<any, Record<string, any>>;
-                    _diagnosis: any[];
                     tenant: {
                         name: string;
                         id: number;
                     } | undefined;
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    _diagnosis: any[];
                 };
                 _input_in: {
                     pid: string;
@@ -1258,21 +1317,21 @@ declare class TrpcRouter {
                         tenantId: number;
                     } | undefined;
                     requestId: string;
-                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                    res: express.Response<any, Record<string, any>>;
-                    _diagnosis: any[];
                     tenant: {
                         name: string;
                         id: number;
                     } | undefined;
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    _diagnosis: any[];
                 };
                 _input_in: {
-                    schemaName: string;
                     tenant: string;
+                    schemaName: string;
                 };
                 _input_out: {
-                    schemaName: string;
                     tenant: string;
+                    schemaName: string;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1315,67 +1374,67 @@ declare class TrpcRouter {
                         tenantId: number;
                     } | undefined;
                     requestId: string;
-                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                    res: express.Response<any, Record<string, any>>;
-                    _diagnosis: any[];
                     tenant: {
                         name: string;
                         id: number;
                     } | undefined;
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    _diagnosis: any[];
                 };
                 _input_in: {
+                    tenant: string;
+                    schemaName: string;
                     sort: {
                         sort: "asc" | "desc";
                         colId: string;
                     }[];
-                    schemaName: string;
-                    tenant: string;
                     current: number;
                     pageSize: number;
                     filterModel: Record<string, {
-                        filterType: "number" | "text";
                         filter: string | number;
                         type: "contains" | "equals";
+                        filterType: "number" | "text";
                     } | {
                         filterType: "text";
                         operator: "OR" | "AND";
                         conditions: {
-                            filterType: "number" | "text";
                             filter: string | number;
                             type: "contains" | "equals";
+                            filterType: "number" | "text";
                         }[];
                     }>;
                 } | {
+                    tenant: string;
                     schemaName: string;
                     id: number;
-                    tenant: string;
                 };
                 _input_out: {
+                    tenant: string;
+                    schemaName: string;
                     sort: {
                         sort: "asc" | "desc";
                         colId: string;
                     }[];
-                    schemaName: string;
-                    tenant: string;
                     current: number;
                     pageSize: number;
                     filterModel: Record<string, {
-                        filterType: "number" | "text";
                         filter: string | number;
                         type: "contains" | "equals";
+                        filterType: "number" | "text";
                     } | {
                         filterType: "text";
                         operator: "OR" | "AND";
                         conditions: {
-                            filterType: "number" | "text";
                             filter: string | number;
                             type: "contains" | "equals";
+                            filterType: "number" | "text";
                         }[];
                     }>;
                 } | {
+                    tenant: string;
                     schemaName: string;
                     id: number;
-                    tenant: string;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;
@@ -1418,24 +1477,24 @@ declare class TrpcRouter {
                         tenantId: number;
                     } | undefined;
                     requestId: string;
-                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                    res: express.Response<any, Record<string, any>>;
-                    _diagnosis: any[];
                     tenant: {
                         name: string;
                         id: number;
                     } | undefined;
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    _diagnosis: any[];
                 };
                 _input_in: {
+                    tenant: string;
                     schemaName: string;
                     id: number;
-                    tenant: string;
                     updatedValue?: any;
                 };
                 _input_out: {
+                    tenant: string;
                     schemaName: string;
                     id: number;
-                    tenant: string;
                     updatedValue?: any;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
@@ -1479,23 +1538,82 @@ declare class TrpcRouter {
                         tenantId: number;
                     } | undefined;
                     requestId: string;
-                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
-                    res: express.Response<any, Record<string, any>>;
-                    _diagnosis: any[];
                     tenant: {
                         name: string;
                         id: number;
                     } | undefined;
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    _diagnosis: any[];
                 };
                 _input_in: {
-                    schemaName: string;
                     tenant: string;
+                    schemaName: string;
                     value?: any;
                 };
                 _input_out: {
-                    schemaName: string;
                     tenant: string;
+                    schemaName: string;
                     value?: any;
+                };
+                _output_in: typeof _trpc_server.unsetMarker;
+                _output_out: typeof _trpc_server.unsetMarker;
+            }, any>;
+            removeResourceData: _trpc_server.BuildProcedure<"mutation", {
+                _config: _trpc_server.RootConfig<{
+                    ctx: {
+                        req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                        res: express.Response<any, Record<string, any>>;
+                        requestId: string;
+                        _diagnosis: any[];
+                        user: {
+                            username: string;
+                            id: number;
+                            tenantId: number;
+                        } | undefined;
+                        tenant: {
+                            name: string;
+                            id: number;
+                        } | undefined;
+                    };
+                    meta: object;
+                    errorShape: _trpc_server.DefaultErrorShape;
+                    transformer: {
+                        input: {
+                            serialize: (object: any) => any;
+                            deserialize: (object: any) => any;
+                        };
+                        output: {
+                            serialize: (object: any) => any;
+                            deserialize: (object: any) => any;
+                        };
+                    };
+                }>;
+                _meta: object;
+                _ctx_out: {
+                    user: {
+                        username: string;
+                        id: number;
+                        tenantId: number;
+                    } | undefined;
+                    requestId: string;
+                    tenant: {
+                        name: string;
+                        id: number;
+                    } | undefined;
+                    req: express.Request<express_serve_static_core.ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>;
+                    res: express.Response<any, Record<string, any>>;
+                    _diagnosis: any[];
+                };
+                _input_in: {
+                    tenant: string;
+                    schemaName: string;
+                    id: string | number | null;
+                };
+                _input_out: {
+                    tenant: string;
+                    schemaName: string;
+                    id: string | number | null;
                 };
                 _output_in: typeof _trpc_server.unsetMarker;
                 _output_out: typeof _trpc_server.unsetMarker;

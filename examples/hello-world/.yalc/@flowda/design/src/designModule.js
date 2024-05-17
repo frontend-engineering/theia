@@ -24,6 +24,9 @@ let NotImplementedApiService = class NotImplementedApiService {
     postResourceData(input) {
         throw new Error('handlers.postResourceData is not implemented');
     }
+    removeResourceData(input) {
+        throw new Error('handlers.removeResourceData is not implemented');
+    }
 };
 NotImplementedApiService = __decorate([
     injectable()

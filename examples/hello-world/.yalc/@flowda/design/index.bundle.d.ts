@@ -3,9 +3,10 @@ import * as React$1 from 'react';
 import { Component } from 'react';
 import { GridApi, ColDef, IRowNode, CellValueChangedEvent, SortModelItem } from 'ag-grid-community';
 import { URI } from '@theia/core';
-import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, postResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType, ColumUI } from '@flowda/types';
+import { ManageableModel, ApiService, getResourceInputSchema, ResourceUISchema, getResourceDataInputSchema, getResourceDataOutputSchema, putResourceDataInputSchema, postResourceDataInputSchema, removeResourceDataInputSchema, ColumnUISchema, ResourceUI, handleContextMenuInputSchema, ICustomResource, CellRenderer, agFilterSchema, CellRendererInput, loginInputSchemaDto, loginOutputSchemaDto, wfCfgSchema, DefaultFormValueType, ColumUI } from '@flowda/types';
 import { ContainerModule, interfaces } from 'inversify';
 import { z } from 'zod';
+import { RowSelectedEvent } from 'ag-grid-community/dist/lib/events';
 import { FormikProps } from 'formik';
 
 declare class TreeGridModel implements ManageableModel {
@@ -53,6 +54,7 @@ declare class NotImplementedApiService implements ApiService {
     getResourceData(input: z.infer<typeof getResourceDataInputSchema>): Promise<z.infer<typeof getResourceDataOutputSchema>>;
     putResourceData(input: z.infer<typeof putResourceDataInputSchema>): Promise<unknown>;
     postResourceData(input: z.infer<typeof postResourceDataInputSchema>): Promise<unknown>;
+    removeResourceData(input: z.infer<typeof removeResourceDataInputSchema>): Promise<unknown>;
 }
 declare const bindDesignModule: (bind: interfaces.Bind) => void;
 
@@ -126,17 +128,19 @@ declare class GridModel implements ManageableModel {
     theme: ThemeModel;
     apiService: ApiService;
     private customResources;
+    selectedRowPk: string | number | null;
     columnDefs: z.infer<typeof ColumnUISchema>[];
     schemaName: string | null;
     schema: ResourceUI | null;
     isNotEmpty: boolean;
-    gridApi: GridApi | null;
+    _gridApi: GridApi | null;
     /**
      * 是否是首次请求数据
      * 首次请求数据 smartMergeFilterModel 则只返回 uri
      * 否则根据 params.filterModel 进行合并
      */
     private _isFirstGetRows;
+    get gridApi(): GridApi<any>;
     get isFirstGetRows(): boolean;
     /**
      * 等待 setRef 也就是 widget render 然后才能调用 this.ref.setColDefs
@@ -193,6 +197,10 @@ declare class GridModel implements ManageableModel {
     }) => void;
     onRefClick(field: string, value: string | number): void;
     onNewForm(): void;
+    onRowSelected(event: RowSelectedEvent<{
+        id: string | number;
+    }>): void;
+    remove(): void;
 }
 
 type GridProps = {

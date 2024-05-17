@@ -179,6 +179,10 @@ const postDataSchema = zod.z.object({
     path: zod.z.string(),
     value: zod.z.any(),
 });
+const removeDataSchema = zod.z.object({
+    user: zod.z.any(),
+    path: zod.z.string(),
+});
 
 const getResourceInputSchema = zod.z.object({
     tenant: zod.z.string(),
@@ -215,6 +219,11 @@ const postResourceDataInputSchema = zod.z.object({
     tenant: zod.z.string(),
     schemaName: zod.z.string(),
     value: zod.z.any(),
+});
+const removeResourceDataInputSchema = zod.z.object({
+    tenant: zod.z.string(),
+    schemaName: zod.z.string(),
+    id: zod.z.union([zod.z.number(), zod.z.string()]).nullable(),
 });
 
 // https://github.com/colinhacks/zod/discussions/2245
@@ -377,6 +386,8 @@ exports.postDataSchema = postDataSchema;
 exports.postResourceDataInputSchema = postResourceDataInputSchema;
 exports.putDataSchema = putDataSchema;
 exports.putResourceDataInputSchema = putResourceDataInputSchema;
+exports.removeDataSchema = removeDataSchema;
+exports.removeResourceDataInputSchema = removeResourceDataInputSchema;
 exports.resourceKeySchema = resourceKeySchema;
 exports.selectOptionSchema = selectOptionSchema;
 exports.taskSchema = taskSchema;

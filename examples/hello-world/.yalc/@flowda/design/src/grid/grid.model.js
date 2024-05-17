@@ -6,7 +6,13 @@ import { URI } from '@theia/core';
 import axios from 'axios';
 import { ThemeModel } from '../theme/theme.model';
 import { smartMergeFilterModel } from './grid-utils';
+import { makeObservable, observable } from 'mobx';
 let GridModel = class GridModel {
+    get gridApi() {
+        if (this._gridApi == null)
+            throw new Error('gridApi is null');
+        return this._gridApi;
+    }
     get isFirstGetRows() {
         return this._isFirstGetRows;
     }
@@ -14,11 +20,12 @@ let GridModel = class GridModel {
         this.theme = theme;
         this.apiService = apiService;
         this.customResources = customResources;
+        this.selectedRowPk = null;
         this.columnDefs = [];
         this.schemaName = null;
         this.schema = null;
         this.isNotEmpty = false;
-        this.gridApi = null;
+        this._gridApi = null;
         /**
          * 是否是首次请求数据
          * 首次请求数据 smartMergeFilterModel 则只返回 uri
@@ -64,12 +71,13 @@ let GridModel = class GridModel {
                 }
             }
         };
+        makeObservable(this);
         this.refPromise = new Promise(resolve => {
             this.refResolve = resolve;
         });
     }
     setGridApi(api) {
-        this.gridApi = api;
+        this._gridApi = api;
     }
     getUri() {
         if (!this._uri)
@@ -87,8 +95,6 @@ let GridModel = class GridModel {
         this._uri = uri;
     }
     async refresh(fromToolbar = false) {
-        if (this.gridApi == null)
-            throw new Error('gridApi is null');
         if (this.gridApi.isDestroyed()) {
             throw new Error(`gridApi isDestroyed: ${this._uri}`);
         }
@@ -208,8 +214,6 @@ let GridModel = class GridModel {
             // 核心逻辑不变 是 grid filterModel 和 uri 有一个合并策略
             // 然后更新到 uri
             params.filterModel = smartMergeFilterModel(this.getUri(), params.filterModel, this.isFirstGetRows);
-            if (this.gridApi == null)
-                throw new Error('gridApi is null');
             this.gridApi.setFilterModel(params.filterModel);
             const uri = updateUriFilterModel(this.getUri(), params.filterModel);
             this.setUri(uri);
@@ -252,7 +256,29 @@ let GridModel = class GridModel {
             this.handlers.onClickNew(uri);
         }
     }
+    onRowSelected(event) {
+        if (event.node.isSelected()) {
+            const data = event.node.data;
+            if (data == null)
+                throw new Error(`event.node.data is null, rowIndex: ${event.rowIndex}`);
+            this.selectedRowPk = data.id;
+        }
+        else {
+            this.selectedRowPk = null;
+        }
+    }
+    remove() {
+        this.apiService.removeResourceData({
+            tenant: this.getTenant(),
+            schemaName: this.schemaName,
+            id: this.selectedRowPk
+        });
+    }
 };
+__decorate([
+    observable,
+    __metadata("design:type", Object)
+], GridModel.prototype, "selectedRowPk", void 0);
 GridModel = __decorate([
     injectable(),
     __param(0, inject(ThemeModelSymbol)),
