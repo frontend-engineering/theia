@@ -21,8 +21,7 @@ export class HelloApiService implements ApiService {
         return this.trpcFactory().hello.getResourceSchema.query(input)
     }
     getResourceData(
-        input: z.infer<typeof getResourceDataInputSchema>,
-    ): Promise<z.infer<typeof getResourceDataOutputSchema>> {
+        input: z.infer<typeof getResourceDataInputSchema>): Promise<z.infer<typeof getResourceDataOutputSchema>> {
         return this.trpcFactory().hello.getResourceData.query(input)
     }
     putResourceData(input: z.infer<typeof putResourceDataInputSchema>): Promise<unknown> {

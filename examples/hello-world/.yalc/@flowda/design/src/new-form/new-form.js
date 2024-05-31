@@ -24,9 +24,9 @@ let NewFormInner = class NewFormInner extends Component {
                 const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting,
                 /* and other goodies */
                  } = formikProps;
-                return _jsx(EuiForm, { isInvalid: false, error: [], component: "form", children: this.props.model.formItemColumns.length === 0 ? null : (_jsx(EuiFlexGrid, { columns: 4, children: this.props.model.formItemColumns.map(col => {
+                return (_jsx(EuiForm, { isInvalid: false, error: [], component: "form", children: this.props.model.formItemColumns.length === 0 ? null : (_jsx(EuiFlexGrid, { columns: 4, children: this.props.model.formItemColumns.map(col => {
                             return (_jsx(EuiFlexItem, { children: _jsx(EuiFormRow, { label: col.display_name, isInvalid: !!(touched[col.name] && errors[col.name]), error: errors[col.name], children: _jsx(EuiFieldText, { name: col.name, isInvalid: !!(touched[col.name] && errors[col.name]), compressed: true, value: values[col.name], onChange: handleChange, onBlur: handleBlur }) }) }, col.name));
-                        }) })) });
+                        }) })) }));
             } }));
     }
 };

@@ -9,9 +9,9 @@ import { GridToolbar } from './grid-toolbar';
 import { Flex } from '@rebass/grid/emotion';
 import styled from '@emotion/styled';
 const FEuiIcon = styled(EuiIcon) `
-    position: relative;
-    top: ${props => props.top || 1}px;
-    margin-right: 8px;
+  position: relative;
+  top: ${props => props.top || 1}px;
+  margin-right: 8px;
 `;
 export class Grid extends React.Component {
     constructor() {
@@ -101,7 +101,6 @@ export class Grid extends React.Component {
                 if (item.name === ((_a = this.props.model.schema) === null || _a === void 0 ? void 0 : _a.primary_key)) {
                     return {
                         checkboxSelection: true,
-                        headerCheckboxSelection: true,
                         minWidth: 110,
                         field: item.name,
                         // headerName: item.display_name,
@@ -276,7 +275,7 @@ export class Grid extends React.Component {
         };
     }
     render() {
-        return (_jsxs("div", { style: { height: '100%' }, children: [_jsx(EuiThemeProvider, { colorMode: this.props.model.theme.colorMode, children: _jsx(GridToolbar, Object.assign({}, this.props)) }), _jsx("div", { style: { height: 'calc(100% - 40px)' }, children: _jsx(AgGridReact, { rowSelection: 'single', onRowSelected: (evt) => this.props.model.onRowSelected(evt), modules: [InfiniteRowModelModule], ref: ref => {
+        return (_jsxs("div", { style: { height: '100%' }, children: [_jsx(EuiThemeProvider, { colorMode: this.props.model.theme.colorMode, children: _jsx(GridToolbar, Object.assign({}, this.props)) }), _jsx("div", { style: { height: 'calc(100% - 40px)' }, children: _jsx(AgGridReact, { rowSelection: 'single', onRowSelected: evt => this.props.model.onRowSelected(evt), modules: [InfiniteRowModelModule], ref: ref => {
                             this.gridRef = ref;
                         }, defaultColDef: {
                             maxWidth: 400,

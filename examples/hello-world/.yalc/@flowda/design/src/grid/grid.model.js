@@ -271,7 +271,7 @@ let GridModel = class GridModel {
         this.apiService.removeResourceData({
             tenant: this.getTenant(),
             schemaName: this.schemaName,
-            id: this.selectedRowPk
+            id: this.selectedRowPk,
         });
     }
 };
